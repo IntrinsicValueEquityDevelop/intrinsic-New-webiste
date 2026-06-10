@@ -262,30 +262,18 @@ button {
 .logo {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    font-family: var(--font-heading);
-    font-size: 1.5rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    color: var(--text-primary);
 }
 
-.logo span {
-    color: var(--accent);
+.logo-img {
+    height: 48px;
+    width: auto;
+    display: block;
+    object-fit: contain;
+    transition: var(--transition-normal);
 }
 
-.logo-icon {
-    width: 35px;
-    height: 35px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 800;
-    font-size: 1.25rem;
-    color: var(--text-dark);
-    box-shadow: 0 0 15px rgba(255, 140, 0, 0.3);
+.main-header.scrolled .logo-img {
+    height: 40px;
 }
 
 /* Navigation Links */
