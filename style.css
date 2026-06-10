@@ -794,3 +794,428 @@ button {
     }
 }
 
+/* ==========================================================================
+   HERO SECTION STYLES & LAYOUT
+   ========================================================================== */
+.iv-hero {
+  width: 100%;
+  min-height: 88vh;
+  display: flex;
+  align-items: center;
+  background: var(--bg-primary);
+  padding: 120px 0 60px 0;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle background grid (Velvet Marigold theme version) */
+.iv-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 140, 0, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 140, 0, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.iv-hero-inner {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 50px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Left Content */
+.iv-hero-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.iv-hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: ivFadeUp 0.7s ease 0.1s forwards;
+}
+
+.iv-hero-tag::before {
+  content: '';
+  width: 30px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+}
+
+.iv-hero-h1 {
+  font-size: clamp(38px, 4.5vw, 56px);
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1.15;
+  margin: 0 0 20px;
+  letter-spacing: -1px;
+  opacity: 0;
+  transform: translateY(25px);
+  animation: ivFadeUp 0.7s ease 0.2s forwards;
+  min-height: 140px; /* Prevents shifting during typewriter animation */
+}
+
+.iv-typing-container {
+  color: var(--accent);
+  display: inline-block;
+  position: relative;
+}
+
+.iv-typing-text {
+  border-right: 3px solid var(--accent);
+  padding-right: 4px;
+  white-space: pre-wrap;
+  animation: ivBlinkCursor 0.8s step-end infinite;
+}
+
+/* Gold accent bar */
+.iv-hero-bar {
+  width: 50px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), #ffb347);
+  border-radius: 4px;
+  margin-bottom: 28px;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: ivBarGrow 0.6s ease 0.4s forwards;
+}
+
+.iv-hero-desc {
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--text-muted);
+  margin: 0 0 14px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: ivFadeUp 0.7s ease 0.5s forwards;
+}
+
+.iv-hero-desc strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.iv-hero-desc-2 {
+  animation-delay: 0.6s;
+  margin-bottom: 32px;
+}
+
+/* CTA Button */
+.iv-hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  background: var(--accent);
+  color: var(--text-dark);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  box-shadow: var(--glow-soft);
+  align-self: flex-start;
+  letter-spacing: 0.2px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: ivFadeUp 0.7s ease 0.7s forwards;
+}
+
+.iv-hero-cta:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--glow-strong);
+  background: var(--accent-hover);
+  color: var(--text-dark);
+}
+
+.iv-hero-cta-arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.iv-hero-cta:hover .iv-hero-cta-arrow {
+  transform: translateX(4px);
+}
+
+/* SEBI badge bottom */
+.iv-sebi-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 24px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+  font-weight: 500;
+  opacity: 0;
+  animation: ivFadeUp 0.7s ease 0.8s forwards;
+}
+
+.iv-sebi-badge::before {
+  content: '✓';
+  width: 18px;
+  height: 18px;
+  background: rgba(0, 208, 132, 0.12);
+  color: #00d084;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* Right Content: Card + Overlapping Stats (inspired by img2) */
+.iv-hero-right {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  opacity: 0;
+  transform: translateX(40px);
+  animation: ivSlideLeft 0.9s cubic-bezier(0.25, 1, 0.5, 1) 0.4s forwards;
+}
+
+/* Compound Wealth Card (matching img1 visual style, but in dark theme) */
+.iv-hero-card {
+  width: 100%;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 24px;
+  padding: 44px 44px 80px; /* Extra bottom padding for overlapping stats */
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.iv-card-planet {
+  position: absolute;
+  top: 22px;
+  right: 28px;
+  font-size: 26px;
+  opacity: 0.6;
+  animation: ivFloat 4s ease-in-out infinite;
+}
+
+.iv-card-headline {
+  font-size: clamp(26px, 3.2vw, 36px);
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--text-primary);
+  margin: 0 0 6px;
+  letter-spacing: -0.5px;
+}
+
+.iv-card-headline em {
+  font-style: normal;
+  color: var(--accent);
+}
+
+.iv-card-sub {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin: 14px 0 32px;
+}
+
+/* Staircase illustration */
+.iv-staircase {
+  width: 100%;
+  position: relative;
+  height: 140px;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding-bottom: 4px;
+}
+
+.iv-stair-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+  flex: 1;
+}
+
+.iv-bar-item {
+  flex: 1;
+  background: linear-gradient(180deg, #ffb347 0%, var(--accent) 100%);
+  border-radius: 4px 4px 0 0;
+  animation: ivBarRise 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  opacity: 0;
+}
+
+.iv-bar-item:nth-child(1) { height: 30px; animation-delay: 0.6s; }
+.iv-bar-item:nth-child(2) { height: 50px; animation-delay: 0.7s; }
+.iv-bar-item:nth-child(3) { height: 72px; animation-delay: 0.8s; }
+.iv-bar-item:nth-child(4) { height: 95px; animation-delay: 0.9s; }
+.iv-bar-item:nth-child(5) { height: 120px; animation-delay: 1.0s; }
+
+/* Walking figure */
+.iv-figure {
+  position: absolute;
+  bottom: 120px;
+  right: 20px;
+  font-size: 38px;
+  animation: ivWalk 3s ease-in-out infinite, ivBarRise 0.6s ease 1.2s both;
+  opacity: 0;
+}
+
+/* Baseline */
+.iv-stair-base {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 140, 0, 0.4), transparent);
+  margin-top: 4px;
+}
+
+/* Overlapping Stats Card (inspired by img2 layout, styled for Velvet Marigold) */
+.iv-hero-stats-overlay {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 24px 20px;
+  margin: -50px 20px 0 20px; /* Overlaps bottom of the staircase card */
+  box-shadow: var(--shadow-soft), 0 10px 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.iv-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+}
+
+.iv-stat-num {
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 800;
+  color: var(--accent);
+  line-height: 1.1;
+}
+
+.iv-stat-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1.3;
+  max-width: 110px;
+}
+
+.iv-stat-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--border-color);
+  flex-shrink: 0;
+}
+
+/* Animations */
+@keyframes ivFadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes ivSlideLeft {
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes ivBarGrow {
+  to { opacity: 1; transform: scaleX(1); }
+}
+@keyframes ivFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(10deg); }
+}
+@keyframes ivBarRise {
+  to { opacity: 1; transform: scaleY(1); }
+  from { opacity: 0; transform: scaleY(0); transform-origin: bottom; }
+}
+@keyframes ivWalk {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes ivBlinkCursor {
+  from, to { border-color: transparent }
+  50% { border-color: var(--accent); }
+}
+
+/* Divider line at bottom */
+.iv-hero-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--accent) 30%, #ffb347 50%, var(--accent) 70%, transparent 100%);
+  opacity: 0.2;
+}
+
+/* Responsive Footer Breakpoints */
+@media (max-width: 992px) {
+  .iv-hero {
+    padding: 120px 0 60px 0;
+  }
+  
+  .iv-hero-inner {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+  
+  .iv-hero-left {
+    align-items: center;
+    text-align: center;
+  }
+  
+  .iv-hero-cta {
+    align-self: center;
+  }
+  
+  .iv-hero-right {
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .iv-hero-card {
+    padding: 30px 24px 70px 24px;
+  }
+  
+  .iv-hero-stats-overlay {
+    margin: -40px 10px 0 10px;
+    padding: 18px 12px;
+  }
+  
+  .iv-stat-num {
+    font-size: 20px;
+  }
+}
+
+

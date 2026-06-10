@@ -45,20 +45,146 @@
     <!-- ==========================================================================
          MAIN CONTENT LANDING PAGE SKELETON
          ========================================================================== -->
-    <main style="padding-top: var(--header-height); min-height: calc(100vh - 200px); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
-        <div class="container" style="padding: 4rem 2rem;">
-            <h1 style="font-size: 3.5rem; margin-bottom: 1.5rem; background: linear-gradient(135deg, #FFF 40%, var(--accent) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
-                Accelerate Wealth Creation
-            </h1>
-            <p style="color: var(--text-muted); max-width: 700px; margin: 0 auto 2.5rem auto; font-size: 1.15rem;">
-                Discover the power of systematic sector rotation investing paired with precise value unlocking strategies. Our methodology targets high-quality, overlooked businesses positioned for major structural turnarounds.
-            </p>
-            <div style="display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;">
-                <a href="#contact" class="btn-solid open-contact-modal">Get Started</a>
-                <a href="about.html" class="btn-glow">Learn Our Philosophy</a>
+    <!-- ==========================================================================
+         MAIN HERO SECTION WITH TYPING EFFECT & OVERLAPPING STATS
+         ========================================================================== -->
+    <main>
+        <section class="iv-hero">
+            <div class="container iv-hero-inner">
+                
+                <!-- LEFT Column: Text, Badge, Typewriter Title & Description -->
+                <div class="iv-hero-left">
+                    <div class="iv-hero-tag">SEBI Registered Research Analyst</div>
+                    
+                    <h1 class="iv-hero-h1">
+                        Accelerate<br>
+                        <span class="iv-typing-container"><span class="iv-typing-text"></span></span>
+                    </h1>
+                    
+                    <div class="iv-hero-bar"></div>
+                    
+                    <p class="iv-hero-desc">
+                        Discover the power of systematic <strong>sector rotation investing</strong> paired with precise <strong>value unlocking</strong> strategies. Our methodology targets high-quality, overlooked businesses positioned for major structural turnarounds and multi-year growth.
+                    </p>
+                    
+                    <p class="iv-hero-desc iv-hero-desc-2">
+                        At Intrinsic Value, alpha is a natural result of a robust, data-driven strategy. <strong>Capital protection, strict risk management, and process</strong> govern every stock recommendation. We are a SEBI-registered equity research analyst service dedicated to sustainable wealth creation.
+                    </p>
+                    
+                    <a href="#contact" class="iv-hero-cta open-contact-modal">
+                        Accelerate Your Wealth Now
+                        <span class="iv-hero-cta-arrow">&rarr;</span>
+                    </a>
+                    
+                    <div class="iv-sebi-badge">SEBI Registered · INH000009047 · No Intraday Tips · No Guaranteed Returns</div>
+                </div>
+                
+                <!-- RIGHT Column: Staircase Illustration Card & Overlapping Stats Card -->
+                <div class="iv-hero-right">
+                    <!-- Staircase Card -->
+                    <div class="iv-hero-card">
+                        <div class="iv-card-planet">🪐</div>
+                        
+                        <div class="iv-card-headline">
+                            <em>Compound</em> Wealth,<br>Real Value.
+                        </div>
+                        <div class="iv-card-sub">Intrinsic Value Equity Advisors</div>
+                        
+                        <!-- Staircase bar animation and walking figure -->
+                        <div class="iv-staircase">
+                            <div class="iv-stair-bars">
+                                <div class="iv-bar-item"></div>
+                                <div class="iv-bar-item"></div>
+                                <div class="iv-bar-item"></div>
+                                <div class="iv-bar-item"></div>
+                                <div class="iv-bar-item"></div>
+                            </div>
+                            <div class="iv-figure">🚶</div>
+                        </div>
+                        <div class="iv-stair-base"></div>
+                    </div>
+                    
+                    <!-- Overlapping Stats Box (inspired by img2 layout) -->
+                    <div class="iv-hero-stats-overlay">
+                        <!-- Stat Item 1 -->
+                        <div class="iv-stat-item">
+                            <div class="iv-stat-num">10X+</div>
+                            <div class="iv-stat-label">Multibaggers Found</div>
+                        </div>
+                        
+                        <div class="iv-stat-divider"></div>
+                        
+                        <!-- Stat Item 2 -->
+                        <div class="iv-stat-item">
+                            <div class="iv-stat-num">500+</div>
+                            <div class="iv-stat-label">Active Clients</div>
+                        </div>
+                        
+                        <div class="iv-stat-divider"></div>
+                        
+                        <!-- Stat Item 3 -->
+                        <div class="iv-stat-item">
+                            <div class="iv-stat-num">10Y+</div>
+                            <div class="iv-stat-label">Track Record</div>
+                        </div>
+                    </div>
+                </div>
+                
             </div>
-        </div>
+        </section>
+        
+        <!-- Subtle gold line divider -->
+        <div class="iv-hero-divider"></div>
     </main>
+
+    <!-- Typewriter Script -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const words = [
+            "Wealth Creation.",
+            "Capital Growth.",
+            "Portfolio Alpha.",
+            "Financial Freedom."
+        ];
+        
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        const typingTarget = document.querySelector(".iv-typing-text");
+        
+        const typeSpeed = 120;       // Typing speed per char (ms)
+        const eraseSpeed = 60;       // Erasing speed per char (ms)
+        const waitBeforeErase = 2000; // Word visible state hold (ms)
+        const waitBeforeType = 450;   // Pause before typing next word (ms)
+        
+        function typeEffect() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                typingTarget.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typingTarget.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            
+            if (!isDeleting && charIndex === currentWord.length) {
+                isDeleting = true;
+                setTimeout(typeEffect, waitBeforeErase);
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                wordIndex = (wordIndex + 1) % words.length;
+                setTimeout(typeEffect, waitBeforeType);
+            } else {
+                setTimeout(typeEffect, isDeleting ? eraseSpeed : typeSpeed);
+            }
+        }
+        
+        if (typingTarget) {
+            typeEffect();
+        }
+    });
+    </script>
 
     <!-- ==========================================================================
          SHARED FOOTER & DISCLAIMER
