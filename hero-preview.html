@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teal Hero Section Preview</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; padding: 0; font-family: 'Poppins', sans-serif; background: #fff; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     INTRINSIC VALUE — TYPING HERO SECTION WITH OVERLAPPING STATS
+     Copy-paste from <style> to </script> into WordPress Custom HTML
+     ============================================================ -->
+
+<style>
+/* ── Hero Section Wrapper ── */
+.iv-hero-sec {
+  width: 100%;
+  min-height: 90vh;
+  display: flex;
+  align-items: center;
+  background: #f4f9fa;
+  padding: 80px 6% 80px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle background grid pattern using Teal accent */
+.iv-hero-sec::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(15, 98, 87, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 98, 87, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.iv-hero-sec-inner {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 60px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Left Column: Text & CTA ── */
+.iv-hero-sec-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.iv-hero-sec-tag {
+  display: inline-flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 600;
+  color: #0F6257;
+  background: rgba(15, 98, 87, 0.06);
+  border: 1px solid rgba(15, 98, 87, 0.15);
+  padding: 6px 18px;
+  border-radius: 30px;
+  letter-spacing: 0.2px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: ivHeroFadeUp 0.7s ease 0.1s forwards;
+}
+
+.iv-hero-sec-h1 {
+  font-size: clamp(38px, 4.8vw, 56px);
+  font-weight: 700;
+  color: #112C28;
+  line-height: 1.25;
+  margin: 0;
+  letter-spacing: -0.5px;
+  opacity: 0;
+  transform: translateY(25px);
+  animation: ivHeroFadeUp 0.7s ease 0.2s forwards;
+  min-height: 150px; /* Prevents layout shifting during typing */
+}
+
+/* Dynamic Typing Text Style */
+.iv-typing-container {
+  display: inline-block;
+  color: #0F6257;
+  position: relative;
+}
+
+.iv-typing-text {
+  border-right: 3px solid #0F6257;
+  padding-right: 4px;
+  white-space: pre-wrap;
+  animation: ivBlinkCursor 0.8s step-end infinite;
+}
+
+/* CTA Button */
+.iv-hero-sec-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  background: #0F6257;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 14px rgba(15, 98, 87, 0.2);
+  opacity: 0;
+  transform: translateY(20px);
+  animation: ivHeroFadeUp 0.7s ease 0.3s forwards;
+}
+
+.iv-hero-sec-cta:hover {
+  background: #0A4B42;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(15, 98, 87, 0.3);
+  color: #ffffff;
+}
+
+/* ── Right Column: Image and Overlapping Stats Card ── */
+.iv-hero-sec-right {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  opacity: 0;
+  transform: translateX(30px);
+  animation: ivHeroSlideIn 0.8s cubic-bezier(0.25, 1, 0.5, 1) 0.3s forwards;
+}
+
+/* Orange rounded card container for the image */
+.iv-img-card-wrapper {
+  background: #DF9E56;
+  border-radius: 40px;
+  padding: 30px 30px 90px 30px; /* Padding bottom leaves room for overlapping stats */
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.iv-hero-main-img {
+  width: 100%;
+  height: auto;
+  border-radius: 24px;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.iv-img-card-wrapper:hover .iv-hero-main-img {
+  transform: scale(1.02);
+}
+
+/* Overlapping White Stats Card */
+.iv-stats-overlay-card {
+  background: #ffffff;
+  border: 1px solid rgba(15, 98, 87, 0.06);
+  border-radius: 24px;
+  padding: 28px 24px;
+  margin: -60px 20px 0 20px; /* Negative margin pulls it up to overlap the image card */
+  box-shadow: 0 15px 35px rgba(15, 98, 87, 0.08);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.iv-stat-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: 1;
+}
+
+.iv-stat-value {
+  font-size: clamp(24px, 3.2vw, 32px);
+  font-weight: 800;
+  color: #112C28;
+  line-height: 1.1;
+}
+
+.iv-stat-desc {
+  font-size: 11px;
+  font-weight: 500;
+  color: #6B7280;
+  margin-top: 6px;
+  line-height: 1.4;
+  max-width: 120px;
+}
+
+.iv-stat-bar-divider {
+  width: 1px;
+  height: 50px;
+  background: rgba(15, 98, 87, 0.1);
+  flex-shrink: 0;
+}
+
+/* ── Keyframe Animations ── */
+@keyframes ivHeroFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes ivHeroSlideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes ivBlinkCursor {
+  from, to { border-color: transparent }
+  50% { border-color: #0F6257; }
+}
+
+/* ── Responsive Styling ── */
+@media (max-width: 992px) {
+  .iv-hero-sec {
+    padding: 60px 4% 60px;
+  }
+  .iv-hero-sec-inner {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+  .iv-hero-sec-left {
+    align-items: center;
+    text-align: center;
+  }
+  .iv-hero-sec-h1 {
+    min-height: auto;
+  }
+  .iv-hero-sec-right {
+    max-width: 550px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .iv-hero-sec {
+    padding: 40px 4% 40px;
+  }
+  .iv-img-card-wrapper {
+    border-radius: 30px;
+    padding: 20px 20px 70px 20px;
+  }
+  .iv-stats-overlay-card {
+    margin: -50px 10px 0 10px;
+    padding: 20px 10px;
+    border-radius: 16px;
+  }
+  .iv-stat-value {
+    font-size: 22px;
+  }
+  .iv-stat-desc {
+    font-size: 9px;
+    margin-top: 4px;
+  }
+}
+</style>
+
+<!-- Custom WordPress Hero Section -->
+<section class="iv-hero-sec">
+  <div class="iv-hero-sec-inner">
+
+    <!-- LEFT: Heading, Dynamic Typing Words & CTA -->
+    <div class="iv-hero-sec-left">
+      <div class="iv-hero-sec-tag">SEBI Registered: INH000009843</div>
+
+      <h1 class="iv-hero-sec-h1">
+        Grow your<br>money by<br>investing in <span class="iv-typing-container"><span class="iv-typing-text"></span></span>
+      </h1>
+
+      <a href="#get-started" class="iv-hero-sec-cta">Get Started</a>
+    </div>
+
+    <!-- RIGHT: Image Card with Overlapping Stats Container -->
+    <div class="iv-hero-sec-right">
+      <!-- Orange card base -->
+      <div class="iv-img-card-wrapper">
+        <img src="hero_illustration.png" alt="Analytics Dashboard with Lion Mascot" class="iv-hero-main-img">
+      </div>
+
+      <!-- Overlapping white stats card -->
+      <div class="iv-stats-overlay-card">
+        <!-- Stat Column 1 -->
+        <div class="iv-stat-col">
+          <div class="iv-stat-value">50+</div>
+          <div class="iv-stat-desc">Years of team experience</div>
+        </div>
+        
+        <div class="iv-stat-bar-divider"></div>
+
+        <!-- Stat Column 2 -->
+        <div class="iv-stat-col">
+          <div class="iv-stat-value">3000+</div>
+          <div class="iv-stat-desc">Delighted Investors</div>
+        </div>
+
+        <div class="iv-stat-bar-divider"></div>
+
+        <!-- Stat Column 3 -->
+        <div class="iv-stat-col">
+          <div class="iv-stat-value">70+</div>
+          <div class="iv-stat-desc">Stocks Released</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Dynamic Typewriter Animation Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // Array of phrases to type and erase
+  const phrases = [
+    "undervalued stocks.",
+    "quality businesses.",
+    "long-term equities.",
+    "growth sectors."
+  ];
+
+  let phraseIndex = 0;
+  let charIndex = 0;
+  let isDeleting = false;
+  const typingTarget = document.querySelector(".iv-typing-text");
+
+  const typeSpeed = 120;     // Speed of typing each char (ms)
+  const eraseSpeed = 60;     // Speed of deleting each char (ms)
+  const waitBeforeErase = 2000; // Time word stays visible (ms)
+  const waitBeforeType = 400;  // Pause before starting typing next word (ms)
+
+  function handleTyping() {
+    const currentPhrase = phrases[phraseIndex];
+
+    if (isDeleting) {
+      // Erasing characters
+      typingTarget.textContent = currentPhrase.substring(0, charIndex - 1);
+      charIndex--;
+    } else {
+      // Typing characters
+      typingTarget.textContent = currentPhrase.substring(0, charIndex + 1);
+      charIndex++;
+    }
+
+    // Checking word boundaries
+    if (!isDeleting && charIndex === currentPhrase.length) {
+      // Pause at full word before starting to erase
+      isDeleting = true;
+      setTimeout(handleTyping, waitBeforeErase);
+    } else if (isDeleting && charIndex === 0) {
+      // Move to next word after complete erasure
+      isDeleting = false;
+      phraseIndex = (phraseIndex + 1) % phrases.length;
+      setTimeout(handleTyping, waitBeforeType);
+    } else {
+      // Continue typing or erasing
+      setTimeout(handleTyping, isDeleting ? eraseSpeed : typeSpeed);
+    }
+  }
+
+  // Start the typewriter loop
+  if (typingTarget) {
+    handleTyping();
+  }
+});
+</script>
+
+</body>
+</html>
