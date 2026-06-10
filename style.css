@@ -334,6 +334,10 @@ button {
     gap: 1.25rem;
 }
 
+.nav-actions-mobile {
+    display: none;
+}
+
 .btn-contact {
     color: var(--text-primary);
     font-weight: 500;
