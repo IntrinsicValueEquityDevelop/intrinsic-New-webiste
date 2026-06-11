@@ -2384,7 +2384,7 @@ button {
                 filter 1.2s ease;
 }
 
-.cases-horizontal-accordion {
+.iv-cases-section.entered .cases-horizontal-accordion {
     transition-delay: 0.15s;
 }
 
@@ -2429,7 +2429,7 @@ button {
 .cases-horizontal-accordion {
     display: flex;
     width: 100%;
-    max-width: 1000px;
+    max-width: 500px;
     height: 380px;
     background: rgba(26, 18, 10, 0.35);
     border: 1px solid rgba(255, 140, 0, 0.15);
@@ -2438,6 +2438,14 @@ button {
     margin: 0 auto;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
     box-sizing: border-box;
+    transition: max-width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+                opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                filter 1.2s ease;
+}
+
+.cases-horizontal-accordion.has-expanded {
+    max-width: 1000px;
 }
 
 .case-accordion-item {
@@ -2632,6 +2640,7 @@ button {
         flex-direction: column;
         height: auto;
         border-radius: 12px;
+        max-width: 100%;
     }
     
     .case-accordion-item {
