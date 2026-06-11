@@ -2636,7 +2636,7 @@ button {
 }
 
 .cases-buttons-container.has-expanded {
-    padding-bottom: 220px;
+    padding-bottom: 180px;
 }
 
 .company-card-wrapper {
@@ -2657,28 +2657,28 @@ button {
                 filter 1.8s ease;
 }
 
-/* Delays shifted slightly later to trigger after user lands on page */
-/* JSW Holdings: Fly from top-left/back */
+/* Crossing travel paths: Alternating start coordinates */
+/* JSW Holdings (leftmost): Travels from far right */
 .company-card-wrapper[data-case="0"] {
-    transform: translate3d(-150px, -80px, -200px) scale(0.65);
+    transform: translate3d(450px, -40px, -200px) scale(0.6);
     transition-delay: 0.3s;
 }
 
-/* Tata Investment: Fly from top-center/back */
+/* Tata Investment (mid-left): Travels from left */
 .company-card-wrapper[data-case="1"] {
-    transform: translate3d(0, -150px, -200px) scale(0.65);
+    transform: translate3d(-250px, 80px, -200px) scale(0.6);
     transition-delay: 0.5s;
 }
 
-/* Maharashtra Scooters: Fly from bottom-center/back */
+/* Maharashtra Scooters (mid-right): Travels from right */
 .company-card-wrapper[data-case="2"] {
-    transform: translate3d(0, 150px, -200px) scale(0.65);
+    transform: translate3d(250px, -80px, -200px) scale(0.6);
     transition-delay: 0.7s;
 }
 
-/* Kalyani Investment: Fly from top-right/back */
+/* Kalyani Investment (rightmost): Travels from far left */
 .company-card-wrapper[data-case="3"] {
-    transform: translate3d(150px, -80px, -200px) scale(0.65);
+    transform: translate3d(-450px, 40px, -200px) scale(0.6);
     transition-delay: 0.9s;
 }
 
@@ -2689,15 +2689,15 @@ button {
     filter: blur(0);
 }
 
-/* Company Button Trigger */
+/* Reduced Area Company Button Trigger */
 .btn-company-trigger {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 24px 16px;
+    padding: 16px 12px;
     width: 100%;
-    height: 115px;
+    height: 85px; /* Reduced from 115px */
     background: rgba(26, 18, 10, 0.45);
     border: 1px solid rgba(255, 140, 0, 0.18);
     border-radius: 16px;
@@ -2717,43 +2717,45 @@ button {
     box-shadow: 0 10px 25px rgba(255, 140, 0, 0.15);
 }
 
+/* Chosen button glows from its border instead of filling with color */
 .company-card-wrapper.expanded .btn-company-trigger {
-    background: var(--accent);
+    background: rgba(18, 12, 7, 0.85); /* Keeps dark background */
     border-color: var(--accent);
-    color: #000000;
+    color: #ffffff;
     transform: translateY(0);
-    box-shadow: 0 8px 30px rgba(255, 140, 0, 0.3);
+    box-shadow: 0 0 25px rgba(255, 140, 0, 0.45), inset 0 0 10px rgba(255, 140, 0, 0.2);
 }
 
 .company-btn-num {
-    font-size: 13px;
+    font-size: 11px; /* Reduced from 13px */
     font-weight: 800;
     color: var(--accent);
-    margin-bottom: 8px;
+    margin-bottom: 4px; /* Reduced from 8px */
     font-family: var(--font-heading);
     letter-spacing: 1.5px;
     transition: color 0.4s ease;
 }
 
+/* Maintain number gold color when expanded */
 .company-card-wrapper.expanded .company-btn-num {
-    color: #000000;
+    color: var(--accent);
 }
 
 .company-btn-title {
-    font-size: 15px;
+    font-size: 14px; /* Reduced from 15px */
     font-weight: 700;
     font-family: var(--font-heading);
     letter-spacing: 0.5px;
-    line-height: 1.3;
+    line-height: 1.2;
 }
 
-/* Reports Dropdown Stack: Centered HORIZONTALLY below the active button */
+/* Reports Dropdown Stack: Centered HORIZONTALLY below the active button with larger gap space (35px) */
 .company-reports-dropdown {
     position: absolute;
     top: 100%;
     left: 50%;
-    transform: translate3d(-50%, -10px, 0) scale(0.95);
-    width: 580px;
+    transform: translate3d(-50%, 10px, 0) scale(0.95);
+    width: 460px; /* Reduced from 580px */
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -2772,24 +2774,24 @@ button {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transform: translate3d(-50%, 15px, 0) scale(1);
+    transform: translate3d(-50%, 35px, 0) scale(1); /* Pushed further down (35px) */
 }
 
-/* Report link buttons styled as horizontal wiggling boxes */
+/* Reduced size report link boxes */
 .btn-report-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 180px;
-    height: 140px;
+    width: 140px; /* Reduced from 180px */
+    height: 110px; /* Reduced from 140px */
     background: rgba(26, 18, 10, 0.85);
     border: 1px solid rgba(255, 140, 0, 0.2);
     border-radius: 14px;
     color: #ffffff;
     text-decoration: none;
     box-sizing: border-box;
-    padding: 16px;
+    padding: 12px;
     text-align: center;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
     transition: background-color 0.3s ease,
@@ -2800,16 +2802,16 @@ button {
 }
 
 .btn-report-item i {
-    font-size: 28px;
+    font-size: 24px; /* Reduced from 28px */
     color: var(--accent);
-    margin-bottom: 12px;
+    margin-bottom: 8px; /* Reduced from 12px */
     transition: transform 0.3s ease;
 }
 
 .btn-report-item span {
-    font-size: 13px;
+    font-size: 11.5px; /* Reduced from 13px */
     font-weight: 700;
-    line-height: 1.3;
+    line-height: 1.25;
 }
 
 .btn-report-item:hover {
@@ -2936,8 +2938,8 @@ button {
         flex-direction: row;
         justify-content: flex-start;
         gap: 16px;
-        width: 100%;
-        height: auto;
+        width: 100% !important;
+        height: auto !important;
         padding: 14px 20px;
         border-radius: 10px;
         box-shadow: none;
