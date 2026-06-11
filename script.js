@@ -218,8 +218,8 @@ function init3DSpiral() {
         
         // Continuous Animation Loop
         function animateSpiral() {
-            // Idle rotation (slowly counter-clockwise, moving cards downward)
-            idleOffsetAngle -= 0.05; 
+            // Idle rotation (slowly clockwise, moving cards upward)
+            idleOffsetAngle += 0.05; 
             
             // Smooth linear interpolation (lerp) for scroll-driven rotation
             currentScrollOffsetAngle += (targetScrollOffsetAngle - currentScrollOffsetAngle) * 0.08;
