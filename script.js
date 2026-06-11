@@ -475,9 +475,9 @@ function initFeaturedSection() {
     
     // Calculate the wrap-around scroll width once layout is ready
     function initScrollMetrics() {
-        if (cards.length > 12) {
-            // offset of 13th card (index 12, start of cloned set) minus 1st card
-            halfScrollWidth = cards[12].offsetLeft - cards[0].offsetLeft;
+        if (cards.length > 16) {
+            // offset of 17th card (index 16, start of cloned set) minus 1st card
+            halfScrollWidth = cards[16].offsetLeft - cards[0].offsetLeft;
         }
     }
     
@@ -534,7 +534,7 @@ function initFeaturedSection() {
     // 4. Position dynamic pagination indicator dot
     function updatePaginationDot(dataIndex) {
         if (!paginationDot) return;
-        const totalOriginalCards = 12; // We have 12 unique cards
+        const totalOriginalCards = 16; // We have 16 unique cards
         const trackWidth = 120; // matches CSS pagination track width (120px)
         const dotWidth = 15;   // matches CSS dot width (15px)
         

@@ -2279,6 +2279,17 @@ button {
     color: #e2e2e6;
 }
 
+.logo-icon-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background-color: #ffffff;
+    padding: 12px;
+    box-sizing: border-box;
+    transition: transform 0.3s ease;
+}
+
 /* Hover & Active Card styles */
 .featured-logo-card:hover,
 .featured-logo-card.active {
