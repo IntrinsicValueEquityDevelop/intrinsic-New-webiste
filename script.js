@@ -190,6 +190,7 @@ function init3DSpiral() {
         
         const pricingState = {
             hasAnimatedCounter: false,
+            counterTimeout: null,
             title: {
                 el: pricingTitle,
                 currZ: -600, targetZ: -600,
@@ -403,6 +404,10 @@ function init3DSpiral() {
                         c.targetY = 50;
                     });
                     pricingState.hasAnimatedCounter = false;
+                    if (pricingState.counterTimeout) {
+                        clearTimeout(pricingState.counterTimeout);
+                        pricingState.counterTimeout = null;
+                    }
                 } else if (scrollY > pricingFadeInEnd && scrollY < pricingFadeOutStart) {
                     // Active Phase (Zoom entrance triggers based on scroll progress)
                     sectionsState.pricing.targetOpacity = 1;
@@ -431,16 +436,25 @@ function init3DSpiral() {
 
                     // Trigger dynamic count-down when cards zoom entrance is 100% complete (visible properly)
                     if (cardsProg >= 1.0) {
-                        if (!pricingState.hasAnimatedCounter) {
-                            pricingState.hasAnimatedCounter = true;
-                            animatePriceCounter();
+                        if (!pricingState.hasAnimatedCounter && !pricingState.counterTimeout) {
+                            pricingState.counterTimeout = setTimeout(() => {
+                                animatePriceCounter();
+                                pricingState.hasAnimatedCounter = true;
+                                pricingState.counterTimeout = null;
+                            }, 500);
                         }
-                    } else if (cardsProg < 0.5) {
-                        // Reset counter animation flag and text if user scrolls back up significantly
-                        pricingState.hasAnimatedCounter = false;
-                        const counterSpan = document.querySelector('.pricing-discount-counter');
-                        if (counterSpan) {
-                            counterSpan.textContent = "45,000";
+                    } else {
+                        if (pricingState.counterTimeout) {
+                            clearTimeout(pricingState.counterTimeout);
+                            pricingState.counterTimeout = null;
+                        }
+                        if (cardsProg < 0.5) {
+                            // Reset counter animation flag and text if user scrolls back up significantly
+                            pricingState.hasAnimatedCounter = false;
+                            const counterSpan = document.querySelector('.pricing-discount-counter');
+                            if (counterSpan) {
+                                counterSpan.textContent = "45,000";
+                            }
                         }
                     }
                 } else if (scrollY >= pricingFadeOutStart && scrollY <= pricingFadeOutEnd) {
@@ -463,6 +477,10 @@ function init3DSpiral() {
                         c.targetY = 0;
                     });
                     pricingState.hasAnimatedCounter = false;
+                    if (pricingState.counterTimeout) {
+                        clearTimeout(pricingState.counterTimeout);
+                        pricingState.counterTimeout = null;
+                    }
                 } else if (scrollY > pricingFadeOutEnd) {
                     // Past Exit
                     sectionsState.pricing.targetOpacity = 0;
@@ -470,6 +488,10 @@ function init3DSpiral() {
                     sectionsState.pricing.targetScale = 0.95;
                     sectionsState.pricing.pointerEvents = 'none';
                     pricingState.hasAnimatedCounter = false;
+                    if (pricingState.counterTimeout) {
+                        clearTimeout(pricingState.counterTimeout);
+                        pricingState.counterTimeout = null;
+                    }
                 } else {
                     // Before Entrance
                     sectionsState.pricing.targetOpacity = 0;
@@ -477,6 +499,10 @@ function init3DSpiral() {
                     sectionsState.pricing.targetScale = 0.95;
                     sectionsState.pricing.pointerEvents = 'none';
                     pricingState.hasAnimatedCounter = false;
+                    if (pricingState.counterTimeout) {
+                        clearTimeout(pricingState.counterTimeout);
+                        pricingState.counterTimeout = null;
+                    }
                 }
             }
         };
