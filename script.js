@@ -244,6 +244,13 @@ function init3DSpiral() {
                     sectionsState.philosophy.targetScale = 0.95;
                     sectionsState.philosophy.pointerEvents = 'none';
                     targetScrollOffsetAngle = 540;
+                } else {
+                    // Before Entrance (scrollY < philFadeInStart, i.e. in Hero Section)
+                    sectionsState.philosophy.targetOpacity = 0;
+                    sectionsState.philosophy.targetY = 60;
+                    sectionsState.philosophy.targetScale = 0.95;
+                    sectionsState.philosophy.pointerEvents = 'none';
+                    targetScrollOffsetAngle = 0;
                 }
             }
 
