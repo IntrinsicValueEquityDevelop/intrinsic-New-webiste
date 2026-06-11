@@ -612,6 +612,7 @@ function initFeaturedSection() {
 // ==========================================================================
 function initCaseStudies() {
     const wrappers = document.querySelectorAll('.company-card-wrapper');
+    const container = document.querySelector('.cases-buttons-container');
 
     if (wrappers.length === 0) return;
 
@@ -628,6 +629,13 @@ function initCaseStudies() {
                 // 2. Toggle this wrapper if it wasn't already expanded
                 if (!isAlreadyExpanded) {
                     wrapper.classList.add('expanded');
+                    if (container) {
+                        container.classList.add('has-expanded');
+                    }
+                } else {
+                    if (container) {
+                        container.classList.remove('has-expanded');
+                    }
                 }
             });
         }
