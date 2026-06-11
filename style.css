@@ -2444,9 +2444,9 @@ button {
     display: flex;
     flex-direction: row;
     height: 100%;
-    flex: 0 0 76px;
+    flex: 1 1 0%;
     overflow: hidden;
-    transition: flex-grow 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transition: flex 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
                 background-color 0.4s ease;
     background: rgba(26, 18, 10, 0.2);
     border-right: 1px solid rgba(255, 140, 0, 0.15);
@@ -2472,17 +2472,29 @@ button {
     background: rgba(26, 18, 10, 0.5);
     border-right: 1px solid rgba(255, 140, 0, 0.1);
     cursor: pointer;
-    width: 75px;
-    min-width: 75px;
+    width: 100%;
     height: 100%;
     box-sizing: border-box;
-    transition: background-color 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transition: background-color 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
     user-select: none;
 }
 
 .case-accordion-item.expanded .case-accordion-trigger {
     background: var(--accent);
     border-right: none;
+}
+
+/* Desktop-only flex and width overrides when an item is expanded */
+@media (min-width: 769px) {
+    .cases-horizontal-accordion.has-expanded .case-accordion-item:not(.expanded) {
+        flex: 0 0 76px;
+    }
+    
+    .case-accordion-item.expanded .case-accordion-trigger {
+        width: 75px;
+        min-width: 75px;
+    }
 }
 
 .case-accordion-num {

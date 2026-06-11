@@ -701,6 +701,7 @@ function initFeaturedSection() {
 // ==========================================================================
 function initCaseStudies() {
     const items = document.querySelectorAll('.case-accordion-item');
+    const accordionContainer = document.querySelector('.cases-horizontal-accordion');
 
     if (items.length === 0) return;
 
@@ -717,6 +718,13 @@ function initCaseStudies() {
                 // 2. Toggle this item if it wasn't already expanded
                 if (!isAlreadyExpanded) {
                     item.classList.add('expanded');
+                    if (accordionContainer) {
+                        accordionContainer.classList.add('has-expanded');
+                    }
+                } else {
+                    if (accordionContainer) {
+                        accordionContainer.classList.remove('has-expanded');
+                    }
                 }
             });
         }
