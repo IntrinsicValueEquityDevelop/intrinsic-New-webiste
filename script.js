@@ -167,6 +167,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize 3D Philosophy Spiral Carousel
     init3DSpiral();
+
+    // Initialize Featured In dynamic section
+    initFeaturedSection();
 });
 
 
@@ -325,3 +328,213 @@ function init3DSpiral() {
         });
     }
 }
+
+// ==========================================================================
+// DYNAMIC FEATURED IN (PRESS & RECOGNITION) SECTION
+// ==========================================================================
+function initFeaturedSection() {
+    const section = document.getElementById('featured');
+    const displayQuote = document.querySelector('.featured-quote');
+    const displaySource = document.querySelector('.featured-source');
+    const cardsRow = document.querySelector('.featured-cards-row');
+    const paginationDot = document.querySelector('.featured-pagination-dot');
+    
+    if (!section || !cardsRow) return;
+    
+    // 1. Clone cards for infinite loop marquee scroll
+    const originalCardsList = Array.from(cardsRow.children);
+    originalCardsList.forEach(card => {
+        const clone = card.cloneNode(true);
+        clone.classList.remove('active');
+        cardsRow.appendChild(clone);
+    });
+    
+    // Query ALL cards including the newly cloned ones
+    const cards = document.querySelectorAll('.featured-logo-card');
+    if (cards.length === 0) return;
+    
+    let currentIndex = 0;
+    let isPaused = false;
+    let scrollSpeed = 0.7; // Speed of auto scroll in pixels per frame
+    let halfScrollWidth = 0;
+    let animationFrameId = null;
+    
+    // Calculate the wrap-around scroll width once layout is ready
+    function initScrollMetrics() {
+        if (cards.length > 12) {
+            // offset of 13th card (index 12, start of cloned set) minus 1st card
+            halfScrollWidth = cards[12].offsetLeft - cards[0].offsetLeft;
+        }
+    }
+    
+    // 2. Intersection Observer for Scroll-Triggered Entrance Animation
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                section.classList.add('entered');
+                initScrollMetrics();
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.15
+    });
+    observer.observe(section);
+    
+    // Run metrics recalculation on window resize
+    window.addEventListener('resize', initScrollMetrics);
+    
+    // 3. Swapping function to update display quote with animations
+    function updateDisplay(index, shouldScroll = true) {
+        if (index < 0 || index >= cards.length) return;
+        
+        const card = cards[index];
+        const quote = card.getAttribute('data-quote');
+        const source = card.getAttribute('data-source');
+        const dataIndex = parseInt(card.getAttribute('data-index'), 10);
+        
+        // Remove active class from all logo cards
+        cards.forEach(c => c.classList.remove('active'));
+        
+        // Highlight all cards carrying this exact index (both original and clones)
+        cards.forEach(c => {
+            if (parseInt(c.getAttribute('data-index'), 10) === dataIndex) {
+                c.classList.add('active');
+            }
+        });
+        
+        // Only trigger swap animation if content actually changes
+        const currentDataIndex = parseInt(cards[currentIndex]?.getAttribute('data-index') || '-1', 10);
+        if (dataIndex !== currentDataIndex) {
+            displayQuote.classList.add('swapping');
+            displaySource.classList.add('swapping');
+            
+            setTimeout(() => {
+                displayQuote.innerHTML = quote;
+                displaySource.innerHTML = source;
+                
+                displayQuote.classList.remove('swapping');
+                displaySource.classList.remove('swapping');
+            }, 220);
+        }
+        
+        // Position pagination indicator dot
+        updatePaginationDot(dataIndex);
+        
+        if (shouldScroll) {
+            centerActiveCard(card);
+        }
+        
+        currentIndex = index;
+    }
+    
+    // 4. Position dynamic pagination indicator dot
+    function updatePaginationDot(dataIndex) {
+        if (!paginationDot) return;
+        const totalOriginalCards = 12; // We have 12 unique cards
+        const trackWidth = 120; // matches CSS pagination track width (120px)
+        const dotWidth = 15;   // matches CSS dot width (15px)
+        
+        const step = (trackWidth - dotWidth) / (totalOriginalCards - 1);
+        const leftPos = dataIndex * step;
+        paginationDot.style.left = `${leftPos}px`;
+    }
+    
+    // 5. Center active card in overflow scroll area (used on hover/click interaction)
+    function centerActiveCard(card) {
+        if (!cardsRow) return;
+        const rowWidth = cardsRow.clientWidth;
+        const cardLeft = card.offsetLeft;
+        const cardWidth = card.clientWidth;
+        
+        const scrollTarget = cardLeft - (rowWidth / 2) + (cardWidth / 2);
+        cardsRow.scrollTo({
+            left: scrollTarget,
+            behavior: 'smooth'
+        });
+    }
+    
+    // 6. Find which card is closest to the middle of the scroll viewport
+    function updateActiveCardFromScroll() {
+        const rowCenter = cardsRow.scrollLeft + (cardsRow.clientWidth / 2);
+        let closestIndex = 0;
+        let minDistance = Infinity;
+        
+        cards.forEach((card, idx) => {
+            const cardCenter = card.offsetLeft + (card.clientWidth / 2);
+            const distance = Math.abs(rowCenter - cardCenter);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestIndex = idx;
+            }
+        });
+        
+        // Update selection quietly without centering scroll
+        const currentDataIndex = parseInt(cards[currentIndex]?.getAttribute('data-index') || '-1', 10);
+        const closestDataIndex = parseInt(cards[closestIndex]?.getAttribute('data-index'), 10);
+        if (closestDataIndex !== currentDataIndex) {
+            updateDisplay(closestIndex, false);
+        }
+    }
+    
+    // 7. Auto Scroll Loop (marquee animation)
+    function tickScroll() {
+        if (!isPaused && halfScrollWidth > 0) {
+            cardsRow.scrollLeft += scrollSpeed;
+            
+            // Loop around seamlessly
+            if (cardsRow.scrollLeft >= halfScrollWidth) {
+                cardsRow.scrollLeft -= halfScrollWidth;
+            }
+            
+            // Auto update active card as it scrolls through the middle
+            updateActiveCardFromScroll();
+        }
+        animationFrameId = requestAnimationFrame(tickScroll);
+    }
+    
+    // 8. Event Listeners for Cards
+    cards.forEach((card, idx) => {
+        // Hover to preview and pause scroll
+        card.addEventListener('mouseenter', () => {
+            isPaused = true;
+            updateDisplay(idx, false);
+        });
+        
+        // Click to open outbound link
+        card.addEventListener('click', () => {
+            const url = card.getAttribute('data-link');
+            if (url) {
+                window.open(url, '_blank', 'noopener,noreferrer');
+            }
+        });
+    });
+    
+    // Pause auto scroll when hovering anywhere inside the cards row
+    cardsRow.addEventListener('mouseenter', () => {
+        isPaused = true;
+    });
+    
+    // Resume scroll on mouse leave
+    cardsRow.addEventListener('mouseleave', () => {
+        isPaused = false;
+    });
+    
+    // Support touchscreen touch drag pausing
+    cardsRow.addEventListener('touchstart', () => {
+        isPaused = true;
+    });
+    cardsRow.addEventListener('touchend', () => {
+        setTimeout(() => {
+            isPaused = false;
+        }, 1500); // Resume scroll shortly after swipe ends
+    });
+    
+    // 9. Initialize & Run
+    initScrollMetrics();
+    updateDisplay(0, false);
+    
+    // Start animation loop
+    animationFrameId = requestAnimationFrame(tickScroll);
+}
+
