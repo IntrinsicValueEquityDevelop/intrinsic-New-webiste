@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blogs | Intrinsic Value Equity Advisors</title>
-    <meta name="description" content="Read our latest insights, newsletters, and equity research articles on value investing and market cycles.">
+    <title>Blog Post | Intrinsic Value Equity Advisors</title>
+    <meta name="description" content="Read our detailed equity research article and investing insights.">
     <!-- Link Stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
@@ -43,102 +43,43 @@
     </header>
 
     <!-- ==========================================================================
-         MAIN CONTENT - BLOGS PAGE SKELETON
-         ========================================================================== -->
-    <!-- ==========================================================================
-         MAIN CONTENT - BLOG GRID LISTING
+         MAIN CONTENT - DYNAMIC BLOG DETAIL
          ========================================================================== -->
     <main style="padding-top: var(--header-height);">
-        <section class="blog-listing-sec">
+        <section class="post-section">
             <div class="container">
-                
-                <!-- Blog Header -->
-                <div class="blog-header">
-                    <h1 class="blog-main-title">Insights & Analysis</h1>
-                    <p class="blog-header-desc">
-                        Stay updated with our latest newsletters, business cycle calculations, and research insights on long-term value investing in India.
-                    </p>
-                </div>
-                
-                <!-- Category Filters (Visual Only) -->
-                <div class="blog-filters">
-                    <button class="filter-btn active">All</button>
-                    <button class="filter-btn">Market Cycles</button>
-                    <button class="filter-btn">Value Investing</button>
-                    <button class="filter-btn">Newsletters</button>
-                </div>
-                
-                <!-- Blog Cards Grid -->
-                <div class="blog-grid">
+                <div class="post-layout" id="post-container">
                     
-                    <!-- Blog Card 1 -->
-                    <article class="blog-card">
-                        <div class="blog-thumb-wrapper">
-                            <!-- Placeholder image colored with warm gradients -->
-                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #FF8C00, #121212); opacity: 0.85;" class="blog-thumb"></div>
-                        </div>
-                        <div class="blog-card-content">
-                            <div class="blog-card-meta">
-                                <span class="blog-badge">Market Cycles</span>
-                                <time datetime="2026-06-10">June 10, 2026</time>
-                            </div>
-                            <h2 class="blog-card-title">
-                                <a href="blog-detail.html?post=structural-turnarounds">spotting Structural Turnarounds Before the Market</a>
-                            </h2>
-                            <p class="blog-card-excerpt">
-                                How cyclical sector rotations and precise value unlocking strategies help identify high-quality businesses positioned for major structural turnarounds.
-                            </p>
-                            <a href="blog-detail.html?post=structural-turnarounds" class="blog-card-link">
-                                Read More
-                                <span>&rarr;</span>
-                            </a>
-                        </div>
-                    </article>
+                    <!-- Back to blogs link -->
+                    <a href="blogs.html" class="post-back-link">
+                        &larr; Back to Insights
+                    </a>
                     
-                    <!-- Blog Card 2 -->
-                    <article class="blog-card">
-                        <div class="blog-thumb-wrapper">
-                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #E07B00, #1a1a1a); opacity: 0.85;" class="blog-thumb"></div>
-                        </div>
-                        <div class="blog-card-content">
-                            <div class="blog-card-meta">
-                                <span class="blog-badge">Value Investing</span>
-                                <time datetime="2026-05-24">May 24, 2026</time>
+                    <!-- Post Header -->
+                    <header class="post-header">
+                        <h1 class="post-title" id="dyn-title">Loading Article...</h1>
+                        <div class="post-meta">
+                            <div class="post-meta-item">
+                                <span class="blog-badge" id="dyn-badge">Advisory</span>
                             </div>
-                            <h2 class="blog-card-title">
-                                <a href="blog-detail.html?post=value-vs-growth">Value and Growth are Complements, Not Opposites</a>
-                            </h2>
-                            <p class="blog-card-excerpt">
-                                Dissecting the age-old market debate. Why a value investor must not underestimate growth, and a growth investor must not underestimate value.
-                            </p>
-                            <a href="blog-detail.html?post=value-vs-growth" class="blog-card-link">
-                                Read More
-                                <span>&rarr;</span>
-                            </a>
+                            <div class="post-meta-item">
+                                <span>Date:</span> <strong id="dyn-date">--</strong>
+                            </div>
+                            <div class="post-meta-item">
+                                <span>Reading Time:</span> <strong id="dyn-time">--</strong>
+                            </div>
                         </div>
-                    </article>
+                    </header>
                     
-                    <!-- Blog Card 3 -->
-                    <article class="blog-card">
-                        <div class="blog-thumb-wrapper">
-                            <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #112C28, #FF8C00); opacity: 0.85;" class="blog-thumb"></div>
-                        </div>
-                        <div class="blog-card-content">
-                            <div class="blog-card-meta">
-                                <span class="blog-badge">Newsletters</span>
-                                <time datetime="2026-04-12">April 12, 2026</time>
-                            </div>
-                            <h2 class="blog-card-title">
-                                <a href="blog-detail.html?post=cagr-compounding">Managing Downside Risks for Long-Term Compounding</a>
-                            </h2>
-                            <p class="blog-card-excerpt">
-                                If downside risks are strictly controlled and permanent capital loss is avoided, superior CAGR outcomes emerge naturally over time.
-                            </p>
-                            <a href="blog-detail.html?post=cagr-compounding" class="blog-card-link">
-                                Read More
-                                <span>&rarr;</span>
-                            </a>
-                        </div>
+                    <!-- Post Hero Image -->
+                    <div class="post-hero-image-wrapper">
+                        <!-- Colored fallback block -->
+                        <div id="dyn-hero-image" style="width: 100%; height: 100%; display: block;"></div>
+                    </div>
+                    
+                    <!-- Article Rich Text Body -->
+                    <article class="post-content" id="dyn-content">
+                        <!-- Loaded dynamically -->
                     </article>
                     
                 </div>
@@ -307,5 +248,124 @@
 
     <!-- Link Logic Script -->
     <script src="script.js"></script>
+    
+    <!-- Dynamic Content Renderer Script -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Mock Blog Database
+        const BLOG_DATABASE = {
+            "structural-turnarounds": {
+                title: "Spotting Structural Turnarounds Before the Market",
+                date: "June 10, 2026",
+                category: "Market Cycles",
+                readingTime: "5 min read",
+                gradient: "linear-gradient(135deg, #FF8C00, #121212)",
+                content: `
+                    <p>In value investing, identifying high-quality businesses before their true value is unlocked is the ultimate goal. One of the most effective ways to achieve this is by spotting <strong>structural turnarounds</strong> in cyclical industries.</p>
+                    
+                    <h2>What is a Structural Turnaround?</h2>
+                    <p>A structural turnaround occurs when a company undergoes deep operational, strategic, or capital structure changes that fundamentally change its earning potential. Unlike simple cyclical bounces, structural changes lead to permanent improvements in profit margins, return on equity (ROE), and market share.</p>
+                    
+                    <blockquote>
+                        <p>“Spotting structural turnarounds early requires a deep understanding of business cycles and precise valuation discipline.”</p>
+                    </blockquote>
+                    
+                    <h3>Key Factors to Monitor:</h3>
+                    <ul>
+                        <li><strong>Deleveraging:</strong> The company is using cash flows to rapidly pay down high-interest debt, saving interest costs.</li>
+                        <li><strong>Management Shift:</strong> A new leadership team is brought in to streamline operations and focus on capital allocation.</li>
+                        <li><strong>Industry Consolidation:</strong> Smaller players exit the market during downcycles, leaving surviving companies with increased pricing power.</li>
+                    </ul>
+                    
+                    <p>At Intrinsic Value, we study sector rotation trends and focus on companies that have strong entry barriers, robust balance sheets, and are available at reasonable valuations. This disciplined research process is designed for capital protection and long-term compounding.</p>
+                `
+            },
+            "value-vs-growth": {
+                title: "Value and Growth are Complements, Not Opposites",
+                date: "May 24, 2026",
+                category: "Value Investing",
+                readingTime: "6 min read",
+                gradient: "linear-gradient(135deg, #E07B00, #1a1a1a)",
+                content: `
+                    <p>For decades, Wall Street and Dalal Street have debated the merits of "Value" vs "Growth" investing. However, the most successful investors understand that these two philosophies are actually two sides of the same coin.</p>
+                    
+                    <h2>Redefining Value and Growth</h2>
+                    <p>Growth is simply a component of calculating a business's intrinsic value. If a company can grow its earnings at a high rate while earning returns above its cost of capital, that growth adds significant value to the stock today.</p>
+                    
+                    <blockquote>
+                        <p>“As we often emphasize: A value investor should not underestimate growth, and a growth investor should not underestimate value.”</p>
+                    </blockquote>
+                    
+                    <h3>Why They Work Together</h3>
+                    <p>A pure growth investor might buy a stock at any price, expecting the growth to bail them out. A pure value investor might buy a declining business just because it is cheap (a "value trap").</p>
+                    <p>The optimal approach lies in **GARP (Growth at a Reasonable Price)** or identifying **undervalued growth businesses**. We look for companies with sustainable growth potential that are temporarily mispriced due to short-term market fears, giving us a margin of safety.</p>
+                `
+            },
+            "cagr-compounding": {
+                title: "Managing Downside Risks for Long-Term Compounding",
+                date: "April 12, 2026",
+                category: "Newsletters",
+                readingTime: "4 min read",
+                gradient: "linear-gradient(135deg, #112C28, #FF8C00)",
+                content: `
+                    <p>Many investors focus entirely on how much money they can make when a stock rises. But the mathematical reality of compounding shows that avoiding big losses is far more important for long-term wealth creation.</p>
+                    
+                    <h2>The Math of Losses</h2>
+                    <p>If your portfolio drops by 50%, you need a 100% gain just to get back to even. This asymmetry is why risk management must always come first in equity research.</p>
+                    
+                    <blockquote>
+                        <p>“If downside risks are strictly controlled and permanent capital loss is avoided, superior CAGR outcomes emerge naturally over time.”</p>
+                    </blockquote>
+                    
+                    <h3>Our Capital Protection Process</h3>
+                    <p>We implement a strict process governing all recommendations:</p>
+                    <ul>
+                        <li><strong>Valuation Discipline:</strong> Never overpay, no matter how good the narrative is.</li>
+                        <li><strong>Position Sizing:</strong> Diversifying responsibly across high-conviction ideas.</li>
+                        <li><strong>Process Over Emotions:</strong> Exiting companies when the initial investment thesis changes.</li>
+                    </ul>
+                `
+            }
+        };
+
+        // Get URL Query Parameter (?post=post-id)
+        const urlParams = new URLSearchParams(window.location.search);
+        const postKey = urlParams.get('post');
+
+        const container = document.getElementById('post-container');
+        const titleEl = document.getElementById('dyn-title');
+        const dateEl = document.getElementById('dyn-date');
+        const timeEl = document.getElementById('dyn-time');
+        const badgeEl = document.getElementById('dyn-badge');
+        const imgEl = document.getElementById('dyn-hero-image');
+        const contentEl = document.getElementById('dyn-content');
+
+        if (postKey && BLOG_DATABASE[postKey]) {
+            const post = BLOG_DATABASE[postKey];
+            
+            // Set document title
+            document.title = `${post.title} | Intrinsic Value`;
+            
+            // Populate DOM
+            titleEl.textContent = post.title;
+            dateEl.textContent = post.date;
+            timeEl.textContent = post.readingTime;
+            badgeEl.textContent = post.category;
+            imgEl.style.background = post.gradient;
+            contentEl.innerHTML = post.content;
+        } else {
+            // Revert / Redirect if invalid post key
+            titleEl.textContent = "Article Not Found";
+            dateEl.textContent = "--";
+            timeEl.textContent = "--";
+            badgeEl.textContent = "Error";
+            imgEl.style.background = "#222";
+            contentEl.innerHTML = `
+                <p>Sorry, the article you are looking for does not exist or has been moved.</p>
+                <p><a href="blogs.html" class="btn-solid" style="display:inline-block; margin-top:1rem;">Back to Blogs</a></p>
+            `;
+        }
+    });
+    </script>
 </body>
 </html>
