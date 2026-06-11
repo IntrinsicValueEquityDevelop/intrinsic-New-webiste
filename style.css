@@ -1569,7 +1569,7 @@ button {
     box-sizing: border-box;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    transition: border-color 0.3s, background 0.3s, box-shadow 0.3s, opacity 0.3s;
+    transition: border-color 0.3s, background 0.3s, box-shadow 0.3s;
     transform-style: preserve-3d;
     backface-visibility: visible;
     display: flex;

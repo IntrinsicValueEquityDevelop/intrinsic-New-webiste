@@ -111,6 +111,18 @@ function init3DSpiral() {
             return window.innerWidth <= 480 ? 0.75 : (window.innerWidth <= 768 ? 1.05 : 1.35);
         };
         
+        // Bind hover listeners for scale pop
+        spiralCards.forEach(card => {
+            card.isHovered = false;
+            card.currentHoverScale = 1.0;
+            card.addEventListener('mouseenter', () => {
+                card.isHovered = true;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.isHovered = false;
+            });
+        });
+        
         // Helix geometry configuration constants
         const totalRange = 540;   // 1.5 full turns track length (540 degrees)
         const spacing = 60;       // 60 degrees spacing between cards (9 cards * 60 = 540)
@@ -124,6 +136,40 @@ function init3DSpiral() {
         const philosophySticky = document.querySelector('.spiral-philosophy-sticky');
         const featuredSec = document.querySelector('.iv-featured-section');
         const casesSec = document.querySelector('.iv-cases-section');
+
+        // Setup lerped values for the sections to make all viewport transitions buttery smooth
+        const sectionsState = {
+            hero: {
+                el: heroSec,
+                currOpacity: 1, targetOpacity: 1,
+                currY: 0, targetY: 0,
+                currScale: 1, targetScale: 1,
+                pointerEvents: 'auto'
+            },
+            philosophy: {
+                el: philosophySticky,
+                currOpacity: 0, targetOpacity: 0,
+                currY: 60, targetY: 60,
+                currScale: 0.95, targetScale: 0.95,
+                pointerEvents: 'none'
+            },
+            featured: {
+                el: featuredSec,
+                currOpacity: 0, targetOpacity: 0,
+                currY: 60, targetY: 60,
+                currScale: 0.95, targetScale: 0.95,
+                pointerEvents: 'none',
+                hasEntered: false
+            },
+            cases: {
+                el: casesSec,
+                currOpacity: 0, targetOpacity: 0,
+                currY: 60, targetY: 60,
+                currScale: 0.95, targetScale: 0.95,
+                pointerEvents: 'none',
+                hasEntered: false
+            }
+        };
 
         const handleScrollTransitions = () => {
             const scrollY = window.scrollY;
@@ -149,49 +195,36 @@ function init3DSpiral() {
 
             // 1. Hero Section Fade & Translate (outward)
             if (heroSec) {
-                let opacity = 1;
-                let translateY = 0;
-                let scale = 1;
-                let pointerEvents = 'auto';
-
                 if (scrollY <= heroFadeEnd) {
                     const progress = scrollY / heroFadeEnd;
-                    opacity = 1 - progress;
-                    translateY = -progress * 60;
-                    scale = 1 - progress * 0.05;
+                    sectionsState.hero.targetOpacity = 1 - progress;
+                    sectionsState.hero.targetY = -progress * 60;
+                    sectionsState.hero.targetScale = 1 - progress * 0.05;
+                    sectionsState.hero.pointerEvents = 'auto';
                 } else {
-                    opacity = 0;
-                    translateY = -60;
-                    scale = 0.95;
-                    pointerEvents = 'none';
+                    sectionsState.hero.targetOpacity = 0;
+                    sectionsState.hero.targetY = -60;
+                    sectionsState.hero.targetScale = 0.95;
+                    sectionsState.hero.pointerEvents = 'none';
                 }
-
-                heroSec.style.opacity = opacity.toFixed(3);
-                heroSec.style.transform = `translateY(${translateY}px) scale(${scale})`;
-                heroSec.style.pointerEvents = pointerEvents;
             }
 
             // 2. Philosophy Section (Entrance, Card Spin, and Exit)
             if (philosophySticky) {
-                let opacity = 0;
-                let translateY = 60;
-                let scale = 0.95;
-                let pointerEvents = 'none';
-
                 if (scrollY >= philFadeInStart && scrollY <= philFadeInEnd) {
                     // Fade In Phase
                     const progress = (scrollY - philFadeInStart) / (philFadeInEnd - philFadeInStart);
-                    opacity = progress;
-                    translateY = 60 * (1 - progress);
-                    scale = 0.95 + 0.05 * progress;
-                    pointerEvents = opacity > 0.5 ? 'auto' : 'none';
+                    sectionsState.philosophy.targetOpacity = progress;
+                    sectionsState.philosophy.targetY = 60 * (1 - progress);
+                    sectionsState.philosophy.targetScale = 0.95 + 0.05 * progress;
+                    sectionsState.philosophy.pointerEvents = progress > 0.5 ? 'auto' : 'none';
                     targetScrollOffsetAngle = 0;
                 } else if (scrollY > philFadeInEnd && scrollY < philFadeOutStart) {
                     // Active Spin Phase
-                    opacity = 1;
-                    translateY = 0;
-                    scale = 1;
-                    pointerEvents = 'auto';
+                    sectionsState.philosophy.targetOpacity = 1;
+                    sectionsState.philosophy.targetY = 0;
+                    sectionsState.philosophy.targetScale = 1;
+                    sectionsState.philosophy.pointerEvents = 'auto';
 
                     const spinProgress = (scrollY - philSpinStart) / (philSpinEnd - philSpinStart);
                     const clampedProgress = Math.max(0, Math.min(1, spinProgress));
@@ -199,100 +232,86 @@ function init3DSpiral() {
                 } else if (scrollY >= philFadeOutStart && scrollY <= philFadeOutEnd) {
                     // Fade Out Phase
                     const progress = (scrollY - philFadeOutStart) / (philFadeOutEnd - philFadeOutStart);
-                    opacity = 1 - progress;
-                    translateY = -progress * 60;
-                    scale = 1 - progress * 0.05;
-                    pointerEvents = opacity > 0.5 ? 'auto' : 'none';
+                    sectionsState.philosophy.targetOpacity = 1 - progress;
+                    sectionsState.philosophy.targetY = -progress * 60;
+                    sectionsState.philosophy.targetScale = 1 - progress * 0.05;
+                    sectionsState.philosophy.pointerEvents = (1 - progress) > 0.5 ? 'auto' : 'none';
                     targetScrollOffsetAngle = 540;
                 } else if (scrollY > philFadeOutEnd) {
                     // Past Exit
-                    opacity = 0;
-                    translateY = -60;
-                    scale = 0.95;
-                    pointerEvents = 'none';
+                    sectionsState.philosophy.targetOpacity = 0;
+                    sectionsState.philosophy.targetY = -60;
+                    sectionsState.philosophy.targetScale = 0.95;
+                    sectionsState.philosophy.pointerEvents = 'none';
                     targetScrollOffsetAngle = 540;
                 }
-
-                philosophySticky.style.opacity = opacity.toFixed(3);
-                philosophySticky.style.transform = `translateY(${translateY}px) scale(${scale})`;
-                philosophySticky.style.pointerEvents = pointerEvents;
             }
 
             // 3. Featured Section Fade & Translate (inward & outward)
             if (featuredSec) {
-                let opacity = 0;
-                let translateY = 60;
-                let scale = 0.95;
-                let pointerEvents = 'none';
-
                 if (scrollY >= featuredFadeInStart && scrollY <= featuredFadeInEnd) {
                     // Fade In Phase
                     const progress = (scrollY - featuredFadeInStart) / (featuredFadeInEnd - featuredFadeInStart);
-                    opacity = progress;
-                    translateY = 60 * (1 - progress);
-                    scale = 0.95 + 0.05 * progress;
-                    pointerEvents = opacity > 0.5 ? 'auto' : 'none';
-                    featuredSec.classList.add('entered');
+                    sectionsState.featured.targetOpacity = progress;
+                    sectionsState.featured.targetY = 60 * (1 - progress);
+                    sectionsState.featured.targetScale = 0.95 + 0.05 * progress;
+                    sectionsState.featured.pointerEvents = progress > 0.5 ? 'auto' : 'none';
+                    sectionsState.featured.hasEntered = true;
                 } else if (scrollY > featuredFadeInEnd && scrollY < featuredFadeOutStart) {
                     // Active Phase
-                    opacity = 1;
-                    translateY = 0;
-                    scale = 1;
-                    pointerEvents = 'auto';
-                    featuredSec.classList.add('entered');
+                    sectionsState.featured.targetOpacity = 1;
+                    sectionsState.featured.targetY = 0;
+                    sectionsState.featured.targetScale = 1;
+                    sectionsState.featured.pointerEvents = 'auto';
+                    sectionsState.featured.hasEntered = true;
                 } else if (scrollY >= featuredFadeOutStart && scrollY <= featuredFadeOutEnd) {
                     // Fade Out Phase
                     const progress = (scrollY - featuredFadeOutStart) / (featuredFadeOutEnd - featuredFadeOutStart);
-                    opacity = 1 - progress;
-                    translateY = -progress * 60;
-                    scale = 1 - progress * 0.05;
-                    pointerEvents = opacity > 0.5 ? 'auto' : 'none';
-                    featuredSec.classList.add('entered');
+                    sectionsState.featured.targetOpacity = 1 - progress;
+                    sectionsState.featured.targetY = -progress * 60;
+                    sectionsState.featured.targetScale = 1 - progress * 0.05;
+                    sectionsState.featured.pointerEvents = (1 - progress) > 0.5 ? 'auto' : 'none';
+                    sectionsState.featured.hasEntered = true;
                 } else if (scrollY > featuredFadeOutEnd) {
                     // Past Exit
-                    opacity = 0;
-                    translateY = -60;
-                    scale = 0.95;
-                    pointerEvents = 'none';
-                    featuredSec.classList.remove('entered');
+                    sectionsState.featured.targetOpacity = 0;
+                    sectionsState.featured.targetY = -60;
+                    sectionsState.featured.targetScale = 0.95;
+                    sectionsState.featured.pointerEvents = 'none';
+                    sectionsState.featured.hasEntered = false;
                 } else {
-                    featuredSec.classList.remove('entered');
+                    sectionsState.featured.targetOpacity = 0;
+                    sectionsState.featured.targetY = 60;
+                    sectionsState.featured.targetScale = 0.95;
+                    sectionsState.featured.pointerEvents = 'none';
+                    sectionsState.featured.hasEntered = false;
                 }
-
-                featuredSec.style.opacity = opacity.toFixed(3);
-                featuredSec.style.transform = `translateY(${translateY}px) scale(${scale})`;
-                featuredSec.style.pointerEvents = pointerEvents;
             }
 
             // 4. Case Studies Section Fade & Translate (inward)
             if (casesSec) {
-                let opacity = 0;
-                let translateY = 60;
-                let scale = 0.95;
-                let pointerEvents = 'none';
-
                 if (scrollY >= casesFadeInStart && scrollY <= casesFadeInEnd) {
                     // Fade In Phase
                     const progress = (scrollY - casesFadeInStart) / (casesFadeInEnd - casesFadeInStart);
-                    opacity = progress;
-                    translateY = 60 * (1 - progress);
-                    scale = 0.95 + 0.05 * progress;
-                    pointerEvents = opacity > 0.5 ? 'auto' : 'none';
-                    casesSec.classList.add('entered');
+                    sectionsState.cases.targetOpacity = progress;
+                    sectionsState.cases.targetY = 60 * (1 - progress);
+                    sectionsState.cases.targetScale = 0.95 + 0.05 * progress;
+                    sectionsState.cases.pointerEvents = progress > 0.5 ? 'auto' : 'none';
+                    sectionsState.cases.hasEntered = true;
                 } else if (scrollY > casesFadeInEnd) {
                     // Active Phase
-                    opacity = 1;
-                    translateY = 0;
-                    scale = 1;
-                    pointerEvents = 'auto';
-                    casesSec.classList.add('entered');
+                    sectionsState.cases.targetOpacity = 1;
+                    sectionsState.cases.targetY = 0;
+                    sectionsState.cases.targetScale = 1;
+                    sectionsState.cases.pointerEvents = 'auto';
+                    sectionsState.cases.hasEntered = true;
                 } else {
-                    casesSec.classList.remove('entered');
+                    sectionsState.cases.targetOpacity = 0;
+                    sectionsState.cases.targetY = 60;
+                    sectionsState.cases.targetScale = 0.95;
+                    sectionsState.cases.pointerEvents = 'none';
+                    sectionsState.cases.hasEntered = false;
                 }
-
-                casesSec.style.opacity = opacity.toFixed(3);
-                casesSec.style.transform = `translateY(${translateY}px) scale(${scale})`;
-                casesSec.style.pointerEvents = pointerEvents;
             }
         };
 
@@ -311,7 +330,31 @@ function init3DSpiral() {
             const radius = getSpiralRadius();
             const ySpacingFactor = getSpiralYSpacingFactor();
             
-            // Position each card along the helix track coordinates
+            // A. Smoothly update and apply section transitions (buttery smooth scroll transitions)
+            const sectionLerp = 0.08;
+            for (const key in sectionsState) {
+                const s = sectionsState[key];
+                if (s.el) {
+                    s.currOpacity += (s.targetOpacity - s.currOpacity) * sectionLerp;
+                    s.currY += (s.targetY - s.currY) * sectionLerp;
+                    s.currScale += (s.targetScale - s.currScale) * sectionLerp;
+                    
+                    s.el.style.opacity = s.currOpacity.toFixed(3);
+                    s.el.style.transform = `translateY(${s.currY.toFixed(2)}px) scale(${s.currScale.toFixed(3)})`;
+                    s.el.style.pointerEvents = s.pointerEvents;
+                    
+                    // Toggle the entered class for trigger animations in case studies / featured
+                    if (key === 'featured' || key === 'cases') {
+                        if (s.hasEntered) {
+                            s.el.classList.add('entered');
+                        } else {
+                            s.el.classList.remove('entered');
+                        }
+                    }
+                }
+            }
+            
+            // B. Position each card along the helix track coordinates with smooth flying/fading/blur transitions
             spiralCards.forEach((card, idx) => {
                 const angle = baseAngle + idx * spacing;
                 
@@ -323,9 +366,6 @@ function init3DSpiral() {
                 const rotY = trackAngle;
                 const y = -trackAngle * ySpacingFactor; // Negative to make increasing angle translate card upward
                 
-                // Apply 3D transform settings
-                card.style.transform = `rotateY(${rotY}deg) translateZ(${radius}px) translateY(${y}px)`;
-                
                 // 1. Fade out cards near boundaries to make wrapping jumps invisible
                 let boundaryOpacity = 1.0;
                 const fadeWidth = 80; // degrees
@@ -336,24 +376,36 @@ function init3DSpiral() {
                 }
                 boundaryOpacity = Math.max(0, Math.min(1, boundaryOpacity));
                 
-                // 2. Dim and blur background cards (facing away, 90 to 270 deg world rotation) for depth depth
+                // 2. Continuous flying & faded/blurred rotation based on angle from front (0 degrees)
                 let normAngle = rotY % 360;
                 if (normAngle < 0) normAngle += 360;
                 
-                const isBackside = (normAngle > 90 && normAngle < 270);
-                let finalOpacity = boundaryOpacity;
-                let blurAmount = 0;
+                let angleDiff = Math.abs(normAngle);
+                if (angleDiff > 180) angleDiff = 360 - angleDiff; // [0, 180], where 0 is front, 180 is back
                 
-                if (isBackside) {
-                    finalOpacity = boundaryOpacity * 0.22; // Dim background cards
-                    blurAmount = 3.5;                      // Blur background cards
-                }
+                let frontProgress = (180 - angleDiff) / 180; // 0 in back, 1 in front
+                let t = (1 - Math.cos(frontProgress * Math.PI)) / 2; // Smooth cosine curve
                 
+                // Lerp scale, radius (depth), depth opacity, and blur amount
+                let currentScale = 0.62 + 0.43 * t; // scales from 0.62 (back) to 1.05 (front)
+                let currentRadius = radius * (0.55 + 0.53 * t); // tight core (0.55*R) to expanded front (1.08*R)
+                let depthOpacity = 0.15 + 0.85 * t; // fades to 0.15 in back
+                let finalOpacity = boundaryOpacity * depthOpacity;
+                let blurAmount = (1 - t) * 7.5; // up to 7.5px blur in back, 0px in front
+                
+                // 3. Smooth hover pop factor interpolation
+                const targetHoverScale = card.isHovered ? 1.06 : 1.0;
+                card.currentHoverScale += (targetHoverScale - card.currentHoverScale) * 0.15;
+                currentScale *= card.currentHoverScale;
+                
+                // Apply computed styles
+                card.style.transform = `rotateY(${rotY.toFixed(1)}deg) translateZ(${currentRadius.toFixed(1)}px) scale(${currentScale.toFixed(3)}) translateY(${y.toFixed(1)}px)`;
                 card.style.opacity = finalOpacity.toFixed(3);
-                card.style.filter = blurAmount > 0 ? `blur(${blurAmount}px)` : 'none';
+                card.style.filter = blurAmount > 0.15 ? `blur(${blurAmount.toFixed(2)}px)` : 'none';
                 
-                // Hide cards from screen reader/clicks only when fully faded out
-                if (boundaryOpacity < 0.08) {
+                // Disable clicks and visibility of back-facing/out-of-bounds cards
+                const isBackside = (normAngle > 85 && normAngle < 275);
+                if (boundaryOpacity < 0.08 || finalOpacity < 0.12) {
                     card.style.visibility = 'hidden';
                     card.style.pointerEvents = 'none';
                 } else {
@@ -648,5 +700,13 @@ function initCaseStudies() {
             });
         });
     });
+
+    // 4. Select/Expand the first company card wrapper by default
+    if (wrappers[0]) {
+        wrappers[0].classList.add('expanded');
+        if (container) {
+            container.classList.add('has-expanded');
+        }
+    }
 }
 
