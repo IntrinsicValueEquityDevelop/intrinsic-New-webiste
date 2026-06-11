@@ -244,6 +244,12 @@ button {
     transition: var(--transition-normal);
 }
 
+.main-header.header-hidden {
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
 .main-header.scrolled {
     background: rgba(12, 12, 12, 0.9);
     height: 70px;
@@ -1394,6 +1400,296 @@ button {
   .profile-socials {
     margin-bottom: 0;
   }
+}
+
+/* ==========================================================================
+   3D SPIRAL PHILOSOPHY LAYOUT & STYLES (Velvet Marigold Theme)
+   ========================================================================== */
+.spiral-philosophy-section {
+    position: relative;
+    height: 220vh; /* Scroll track length for pinning and scrolling */
+    background: var(--bg-primary);
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    left: 0;
+    overflow: visible;
+}
+
+/* Pinned sticky screen container */
+.spiral-philosophy-sticky {
+    position: sticky;
+    top: 0px; 
+    height: 100vh; /* Takes full viewport height */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+/* Grid Coordinates overlay background style */
+.spiral-philosophy-sticky::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        linear-gradient(rgba(255, 140, 0, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 140, 0, 0.02) 1px, transparent 1px);
+    background-size: 50px 50px;
+    background-position: center;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Section Title */
+.spiral-philosophy-title {
+    position: absolute;
+    top: 40px;
+    z-index: 10;
+    text-align: center;
+    width: 100%;
+}
+
+.spiral-philosophy-title h2 {
+    font-size: 38px;
+    color: #ffffff !important;
+    font-weight: 700;
+    font-family: var(--font-heading), sans-serif;
+    margin: 0;
+    letter-spacing: -0.5px;
+}
+
+.spiral-philosophy-title h2 em {
+    color: var(--accent);
+    font-style: normal;
+}
+
+/* 3D Scene Viewport */
+.spiral-scene {
+    position: relative;
+    perspective: 1400px;
+    perspective-origin: 50% 35%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+/* Spiral Carousel base track */
+.spiral-carousel {
+    position: relative;
+    width: 320px;
+    height: 200px;
+    transform-style: preserve-3d;
+    will-change: transform;
+}
+
+/* Glassmorphism Spiral cards */
+.spiral-card {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 320px;
+    height: 200px;
+    margin-left: -160px;
+    margin-top: -100px;
+    background: rgba(18, 18, 18, 0.55) !important;
+    border: 1.5px solid rgba(255, 140, 0, 0.18) !important;
+    border-radius: 16px;
+    padding: 24px;
+    box-sizing: border-box;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: border-color 0.3s, background 0.3s, box-shadow 0.3s, opacity 0.3s;
+    transform-style: preserve-3d;
+    backface-visibility: visible;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.spiral-card:hover {
+    background: rgba(18, 18, 18, 0.85) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 12px 30px rgba(255, 140, 0, 0.35) !important;
+    cursor: pointer;
+}
+
+.spiral-card a {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    text-decoration: none !important;
+    outline: none;
+}
+
+.spiral-card-icon {
+    font-size: 24px;
+    color: var(--accent);
+    margin-bottom: 8px;
+}
+
+.spiral-card h5 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff !important;
+    margin: 0 0 6px 0 !important;
+    font-family: var(--font-heading), sans-serif;
+}
+
+.spiral-card p {
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: #dddddd !important;
+    margin: 0 !important;
+    font-family: var(--font-body), sans-serif;
+    font-weight: 400;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+.spiral-card-readmore {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-top: 10px;
+}
+
+.spiral-card-readmore .stm-amsterdam-arrow {
+    display: inline-block;
+    width: 12px;
+    height: 8px;
+    background: currentColor;
+    clip-path: polygon(0 3px, 8px 3px, 5px 0, 12px 4px, 5px 8px, 8px 5px, 0 5px);
+}
+
+/* ==========================================
+   4. MODAL POPUP STYLING (For Philosophy cards)
+   ========================================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(5, 5, 5, 0.85);
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.modal.active {
+    opacity: 1;
+}
+
+.modal .modal-content {
+    background-color: var(--bg-secondary) !important;
+    border: 2px solid var(--accent) !important;
+    padding: 40px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 600px;
+    color: #ffffff;
+    position: relative;
+    transform: scale(0.8);
+    opacity: 1 !important;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    box-shadow: 0 20px 50px var(--accent-glow-dim);
+}
+
+.modal.active .modal-content {
+    transform: scale(1);
+}
+
+.modal .close {
+    color: #ffffff;
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.modal .close:hover {
+    color: var(--accent);
+}
+
+.modal h2 {
+    color: var(--accent);
+    margin-top: 0;
+    font-size: 24px;
+    font-family: var(--font-heading);
+    font-weight: 700;
+}
+
+.modal p {
+    line-height: 1.6;
+    color: #e0e0e0;
+    font-family: var(--font-body);
+    margin-top: 15px;
+}
+
+/* ==========================================
+   3. RESPONSIVE MEDIA QUERIES
+   ========================================== */
+@media screen and (max-width: 992px) {
+    .spiral-card {
+        width: 280px;
+        height: 180px;
+        margin-left: -140px;
+        margin-top: -90px;
+        padding: 20px;
+    }
+    .spiral-card h5 {
+        font-size: 15px;
+    }
+    .spiral-card p {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .spiral-card {
+        width: 220px;
+        height: 150px;
+        margin-left: -110px;
+        margin-top: -75px;
+        padding: 15px;
+    }
+    .spiral-card h5 {
+        font-size: 13.5px;
+        margin-bottom: 4px !important;
+    }
+    .spiral-card p {
+        font-size: 11px;
+        line-height: 1.4;
+    }
+    .spiral-card-icon {
+        font-size: 18px;
+        margin-bottom: 4px;
+    }
+    .spiral-card-readmore {
+        font-size: 10px;
+        margin-top: 6px;
+    }
+    .spiral-philosophy-title h2 {
+        font-size: 28px;
+    }
 }
 
 
