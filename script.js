@@ -417,16 +417,14 @@ function init3DSpiral() {
                     pricingState.title.targetScale = 0.3 + 0.7 * titleProg;
                     pricingState.title.targetOpacity = titleProg;
 
-                    // Cards: 0.2 -> 0.6, 0.4 -> 0.8, 0.6 -> 1.0
-                    pricingState.cards.forEach((c, idx) => {
-                        const cardStart = 0.2 + idx * 0.2;
-                        const cardProg = Math.max(0, Math.min(1, (clampedZoom - cardStart) / 0.4));
-                        
-                        c.targetZ = -600 + 600 * cardProg;
-                        c.targetScale = 0.3 + 0.7 * cardProg;
-                        c.targetOpacity = cardProg;
-                        c.targetRotateX = 15 * (1 - cardProg);
-                        c.targetY = 50 * (1 - cardProg);
+                    // Cards: All together 0.2 -> 0.8
+                    const cardsProg = Math.max(0, Math.min(1, (clampedZoom - 0.2) / 0.6));
+                    pricingState.cards.forEach(c => {
+                        c.targetZ = -600 + 600 * cardsProg;
+                        c.targetScale = 0.3 + 0.7 * cardsProg;
+                        c.targetOpacity = cardsProg;
+                        c.targetRotateX = 15 * (1 - cardsProg);
+                        c.targetY = 50 * (1 - cardsProg);
                     });
                 } else if (scrollY >= pricingFadeOutStart && scrollY <= pricingFadeOutEnd) {
                     // Fade Out Phase

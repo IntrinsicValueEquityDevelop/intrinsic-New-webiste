@@ -3079,7 +3079,7 @@ button {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 480px;
+    min-height: 420px;
     transition: border-color 0.4s ease, box-shadow 0.4s ease;
     transform-style: preserve-3d;
     position: relative;
@@ -3109,86 +3109,62 @@ button {
     opacity: 1;
 }
 
-/* Plan Badge & Premium highlights */
-.pricing-plan-badge {
-    display: inline-block;
-    padding: 5px 12px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.06);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 20px;
-}
-
-.badge-popular {
-    background: rgba(255, 140, 0, 0.15);
-    border-color: rgba(255, 140, 0, 0.3);
-    color: var(--accent);
-}
-
-.pricing-popular {
-    border-color: rgba(255, 140, 0, 0.3);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-}
-
+/* Pricing Plan Highlights */
 .pricing-plan-name {
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 12px;
-}
-
-.pricing-price-box {
-    display: flex;
-    align-items: baseline;
-    gap: 6px;
-    margin-bottom: 15px;
-}
-
-.pricing-price {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 800;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 25px;
+    font-family: var(--font-heading);
+}
+
+.pricing-meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+
+.pricing-meta-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.pricing-meta-value {
+    font-size: 22px;
+    font-weight: 700;
     color: #ffffff;
     font-family: var(--font-heading);
 }
 
-.pricing-price-period {
-    font-size: 13px;
-    color: var(--text-muted);
+.pricing-card-divider {
+    width: 40px;
+    height: 4px;
+    background-color: var(--accent);
+    margin: 20px 0;
+    border-radius: 2px;
 }
 
-.pricing-plan-desc {
-    font-size: 13.5px;
-    color: var(--text-muted);
-    line-height: 1.5;
-    margin-bottom: 25px;
+.pricing-price-box {
+    margin-bottom: 5px;
 }
 
-.pricing-features-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 30px 0;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.pricing-features-list li {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    font-size: 13.5px;
-    line-height: 1.4;
-    color: rgba(250, 250, 250, 0.85);
-}
-
-.pricing-features-list li i {
+.pricing-price {
+    font-size: 20px;
+    font-weight: 700;
     color: var(--accent);
-    margin-top: 4px;
-    font-size: 12px;
+    font-family: var(--font-heading);
+}
+
+.pricing-duration {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 500;
 }
 
 /* Footer buttons in card */
@@ -3197,43 +3173,28 @@ button {
     flex-direction: column;
     gap: 12px;
     width: 100%;
+    margin-top: 10px;
 }
 
 .btn-pricing-primary {
     width: 100%;
-    padding: 12px;
-    border-radius: 10px;
+    padding: 14px;
+    border-radius: 8px;
     background: var(--accent);
-    color: var(--text-dark);
+    color: #050505;
     font-weight: 700;
     font-size: 14px;
     text-align: center;
-    border: 1px solid var(--accent);
+    border: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     transition: var(--transition-normal);
 }
 
 .btn-pricing-primary:hover {
     background: var(--accent-hover);
-    border-color: var(--accent-hover);
-    box-shadow: 0 0 15px var(--accent-glow);
-}
-
-.btn-pricing-secondary {
-    width: 100%;
-    padding: 12px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.04);
-    color: var(--text-primary);
-    font-weight: 600;
-    font-size: 14px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: var(--transition-normal);
-}
-
-.btn-pricing-secondary:hover {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
+    color: #050505;
+    box-shadow: 0 0 20px var(--accent-glow);
 }
 
 /* ==========================================================================
@@ -3447,16 +3408,7 @@ button {
         flex: 0 0 290px;
         scroll-snap-align: center;
         min-height: auto;
-        padding: 25px 20px;
-    }
-    
-    .pricing-price {
-        font-size: 28px;
-    }
-    
-    .pricing-features-list {
-        margin-bottom: 20px;
-        gap: 10px;
+        padding: 30px 24px;
     }
 }
 
