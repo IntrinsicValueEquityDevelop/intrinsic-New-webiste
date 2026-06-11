@@ -700,36 +700,31 @@ function initFeaturedSection() {
 // CASE STUDIES MODALS & INTERACTIVE HANDLERS
 // ==========================================================================
 function initCaseStudies() {
-    const cards = document.querySelectorAll('.case-study-card');
+    const items = document.querySelectorAll('.case-accordion-item');
 
-    if (cards.length === 0) return;
+    if (items.length === 0) return;
 
-    cards.forEach(card => {
-        const btnText = card.querySelector('.btn-text');
+    items.forEach(item => {
+        const trigger = item.querySelector('.case-accordion-trigger');
         
-        card.addEventListener('click', (e) => {
-            const isAlreadyExpanded = card.classList.contains('expanded');
+        if (trigger) {
+            trigger.addEventListener('click', (e) => {
+                const isAlreadyExpanded = item.classList.contains('expanded');
 
-            // 1. Collapse all cards first
-            cards.forEach(c => {
-                c.classList.remove('expanded');
-                const tText = c.querySelector('.btn-text');
-                if (tText) tText.textContent = 'View Reports';
+                // 1. Collapse all items first
+                items.forEach(i => i.classList.remove('expanded'));
+
+                // 2. Toggle this item if it wasn't already expanded
+                if (!isAlreadyExpanded) {
+                    item.classList.add('expanded');
+                }
             });
+        }
 
-            // 2. Toggle this card if it wasn't already expanded
-            if (!isAlreadyExpanded) {
-                card.classList.add('expanded');
-                if (btnText) btnText.textContent = 'Close Reports';
-            }
-        });
-
-        // 3. Prevent click propagation inside report link buttons
-        const reportLinks = card.querySelectorAll('.btn-report-option');
+        // 3. Prevent click propagation inside report links
+        const reportLinks = item.querySelectorAll('.btn-report-option-horiz');
         reportLinks.forEach(link => {
             link.addEventListener('click', (e) => {
-                // Let the natural behavior (opening link in new tab) happen,
-                // but stop propagation so the card doesn't collapse.
                 e.stopPropagation();
             });
         });
