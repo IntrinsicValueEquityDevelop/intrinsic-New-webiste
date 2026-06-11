@@ -701,53 +701,37 @@ function initFeaturedSection() {
 // ==========================================================================
 function initCaseStudies() {
     const cards = document.querySelectorAll('.case-study-card');
-    const modals = document.querySelectorAll('.case-modal');
 
     if (cards.length === 0) return;
 
     cards.forEach(card => {
-        card.addEventListener('click', (e) => {
-            // Find target modal
-            const caseIdx = card.getAttribute('data-case');
-            const targetModal = document.getElementById(`case_modal_${caseIdx}`);
-            if (targetModal) {
-                targetModal.style.display = 'flex';
-                void targetModal.offsetWidth; // Force layout repaint
-                targetModal.classList.add('active');
-            }
-        });
-    });
-
-    modals.forEach(modal => {
-        const closeBtn = modal.querySelector('.close');
+        const btnText = card.querySelector('.btn-text');
         
-        const closeModal = () => {
-            modal.classList.remove('active');
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 400);
-        };
+        card.addEventListener('click', (e) => {
+            const isAlreadyExpanded = card.classList.contains('expanded');
 
-        if (closeBtn) {
-            closeBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                closeModal();
+            // 1. Collapse all cards first
+            cards.forEach(c => {
+                c.classList.remove('expanded');
+                const tText = c.querySelector('.btn-text');
+                if (tText) tText.textContent = 'View Reports';
             });
-        }
 
-        // Close on background overlay click
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                closeModal();
+            // 2. Toggle this card if it wasn't already expanded
+            if (!isAlreadyExpanded) {
+                card.classList.add('expanded');
+                if (btnText) btnText.textContent = 'Close Reports';
             }
         });
 
-        // Close on escape key press
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && modal.classList.contains('active')) {
-                closeModal();
-            }
+        // 3. Prevent click propagation inside report link buttons
+        const reportLinks = card.querySelectorAll('.btn-report-option');
+        reportLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Let the natural behavior (opening link in new tab) happen,
+                // but stop propagation so the card doesn't collapse.
+                e.stopPropagation();
+            });
         });
     });
 }
