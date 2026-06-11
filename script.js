@@ -8,12 +8,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. SCROLL-SENSITIVE HEADER EFFECT
     // ==========================================================================
     const header = document.querySelector('.main-header');
+    const philosophySection = document.getElementById('philosophy');
     
     const checkScroll = () => {
         if (window.scrollY > 20) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
+        }
+
+        // Hide navigation header when inside philosophy section
+        if (philosophySection) {
+            const rect = philosophySection.getBoundingClientRect();
+            // Hide header if philosophy section is active in the viewport
+            if (rect.top <= 80 && rect.bottom >= 0) {
+                header.classList.add('header-hidden');
+            } else {
+                header.classList.remove('header-hidden');
+            }
         }
     };
     
@@ -152,4 +164,164 @@ document.addEventListener('DOMContentLoaded', () => {
             link.classList.remove('active');
         }
     });
+
+    // Initialize 3D Philosophy Spiral Carousel
+    init3DSpiral();
 });
+
+
+
+// ==========================================================================
+// 3D SPIRAL PHILOSOPHY CAROUSEL
+// ==========================================================================
+function init3DSpiral() {
+    const philosophySection = document.getElementById('philosophy');
+    const carousel = document.querySelector('.spiral-carousel');
+    const spiralCards = document.querySelectorAll('.spiral-card');
+    
+    if (philosophySection && carousel && spiralCards.length > 0) {
+        // Dynamic adjustments for helix spacing depending on device width
+        const getSpiralRadius = () => {
+            return window.innerWidth <= 480 ? 150 : (window.innerWidth <= 768 ? 200 : 380);
+        };
+        
+        const getSpiralYSpacingFactor = () => {
+            return window.innerWidth <= 480 ? 0.75 : (window.innerWidth <= 768 ? 1.05 : 1.35);
+        };
+        
+        // Helix geometry configuration constants
+        const totalRange = 540;   // 1.5 full turns track length (540 degrees)
+        const spacing = 60;       // 60 degrees spacing between cards (9 cards * 60 = 540)
+        const startAngle = -270;  // Track starts at -270 degrees and wraps to +270
+        
+        let idleOffsetAngle = 0;
+        let targetScrollOffsetAngle = 0;
+        let currentScrollOffsetAngle = 0;
+        
+        // Track page scroll to map to clockwise fast rotation
+        window.addEventListener('scroll', () => {
+            const rect = philosophySection.getBoundingClientRect();
+            const sectionHeight = rect.height;
+            const windowHeight = window.innerHeight;
+            
+            const scrolled = -rect.top;
+            const scrollRange = sectionHeight - windowHeight;
+            
+            if (scrollRange > 0) {
+                let progress = scrolled / scrollRange;
+                progress = Math.max(0, Math.min(1, progress));
+                
+                // Scroll down revolves cards upward by exactly one 540-deg cycle
+                targetScrollOffsetAngle = progress * 540;
+            }
+        });
+        
+        // Continuous Animation Loop
+        function animateSpiral() {
+            // Idle rotation (slowly clockwise, moving cards upward)
+            idleOffsetAngle += 0.05; 
+            
+            // Smooth linear interpolation (lerp) for scroll-driven rotation
+            currentScrollOffsetAngle += (targetScrollOffsetAngle - currentScrollOffsetAngle) * 0.08;
+            
+            const baseAngle = idleOffsetAngle + currentScrollOffsetAngle;
+            const radius = getSpiralRadius();
+            const ySpacingFactor = getSpiralYSpacingFactor();
+            
+            // Position each card along the helix track coordinates
+            spiralCards.forEach((card, idx) => {
+                const angle = baseAngle + idx * spacing;
+                
+                // Wrap the angle to stay within the repeating track range [-270, 270)
+                let wrapped = (angle - startAngle) % totalRange;
+                if (wrapped < 0) wrapped += totalRange;
+                const trackAngle = startAngle + wrapped;
+                
+                const rotY = trackAngle;
+                const y = -trackAngle * ySpacingFactor; // Negative to make increasing angle translate card upward
+                
+                // Apply 3D transform settings
+                card.style.transform = `rotateY(${rotY}deg) translateZ(${radius}px) translateY(${y}px)`;
+                
+                // 1. Fade out cards near boundaries to make wrapping jumps invisible
+                let boundaryOpacity = 1.0;
+                const fadeWidth = 80; // degrees
+                if (trackAngle < startAngle + fadeWidth) {
+                    boundaryOpacity = (trackAngle - startAngle) / fadeWidth;
+                } else if (trackAngle > (startAngle + totalRange - fadeWidth)) {
+                    boundaryOpacity = (startAngle + totalRange - trackAngle) / fadeWidth;
+                }
+                boundaryOpacity = Math.max(0, Math.min(1, boundaryOpacity));
+                
+                // 2. Dim and blur background cards (facing away, 90 to 270 deg world rotation) for depth depth
+                let normAngle = rotY % 360;
+                if (normAngle < 0) normAngle += 360;
+                
+                const isBackside = (normAngle > 90 && normAngle < 270);
+                let finalOpacity = boundaryOpacity;
+                let blurAmount = 0;
+                
+                if (isBackside) {
+                    finalOpacity = boundaryOpacity * 0.22; // Dim background cards
+                    blurAmount = 3.5;                      // Blur background cards
+                }
+                
+                card.style.opacity = finalOpacity.toFixed(3);
+                card.style.filter = blurAmount > 0 ? `blur(${blurAmount}px)` : 'none';
+                
+                // Hide cards from screen reader/clicks only when fully faded out
+                if (boundaryOpacity < 0.08) {
+                    card.style.visibility = 'hidden';
+                    card.style.pointerEvents = 'none';
+                } else {
+                    card.style.visibility = 'visible';
+                    card.style.pointerEvents = isBackside ? 'none' : 'auto';
+                }
+            });
+            
+            requestAnimationFrame(animateSpiral);
+        }
+        
+        requestAnimationFrame(animateSpiral);
+        
+        // Bind click events on cards to trigger modals natively
+        const modals = document.querySelectorAll('.modal[id^="services_item"]');
+        modals.forEach(modal => {
+            const closeBtn = modal.querySelector('.close');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    modal.classList.remove('active');
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                    }, 400);
+                });
+            }
+            
+            // Close on background overlay click
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    setTimeout(() => {
+                        modal.style.display = 'none';
+                    }, 400);
+                }
+            });
+        });
+        
+        const spiralLinks = document.querySelectorAll('.spiral-card a');
+        spiralLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const modalId = link.getAttribute('href');
+                const targetModal = document.querySelector(modalId);
+                if (targetModal) {
+                    targetModal.style.display = 'flex';
+                    void targetModal.offsetWidth; // Force layout repaint
+                    targetModal.classList.add('active');
+                }
+            });
+        });
+    }
+}
