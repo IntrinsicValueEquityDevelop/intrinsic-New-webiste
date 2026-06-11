@@ -50,8 +50,9 @@
     <!-- ==========================================================================
          MAIN HERO SECTION WITH TYPING EFFECT & OVERLAPPING STATS
          ========================================================================== -->
-    <main>
-        <section class="iv-hero">
+    <main class="scroll-stack">
+        <div class="sticky-viewport">
+            <section class="iv-hero">
             <div class="container iv-hero-inner">
                 
                 <!-- LEFT Column: Text, Badge, Typewriter Title & Description -->
@@ -134,15 +135,11 @@
                 
             </div>
         </section>
-        
-        <!-- Subtle gold line divider -->
-        <div class="iv-hero-divider"></div>
 
         <!-- ==========================================================================
              PHILOSOPHY SECTION: 3D HELIX CAROUSEL
              ========================================================================= -->
-        <section id="philosophy" class="spiral-philosophy-section">
-            <div class="spiral-philosophy-sticky">
+        <div class="spiral-philosophy-sticky" id="philosophy">
                 <div class="spiral-philosophy-title">
                     <h2>Investment philosophy<em>.</em></h2>
                 </div>
@@ -256,16 +253,15 @@
                                 </div>
                             </a>
                         </div>
-                    </div>
-                </div>
             </div>
-        </section>
+        </div>
+    </div>
 
         <!-- ==========================================================================
              FEATURED IN SECTION: PRESS & RECOGNITION (DYNAMIC TAB-SLIDER)
              ========================================================================== -->
         <section id="featured" class="iv-featured-section">
-            <div class="container iv-featured-container">
+                <div class="container iv-featured-container">
                 
                 <!-- Active Featured display area -->
                 <div class="featured-display">
@@ -447,6 +443,7 @@
 
             </div>
         </section>
+        </div>
     </main>
 
     <!-- Typewriter Script -->

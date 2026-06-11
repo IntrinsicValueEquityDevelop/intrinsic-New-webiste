@@ -8,25 +8,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. SCROLL-SENSITIVE HEADER EFFECT
     // ==========================================================================
     const header = document.querySelector('.main-header');
-    const philosophySection = document.getElementById('philosophy');
+    let lastScrollY = window.scrollY;
     
     const checkScroll = () => {
-        if (window.scrollY > 20) {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY > 20) {
             header.classList.add('scrolled');
         } else {
             header.classList.remove('scrolled');
         }
 
-        // Hide navigation header when inside philosophy section
-        if (philosophySection) {
-            const rect = philosophySection.getBoundingClientRect();
-            // Hide header if philosophy section is active in the viewport
-            if (rect.top <= 80 && rect.bottom >= 0) {
-                header.classList.add('header-hidden');
-            } else {
-                header.classList.remove('header-hidden');
-            }
+        // Smart Header Reveal Logic
+        if (currentScrollY <= 80) {
+            // Always show header at the very top of the page
+            header.classList.remove('header-hidden');
+        } else if (currentScrollY > lastScrollY) {
+            // Scrolling down -> Hide header
+            header.classList.add('header-hidden');
+        } else {
+            // Scrolling up -> Reveal header
+            header.classList.remove('header-hidden');
         }
+        
+        lastScrollY = currentScrollY;
     };
     
     window.addEventListener('scroll', checkScroll);
@@ -201,23 +206,132 @@ function init3DSpiral() {
         let targetScrollOffsetAngle = 0;
         let currentScrollOffsetAngle = 0;
         
-        // Track page scroll to map to clockwise fast rotation
-        window.addEventListener('scroll', () => {
-            const rect = philosophySection.getBoundingClientRect();
-            const sectionHeight = rect.height;
+        const heroSec = document.querySelector('.iv-hero');
+        const philosophySticky = document.querySelector('.spiral-philosophy-sticky');
+        const featuredSec = document.querySelector('.iv-featured-section');
+
+        const handleScrollTransitions = () => {
+            const scrollY = window.scrollY;
             const windowHeight = window.innerHeight;
-            
-            const scrolled = -rect.top;
-            const scrollRange = sectionHeight - windowHeight;
-            
-            if (scrollRange > 0) {
-                let progress = scrolled / scrollRange;
-                progress = Math.max(0, Math.min(1, progress));
-                
-                // Scroll down revolves cards upward by exactly one 540-deg cycle
-                targetScrollOffsetAngle = progress * 540;
+
+            // Define scroll transition checkpoints relative to viewport height
+            const heroFadeEnd = 1.0 * windowHeight;
+
+            const philFadeInStart = 0.5 * windowHeight;
+            const philFadeInEnd = 1.0 * windowHeight;
+            const philSpinStart = 1.0 * windowHeight;
+            const philSpinEnd = 3.2 * windowHeight;
+            const philFadeOutStart = 3.2 * windowHeight;
+            const philFadeOutEnd = 3.7 * windowHeight;
+
+            const featuredFadeInStart = 3.2 * windowHeight;
+            const featuredFadeInEnd = 3.7 * windowHeight;
+
+            // 1. Hero Section Fade & Translate (outward)
+            if (heroSec) {
+                let opacity = 1;
+                let translateY = 0;
+                let scale = 1;
+                let pointerEvents = 'auto';
+
+                if (scrollY <= heroFadeEnd) {
+                    const progress = scrollY / heroFadeEnd;
+                    opacity = 1 - progress;
+                    translateY = -progress * 60;
+                    scale = 1 - progress * 0.05;
+                } else {
+                    opacity = 0;
+                    translateY = -60;
+                    scale = 0.95;
+                    pointerEvents = 'none';
+                }
+
+                heroSec.style.opacity = opacity.toFixed(3);
+                heroSec.style.transform = `translateY(${translateY}px) scale(${scale})`;
+                heroSec.style.pointerEvents = pointerEvents;
             }
-        });
+
+            // 2. Philosophy Section (Entrance, Card Spin, and Exit)
+            if (philosophySticky) {
+                let opacity = 0;
+                let translateY = 60;
+                let scale = 0.95;
+                let pointerEvents = 'none';
+
+                if (scrollY >= philFadeInStart && scrollY <= philFadeInEnd) {
+                    // Fade In Phase
+                    const progress = (scrollY - philFadeInStart) / (philFadeInEnd - philFadeInStart);
+                    opacity = progress;
+                    translateY = 60 * (1 - progress);
+                    scale = 0.95 + 0.05 * progress;
+                    pointerEvents = opacity > 0.5 ? 'auto' : 'none';
+                    targetScrollOffsetAngle = 0;
+                } else if (scrollY > philFadeInEnd && scrollY < philFadeOutStart) {
+                    // Active Spin Phase
+                    opacity = 1;
+                    translateY = 0;
+                    scale = 1;
+                    pointerEvents = 'auto';
+
+                    const spinProgress = (scrollY - philSpinStart) / (philSpinEnd - philSpinStart);
+                    const clampedProgress = Math.max(0, Math.min(1, spinProgress));
+                    targetScrollOffsetAngle = clampedProgress * 540;
+                } else if (scrollY >= philFadeOutStart && scrollY <= philFadeOutEnd) {
+                    // Fade Out Phase
+                    const progress = (scrollY - philFadeOutStart) / (philFadeOutEnd - philFadeOutStart);
+                    opacity = 1 - progress;
+                    translateY = -progress * 60;
+                    scale = 1 - progress * 0.05;
+                    pointerEvents = opacity > 0.5 ? 'auto' : 'none';
+                    targetScrollOffsetAngle = 540;
+                } else if (scrollY > philFadeOutEnd) {
+                    // Past Exit
+                    opacity = 0;
+                    translateY = -60;
+                    scale = 0.95;
+                    pointerEvents = 'none';
+                    targetScrollOffsetAngle = 540;
+                }
+
+                philosophySticky.style.opacity = opacity.toFixed(3);
+                philosophySticky.style.transform = `translateY(${translateY}px) scale(${scale})`;
+                philosophySticky.style.pointerEvents = pointerEvents;
+            }
+
+            // 3. Featured Section Fade & Translate (inward)
+            if (featuredSec) {
+                let opacity = 0;
+                let translateY = 60;
+                let scale = 0.95;
+                let pointerEvents = 'none';
+
+                if (scrollY >= featuredFadeInStart && scrollY <= featuredFadeInEnd) {
+                    // Fade In Phase
+                    const progress = (scrollY - featuredFadeInStart) / (featuredFadeInEnd - featuredFadeInStart);
+                    opacity = progress;
+                    translateY = 60 * (1 - progress);
+                    scale = 0.95 + 0.05 * progress;
+                    pointerEvents = opacity > 0.5 ? 'auto' : 'none';
+                    featuredSec.classList.add('entered');
+                } else if (scrollY > featuredFadeInEnd) {
+                    // Active Phase
+                    opacity = 1;
+                    translateY = 0;
+                    scale = 1;
+                    pointerEvents = 'auto';
+                    featuredSec.classList.add('entered');
+                } else {
+                    featuredSec.classList.remove('entered');
+                }
+
+                featuredSec.style.opacity = opacity.toFixed(3);
+                featuredSec.style.transform = `translateY(${translateY}px) scale(${scale})`;
+                featuredSec.style.pointerEvents = pointerEvents;
+            }
+        };
+
+        window.addEventListener('scroll', handleScrollTransitions);
+        handleScrollTransitions(); // Run initially
         
         // Continuous Animation Loop
         function animateSpiral() {
@@ -367,19 +481,8 @@ function initFeaturedSection() {
         }
     }
     
-    // 2. Intersection Observer for Scroll-Triggered Entrance Animation
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                section.classList.add('entered');
-                initScrollMetrics();
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.15
-    });
-    observer.observe(section);
+    // Recalculate metrics once window is fully loaded to ensure styles/fonts are ready
+    window.addEventListener('load', initScrollMetrics);
     
     // Run metrics recalculation on window resize
     window.addEventListener('resize', initScrollMetrics);
