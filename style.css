@@ -2720,36 +2720,13 @@ button {
     box-shadow: 0 10px 25px rgba(255, 140, 0, 0.15);
 }
 
-/* Chosen button: glows strongly from border and runs a tracing spark around it */
+/* Chosen button: glows strongly from border */
 .company-card-wrapper.expanded .btn-company-trigger {
-    border-color: transparent; /* hides default border so spark is visible */
-    background: transparent;
+    border-color: var(--accent);
+    background: rgba(18, 12, 7, 0.85); /* Keeps dark background */
     color: #ffffff;
     transform: translateY(0);
     box-shadow: 0 0 40px rgba(255, 140, 0, 0.75), 0 0 15px rgba(255, 140, 0, 0.45);
-}
-
-/* Sparking line tracing the border: rotating conic gradient pseudo-element */
-.company-card-wrapper.expanded .btn-company-trigger::before {
-    content: '';
-    position: absolute;
-    top: -150px;
-    left: -150px;
-    width: calc(100% + 300px);
-    height: calc(100% + 300px);
-    background: conic-gradient(from 0deg, transparent 75%, var(--accent) 92%, #ffffff 97%, var(--accent) 100%);
-    animation: rotate-spark 2s linear infinite;
-    z-index: -2;
-}
-
-/* Inner overlay matching border-radius to preserve dark core background */
-.company-card-wrapper.expanded .btn-company-trigger::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(18, 12, 7, 0.95);
-    border-radius: 14.5px;
-    z-index: -1;
 }
 
 .company-btn-num {
@@ -2851,15 +2828,7 @@ button {
     transform: scale(1.15);
 }
 
-/* Border tracing rotation and Float & Wiggle Keyframe Animations */
-@keyframes rotate-spark {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
-}
+/* Float & Wiggle Keyframe Animations */
 
 @keyframes float-wiggle {
     0%, 100% {
