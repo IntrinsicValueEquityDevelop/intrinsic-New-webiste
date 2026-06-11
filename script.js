@@ -189,6 +189,7 @@ function init3DSpiral() {
         const pricingCards = document.querySelectorAll('.pricing-card-3d');
         
         const pricingState = {
+            hasAnimatedCounter: false,
             title: {
                 el: pricingTitle,
                 currZ: -600, targetZ: -600,
@@ -401,6 +402,7 @@ function init3DSpiral() {
                         c.targetRotateX = 15;
                         c.targetY = 50;
                     });
+                    pricingState.hasAnimatedCounter = false;
                 } else if (scrollY > pricingFadeInEnd && scrollY < pricingFadeOutStart) {
                     // Active Phase (Zoom entrance triggers based on scroll progress)
                     sectionsState.pricing.targetOpacity = 1;
@@ -426,6 +428,12 @@ function init3DSpiral() {
                         c.targetRotateX = 15 * (1 - cardsProg);
                         c.targetY = 50 * (1 - cardsProg);
                     });
+
+                    // Trigger dynamic count-down when cards zoom in
+                    if (cardsProg > 0.05 && !pricingState.hasAnimatedCounter) {
+                        pricingState.hasAnimatedCounter = true;
+                        animatePriceCounter();
+                    }
                 } else if (scrollY >= pricingFadeOutStart && scrollY <= pricingFadeOutEnd) {
                     // Fade Out Phase
                     const progress = (scrollY - pricingFadeOutStart) / (pricingFadeOutEnd - pricingFadeOutStart);
@@ -445,18 +453,21 @@ function init3DSpiral() {
                         c.targetRotateX = 0;
                         c.targetY = 0;
                     });
+                    pricingState.hasAnimatedCounter = false;
                 } else if (scrollY > pricingFadeOutEnd) {
                     // Past Exit
                     sectionsState.pricing.targetOpacity = 0;
                     sectionsState.pricing.targetY = -60;
                     sectionsState.pricing.targetScale = 0.95;
                     sectionsState.pricing.pointerEvents = 'none';
+                    pricingState.hasAnimatedCounter = false;
                 } else {
                     // Before Entrance
                     sectionsState.pricing.targetOpacity = 0;
                     sectionsState.pricing.targetY = 60;
                     sectionsState.pricing.targetScale = 0.95;
                     sectionsState.pricing.pointerEvents = 'none';
+                    pricingState.hasAnimatedCounter = false;
                 }
             }
         };
@@ -983,5 +994,37 @@ function initComparisonModal() {
             }
         });
     }
+}
+
+// ==========================================================================
+// PRICE COUNTDOWN COUNTER ANIMATION
+// ==========================================================================
+function animatePriceCounter() {
+    const counterSpan = document.querySelector('.pricing-discount-counter');
+    if (!counterSpan) return;
+    
+    const startVal = 45000;
+    const endVal = 39871;
+    const duration = 1500; // 1.5 seconds countdown
+    const startTime = performance.now();
+    
+    function update(now) {
+        const elapsed = now - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing out cubic: starts fast, slows down at the end
+        const easeProgress = 1 - Math.pow(1 - progress, 3);
+        
+        const currentVal = Math.round(startVal - (startVal - endVal) * easeProgress);
+        
+        // Format with Indian commas
+        counterSpan.textContent = currentVal.toLocaleString('en-IN');
+        
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        }
+    }
+    
+    requestAnimationFrame(update);
 }
 

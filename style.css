@@ -3152,16 +3152,6 @@ button {
 
 .pricing-price-box {
     margin-bottom: 5px;
-    display: flex;
-    align-items: baseline;
-}
-
-.pricing-original-price {
-    font-size: 15px;
-    text-decoration: line-through;
-    color: var(--text-muted);
-    margin-right: 8px;
-    font-weight: 500;
 }
 
 .pricing-price {
