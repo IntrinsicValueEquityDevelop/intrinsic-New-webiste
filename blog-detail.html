@@ -248,91 +248,13 @@
 
     <!-- Link Logic Script -->
     <script src="script.js"></script>
-    
-    <!-- Dynamic Content Renderer Script -->
+     <!-- Dynamic Content Renderer Script -->
     <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Mock Blog Database
-        const BLOG_DATABASE = {
-            "structural-turnarounds": {
-                title: "Spotting Structural Turnarounds Before the Market",
-                date: "June 10, 2026",
-                category: "Market Cycles",
-                readingTime: "5 min read",
-                gradient: "linear-gradient(135deg, #FF8C00, #121212)",
-                content: `
-                    <p>In value investing, identifying high-quality businesses before their true value is unlocked is the ultimate goal. One of the most effective ways to achieve this is by spotting <strong>structural turnarounds</strong> in cyclical industries.</p>
-                    
-                    <h2>What is a Structural Turnaround?</h2>
-                    <p>A structural turnaround occurs when a company undergoes deep operational, strategic, or capital structure changes that fundamentally change its earning potential. Unlike simple cyclical bounces, structural changes lead to permanent improvements in profit margins, return on equity (ROE), and market share.</p>
-                    
-                    <blockquote>
-                        <p>“Spotting structural turnarounds early requires a deep understanding of business cycles and precise valuation discipline.”</p>
-                    </blockquote>
-                    
-                    <h3>Key Factors to Monitor:</h3>
-                    <ul>
-                        <li><strong>Deleveraging:</strong> The company is using cash flows to rapidly pay down high-interest debt, saving interest costs.</li>
-                        <li><strong>Management Shift:</strong> A new leadership team is brought in to streamline operations and focus on capital allocation.</li>
-                        <li><strong>Industry Consolidation:</strong> Smaller players exit the market during downcycles, leaving surviving companies with increased pricing power.</li>
-                    </ul>
-                    
-                    <p>At Intrinsic Value, we study sector rotation trends and focus on companies that have strong entry barriers, robust balance sheets, and are available at reasonable valuations. This disciplined research process is designed for capital protection and long-term compounding.</p>
-                `
-            },
-            "value-vs-growth": {
-                title: "Value and Growth are Complements, Not Opposites",
-                date: "May 24, 2026",
-                category: "Value Investing",
-                readingTime: "6 min read",
-                gradient: "linear-gradient(135deg, #E07B00, #1a1a1a)",
-                content: `
-                    <p>For decades, Wall Street and Dalal Street have debated the merits of "Value" vs "Growth" investing. However, the most successful investors understand that these two philosophies are actually two sides of the same coin.</p>
-                    
-                    <h2>Redefining Value and Growth</h2>
-                    <p>Growth is simply a component of calculating a business's intrinsic value. If a company can grow its earnings at a high rate while earning returns above its cost of capital, that growth adds significant value to the stock today.</p>
-                    
-                    <blockquote>
-                        <p>“As we often emphasize: A value investor should not underestimate growth, and a growth investor should not underestimate value.”</p>
-                    </blockquote>
-                    
-                    <h3>Why They Work Together</h3>
-                    <p>A pure growth investor might buy a stock at any price, expecting the growth to bail them out. A pure value investor might buy a declining business just because it is cheap (a "value trap").</p>
-                    <p>The optimal approach lies in **GARP (Growth at a Reasonable Price)** or identifying **undervalued growth businesses**. We look for companies with sustainable growth potential that are temporarily mispriced due to short-term market fears, giving us a margin of safety.</p>
-                `
-            },
-            "cagr-compounding": {
-                title: "Managing Downside Risks for Long-Term Compounding",
-                date: "April 12, 2026",
-                category: "Newsletters",
-                readingTime: "4 min read",
-                gradient: "linear-gradient(135deg, #112C28, #FF8C00)",
-                content: `
-                    <p>Many investors focus entirely on how much money they can make when a stock rises. But the mathematical reality of compounding shows that avoiding big losses is far more important for long-term wealth creation.</p>
-                    
-                    <h2>The Math of Losses</h2>
-                    <p>If your portfolio drops by 50%, you need a 100% gain just to get back to even. This asymmetry is why risk management must always come first in equity research.</p>
-                    
-                    <blockquote>
-                        <p>“If downside risks are strictly controlled and permanent capital loss is avoided, superior CAGR outcomes emerge naturally over time.”</p>
-                    </blockquote>
-                    
-                    <h3>Our Capital Protection Process</h3>
-                    <p>We implement a strict process governing all recommendations:</p>
-                    <ul>
-                        <li><strong>Valuation Discipline:</strong> Never overpay, no matter how good the narrative is.</li>
-                        <li><strong>Position Sizing:</strong> Diversifying responsibly across high-conviction ideas.</li>
-                        <li><strong>Process Over Emotions:</strong> Exiting companies when the initial investment thesis changes.</li>
-                    </ul>
-                `
-            }
-        };
-
         // Get URL Query Parameter (?post=post-id)
         const urlParams = new URLSearchParams(window.location.search);
         const postKey = urlParams.get('post');
 
-        const container = document.getElementById('post-container');
         const titleEl = document.getElementById('dyn-title');
         const dateEl = document.getElementById('dyn-date');
         const timeEl = document.getElementById('dyn-time');
@@ -340,28 +262,58 @@
         const imgEl = document.getElementById('dyn-hero-image');
         const contentEl = document.getElementById('dyn-content');
 
-        if (postKey && BLOG_DATABASE[postKey]) {
-            const post = BLOG_DATABASE[postKey];
-            
-            // Set document title
-            document.title = `${post.title} | Intrinsic Value`;
-            
-            // Populate DOM
-            titleEl.textContent = post.title;
-            dateEl.textContent = post.date;
-            timeEl.textContent = post.readingTime;
-            badgeEl.textContent = post.category;
-            imgEl.style.background = post.gradient;
-            contentEl.innerHTML = post.content;
-        } else {
-            // Revert / Redirect if invalid post key
+        if (!postKey) {
+            showNotFound();
+            return;
+        }
+
+        // Fetch blogs.json
+        fetch('blogs.json')
+            .then(response => response.json())
+            .then(blogs => {
+                // Find matching blog post by slug (decoded for robust comparison)
+                const decodedPostKey = decodeURIComponent(postKey);
+                const post = blogs.find(b => decodeURIComponent(b.slug) === decodedPostKey || b.slug === postKey);
+                
+                if (post) {
+                    // Set document title
+                    document.title = `${post.title} | Intrinsic Value`;
+                    
+                    // Populate DOM
+                    titleEl.textContent = post.title;
+                    dateEl.textContent = post.date;
+                    timeEl.textContent = post.readingTime;
+                    badgeEl.textContent = post.category;
+                    
+                    // Display featured image if present, otherwise fallback to gradient
+                    if (post.image) {
+                        imgEl.innerHTML = `<img src="${post.image}" class="post-hero-image" alt="${post.title}">`;
+                        imgEl.style.background = 'none';
+                    } else {
+                        imgEl.innerHTML = '';
+                        imgEl.style.background = post.gradient;
+                    }
+                    
+                    // Set rendered HTML content
+                    contentEl.innerHTML = post.content;
+                } else {
+                    showNotFound();
+                }
+            })
+            .catch(err => {
+                console.error('Error loading blog detail:', err);
+                showNotFound('Error loading article. Please try again later.');
+            });
+
+        function showNotFound(customMsg) {
             titleEl.textContent = "Article Not Found";
             dateEl.textContent = "--";
             timeEl.textContent = "--";
             badgeEl.textContent = "Error";
             imgEl.style.background = "#222";
+            imgEl.innerHTML = '';
             contentEl.innerHTML = `
-                <p>Sorry, the article you are looking for does not exist or has been moved.</p>
+                <p>${customMsg || 'Sorry, the article you are looking for does not exist or has been moved.'}</p>
                 <p><a href="blogs.html" class="btn-solid" style="display:inline-block; margin-top:1rem;">Back to Blogs</a></p>
             `;
         }
