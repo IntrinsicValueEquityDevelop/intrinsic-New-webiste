@@ -1355,30 +1355,79 @@ button {
 }
 
 .profile-img-wrapper {
+  position: relative;
   width: 100%;
   max-width: 380px;
   border-radius: 24px;
   overflow: hidden;
-  border: 1.5px solid var(--accent); /* Thin orange border */
-  box-shadow: var(--shadow-soft), 0 0 15px var(--accent-glow-dim); /* Subtle orange glow */
-  transition: border-color var(--transition-normal), box-shadow var(--transition-normal);
+  padding: 2px; /* Creates the border width space */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-primary); /* Fallback */
+  box-shadow: var(--shadow-soft), 0 0 15px var(--accent-glow-dim);
+  animation: pulse-glow 6s ease-in-out infinite;
+  transition: box-shadow var(--transition-normal);
+}
+
+/* Rotating conic-gradient border tracing beam (slow, wide color spread) */
+.profile-img-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    var(--accent) 0%,
+    var(--accent-hover) 25%,
+    rgba(255, 140, 0, 0.3) 60%,
+    transparent 90%,
+    transparent 100%
+  );
+  animation: spin-border 10s linear infinite; /* Slowed down to 10s */
+  z-index: 1;
 }
 
 .profile-img-wrapper:hover {
-  border-color: var(--accent-hover);
-  box-shadow: var(--shadow-soft), 0 0 25px var(--accent-glow); /* Stronger glow on hover */
+  animation-play-state: paused; /* Pause breathing glow on hover to let the strong hover glow take over */
+  box-shadow: var(--shadow-soft), 0 0 25px var(--accent-glow);
 }
 
 .profile-photo {
+  position: relative;
+  z-index: 2;
   width: 100%;
   height: auto;
   display: block;
   object-fit: cover;
+  border-radius: 22px; /* Aligns with wrapper's 24px border-radius minus padding */
   transition: transform var(--transition-slow);
 }
 
 .profile-img-wrapper:hover .profile-photo {
   transform: scale(1.03);
+}
+
+/* Keyframe for tracing border animation */
+@keyframes spin-border {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Keyframe for breathing ambient glow */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: var(--shadow-soft), 0 0 12px rgba(255, 140, 0, 0.15);
+  }
+  50% {
+    box-shadow: var(--shadow-soft), 0 0 22px rgba(255, 140, 0, 0.3);
+  }
 }
 
 /* Responsive design for Profile Section */
