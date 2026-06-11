@@ -175,6 +175,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Featured In dynamic section
     initFeaturedSection();
+
+    // Initialize Case Studies section and modals
+    initCaseStudies();
 });
 
 
@@ -209,6 +212,7 @@ function init3DSpiral() {
         const heroSec = document.querySelector('.iv-hero');
         const philosophySticky = document.querySelector('.spiral-philosophy-sticky');
         const featuredSec = document.querySelector('.iv-featured-section');
+        const casesSec = document.querySelector('.iv-cases-section');
 
         const handleScrollTransitions = () => {
             const scrollY = window.scrollY;
@@ -226,6 +230,11 @@ function init3DSpiral() {
 
             const featuredFadeInStart = 3.2 * windowHeight;
             const featuredFadeInEnd = 3.7 * windowHeight;
+            const featuredFadeOutStart = 4.8 * windowHeight;
+            const featuredFadeOutEnd = 5.3 * windowHeight;
+
+            const casesFadeInStart = 4.8 * windowHeight;
+            const casesFadeInEnd = 5.3 * windowHeight;
 
             // 1. Hero Section Fade & Translate (outward)
             if (heroSec) {
@@ -298,7 +307,7 @@ function init3DSpiral() {
                 philosophySticky.style.pointerEvents = pointerEvents;
             }
 
-            // 3. Featured Section Fade & Translate (inward)
+            // 3. Featured Section Fade & Translate (inward & outward)
             if (featuredSec) {
                 let opacity = 0;
                 let translateY = 60;
@@ -313,13 +322,28 @@ function init3DSpiral() {
                     scale = 0.95 + 0.05 * progress;
                     pointerEvents = opacity > 0.5 ? 'auto' : 'none';
                     featuredSec.classList.add('entered');
-                } else if (scrollY > featuredFadeInEnd) {
+                } else if (scrollY > featuredFadeInEnd && scrollY < featuredFadeOutStart) {
                     // Active Phase
                     opacity = 1;
                     translateY = 0;
                     scale = 1;
                     pointerEvents = 'auto';
                     featuredSec.classList.add('entered');
+                } else if (scrollY >= featuredFadeOutStart && scrollY <= featuredFadeOutEnd) {
+                    // Fade Out Phase
+                    const progress = (scrollY - featuredFadeOutStart) / (featuredFadeOutEnd - featuredFadeOutStart);
+                    opacity = 1 - progress;
+                    translateY = -progress * 60;
+                    scale = 1 - progress * 0.05;
+                    pointerEvents = opacity > 0.5 ? 'auto' : 'none';
+                    featuredSec.classList.add('entered');
+                } else if (scrollY > featuredFadeOutEnd) {
+                    // Past Exit
+                    opacity = 0;
+                    translateY = -60;
+                    scale = 0.95;
+                    pointerEvents = 'none';
+                    featuredSec.classList.remove('entered');
                 } else {
                     featuredSec.classList.remove('entered');
                 }
@@ -327,6 +351,37 @@ function init3DSpiral() {
                 featuredSec.style.opacity = opacity.toFixed(3);
                 featuredSec.style.transform = `translateY(${translateY}px) scale(${scale})`;
                 featuredSec.style.pointerEvents = pointerEvents;
+            }
+
+            // 4. Case Studies Section Fade & Translate (inward)
+            if (casesSec) {
+                let opacity = 0;
+                let translateY = 60;
+                let scale = 0.95;
+                let pointerEvents = 'none';
+
+                if (scrollY >= casesFadeInStart && scrollY <= casesFadeInEnd) {
+                    // Fade In Phase
+                    const progress = (scrollY - casesFadeInStart) / (casesFadeInEnd - casesFadeInStart);
+                    opacity = progress;
+                    translateY = 60 * (1 - progress);
+                    scale = 0.95 + 0.05 * progress;
+                    pointerEvents = opacity > 0.5 ? 'auto' : 'none';
+                    casesSec.classList.add('entered');
+                } else if (scrollY > casesFadeInEnd) {
+                    // Active Phase
+                    opacity = 1;
+                    translateY = 0;
+                    scale = 1;
+                    pointerEvents = 'auto';
+                    casesSec.classList.add('entered');
+                } else {
+                    casesSec.classList.remove('entered');
+                }
+
+                casesSec.style.opacity = opacity.toFixed(3);
+                casesSec.style.transform = `translateY(${translateY}px) scale(${scale})`;
+                casesSec.style.pointerEvents = pointerEvents;
             }
         };
 
@@ -639,5 +694,61 @@ function initFeaturedSection() {
     
     // Start animation loop
     animationFrameId = requestAnimationFrame(tickScroll);
+}
+
+// ==========================================================================
+// CASE STUDIES MODALS & INTERACTIVE HANDLERS
+// ==========================================================================
+function initCaseStudies() {
+    const cards = document.querySelectorAll('.case-study-card');
+    const modals = document.querySelectorAll('.case-modal');
+
+    if (cards.length === 0) return;
+
+    cards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            // Find target modal
+            const caseIdx = card.getAttribute('data-case');
+            const targetModal = document.getElementById(`case_modal_${caseIdx}`);
+            if (targetModal) {
+                targetModal.style.display = 'flex';
+                void targetModal.offsetWidth; // Force layout repaint
+                targetModal.classList.add('active');
+            }
+        });
+    });
+
+    modals.forEach(modal => {
+        const closeBtn = modal.querySelector('.close');
+        
+        const closeModal = () => {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 400);
+        };
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                closeModal();
+            });
+        }
+
+        // Close on background overlay click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Close on escape key press
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+    });
 }
 
