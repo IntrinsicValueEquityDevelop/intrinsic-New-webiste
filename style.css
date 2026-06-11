@@ -2425,298 +2425,266 @@ button {
     font-weight: 400;
 }
 
-/* Horizontal Accordion Layout */
-.cases-horizontal-accordion {
-    display: flex;
-    width: 100%;
-    max-width: 500px;
-    height: 380px;
-    background: rgba(26, 18, 10, 0.35);
-    border: 1px solid rgba(255, 140, 0, 0.15);
-    border-radius: 20px;
-    overflow: hidden;
-    margin: 0 auto;
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
-    box-sizing: border-box;
-    transition: max-width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
-                opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), 
-                transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), 
-                filter 1.2s ease;
-}
-
-.cases-horizontal-accordion.has-expanded {
-    max-width: 1000px;
-}
-
-.case-accordion-item {
+/* Case Studies Row & Dropdowns Layout */
+.cases-buttons-container {
     display: flex;
     flex-direction: row;
-    height: 100%;
-    flex: 1 1 0%;
-    overflow: hidden;
-    transition: flex 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
-                background-color 0.4s ease;
-    background: rgba(26, 18, 10, 0.2);
-    border-right: 1px solid rgba(255, 140, 0, 0.15);
+    justify-content: center;
+    gap: 24px;
+    align-items: flex-start;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
     box-sizing: border-box;
+    padding: 20px 0;
 }
 
-.case-accordion-item:last-child {
-    border-right: none;
-}
-
-.case-accordion-item.expanded {
-    flex-grow: 1;
-    background: rgba(26, 18, 10, 0.65);
-}
-
-/* Trigger Header */
-.case-accordion-trigger {
+.company-card-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 30px 16px;
-    background: rgba(26, 18, 10, 0.5);
-    border-right: 1px solid rgba(255, 140, 0, 0.1);
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
+    flex: 1 1 0;
+    min-width: 180px;
+    max-width: 250px;
     box-sizing: border-box;
-    transition: background-color 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
-                width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-    user-select: none;
-}
-
-.case-accordion-item.expanded .case-accordion-trigger {
-    background: var(--accent);
-    border-right: none;
-}
-
-/* Desktop-only flex and width overrides when an item is expanded */
-@media (min-width: 769px) {
-    .cases-horizontal-accordion.has-expanded .case-accordion-item:not(.expanded) {
-        flex: 0 0 76px;
-    }
     
-    .case-accordion-item.expanded .case-accordion-trigger {
-        width: 75px;
-        min-width: 75px;
-    }
+    /* 3D Entrance animations: fly in from different directions and fade in */
+    opacity: 0;
+    filter: blur(5px);
+    transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 1.2s cubic-bezier(0.34, 1.56, 0.64, 1),
+                filter 1.2s ease;
 }
 
-.case-accordion-num {
-    font-size: 17px;
+/* JSW Holdings: Fly from top-left/back */
+.company-card-wrapper[data-case="0"] {
+    transform: translate3d(-150px, -80px, -200px) scale(0.65);
+    transition-delay: 0s;
+}
+
+/* Tata Investment: Fly from top-center/back */
+.company-card-wrapper[data-case="1"] {
+    transform: translate3d(0, -150px, -200px) scale(0.65);
+    transition-delay: 0.1s;
+}
+
+/* Maharashtra Scooters: Fly from bottom-center/back */
+.company-card-wrapper[data-case="2"] {
+    transform: translate3d(0, 150px, -200px) scale(0.65);
+    transition-delay: 0.2s;
+}
+
+/* Kalyani Investment: Fly from top-right/back */
+.company-card-wrapper[data-case="3"] {
+    transform: translate3d(150px, -80px, -200px) scale(0.65);
+    transition-delay: 0.3s;
+}
+
+/* Active Entrance Triggered by Scroll Observer */
+.iv-cases-section.entered .company-card-wrapper {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+    filter: blur(0);
+}
+
+/* Company Button Trigger */
+.btn-company-trigger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    width: 100%;
+    height: 115px;
+    background: rgba(26, 18, 10, 0.45);
+    border: 1px solid rgba(255, 140, 0, 0.18);
+    border-radius: 16px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-sizing: border-box;
+    text-align: center;
+    user-select: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.btn-company-trigger:hover {
+    background: rgba(255, 140, 0, 0.08);
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(255, 140, 0, 0.15);
+}
+
+.company-card-wrapper.expanded .btn-company-trigger {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #000000;
+    transform: translateY(0);
+    box-shadow: 0 8px 30px rgba(255, 140, 0, 0.3);
+}
+
+.company-btn-num {
+    font-size: 13px;
     font-weight: 800;
     color: var(--accent);
-    font-family: var(--font-heading);
-    transition: color 0.4s ease;
-}
-
-.case-accordion-item.expanded .case-accordion-num {
-    color: #000000;
-}
-
-.case-accordion-title {
-    font-size: 19px;
-    font-weight: 700;
-    color: #ffffff;
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    white-space: nowrap;
+    margin-bottom: 8px;
     font-family: var(--font-heading);
     letter-spacing: 1.5px;
     transition: color 0.4s ease;
 }
 
-.case-accordion-item.expanded .case-accordion-title {
+.company-card-wrapper.expanded .company-btn-num {
     color: #000000;
 }
 
-.case-accordion-content {
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    opacity: 0;
-    transition: opacity 0.4s ease, padding 0.4s ease;
-    width: 0;
-    overflow: hidden;
-    box-sizing: border-box;
+.company-btn-title {
+    font-size: 15px;
+    font-weight: 700;
+    font-family: var(--font-heading);
+    letter-spacing: 0.5px;
+    line-height: 1.3;
 }
 
-.case-accordion-item.expanded .case-accordion-content {
-    opacity: 1;
-    width: auto;
-    padding: 0 30px;
-    overflow: visible;
-}
-
-/* Options Mini-cards (kamayakya style) */
-.case-report-options-horizontal {
-    display: flex;
-    gap: 20px;
-    width: 100%;
-    justify-content: center;
-}
-
-.btn-report-option-horiz {
+/* Reports Dropdown Stack */
+.company-reports-dropdown {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 175px;
-    height: 175px;
-    border-radius: 16px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 140, 0, 0.15);
-    color: #ffffff;
-    text-decoration: none;
-    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    gap: 12px;
+    width: 100%;
+    margin-top: 15px;
     box-sizing: border-box;
-    padding: 20px;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(-12px) scale(0.95);
+    transition: max-height 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+                opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.btn-report-option-horiz i {
-    font-size: 38px;
+.company-card-wrapper.expanded .company-reports-dropdown {
+    max-height: 500px;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    overflow: visible; /* allows floating/wiggling without being clipped */
+}
+
+/* Report link buttons with wiggle wiggle floating animations */
+.btn-report-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    width: 100%;
+    background: rgba(26, 18, 10, 0.6);
+    border: 1px solid rgba(255, 140, 0, 0.15);
+    border-radius: 12px;
+    color: #ffffff;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-size: 13px;
+    font-weight: 700;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.btn-report-item i {
+    font-size: 20px;
     color: var(--accent);
-    margin-bottom: 18px;
     transition: transform 0.3s ease;
 }
 
-.btn-report-option-horiz span {
-    font-size: 13px;
-    font-weight: 700;
-    text-align: center;
-    line-height: 1.4;
+.btn-report-item span {
+    line-height: 1.2;
 }
 
-.btn-report-option-horiz:hover {
-    background: rgba(255, 140, 0, 0.08);
+.btn-report-item:hover {
+    background: rgba(255, 140, 0, 0.12);
     border-color: var(--accent);
-    transform: translateY(-8px);
-    box-shadow: 0 10px 25px rgba(255, 140, 0, 0.18);
+    color: #ffffff;
 }
 
-.btn-report-option-horiz:hover i {
-    transform: scale(1.1);
+.btn-report-item:hover i {
+    transform: scale(1.15);
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .iv-featured-section {
-        padding: 0;
+/* Float & Wiggle Keyframe Animation */
+@keyframes float-wiggle {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
     }
-    
-    .featured-main-title {
-        margin-bottom: 25px;
+    25% {
+        transform: translateY(-3px) rotate(-0.6deg);
     }
-    
-    .featured-quote-container {
-        min-height: 180px;
+    50% {
+        transform: translateY(-6px) rotate(0deg);
     }
-    
-    .featured-quote {
-        font-size: 18px;
-        line-height: 1.5;
+    75% {
+        transform: translateY(-3px) rotate(0.6deg);
     }
-    
-    .logo-icon-wrapper {
-        width: 88px;
-        height: 88px;
-        border-radius: 20px;
-    }
-    
-    .logo-card-label {
-        font-size: 10.5px;
-        max-width: 85px;
-    }
+}
+
+/* Apply staggered animations when wrapper is expanded */
+.company-card-wrapper.expanded .btn-report-item {
+    animation: float-wiggle 3.5s ease-in-out infinite;
+}
+
+.company-card-wrapper.expanded .btn-report-item:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.company-card-wrapper.expanded .btn-report-item:nth-child(2) {
+    animation-delay: 0.6s;
+}
+
+.company-card-wrapper.expanded .btn-report-item:nth-child(3) {
+    animation-delay: 1.2s;
 }
 
 /* Responsive styles for Case Studies */
 @media (max-width: 768px) {
-    .cases-horizontal-accordion {
+    .cases-buttons-container {
         flex-direction: column;
-        height: auto;
-        border-radius: 12px;
-        max-width: 100%;
-    }
-    
-    .case-accordion-item {
-        flex-direction: column;
-        width: 100%;
-        height: auto;
-        min-height: 60px;
-        flex: none;
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 140, 0, 0.15);
-    }
-    
-    .case-accordion-item:last-child {
-        border-bottom: none;
-    }
-    
-    .case-accordion-item.expanded {
-        flex: none;
-    }
-    
-    .case-accordion-trigger {
-        flex-direction: row;
-        width: 100%;
-        height: 60px;
-        min-width: unset;
-        border-right: none;
-        border-bottom: 1px solid rgba(255, 140, 0, 0.1);
-        padding: 0 20px;
-    }
-    
-    .case-accordion-item.expanded .case-accordion-trigger {
-        border-bottom: none;
-    }
-    
-    .case-accordion-title {
-        writing-mode: horizontal-tb;
-        transform: none;
-        font-size: 16px;
-    }
-    
-    .case-accordion-content {
-        width: 100%;
-        max-height: 0;
-        opacity: 0;
-        transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.4s ease;
-        padding: 0;
-    }
-    
-    .case-accordion-item.expanded .case-accordion-content {
-        max-height: 680px;
-        opacity: 1;
-        padding: 24px 20px;
-    }
-    
-    .case-report-options-horizontal {
-        flex-direction: column;
-        width: 100%;
-        gap: 12px;
-    }
-    
-    .btn-report-option-horiz {
-        flex-direction: row;
-        justify-content: flex-start;
+        align-items: center;
         gap: 16px;
-        width: 100%;
-        height: auto;
-        padding: 14px 20px;
-        border-radius: 10px;
+        padding: 10px 0;
     }
     
-    .btn-report-option-horiz i {
+    .company-card-wrapper {
+        width: 100%;
+        max-width: 100%;
+        flex: none;
+        
+        /* Simpler slide transition for mobile to avoid side overflow */
+        transform: translate3d(0, 30px, 0) !important;
+        transition-delay: 0s !important;
+    }
+    
+    .iv-cases-section.entered .company-card-wrapper {
+        transform: translate3d(0, 0, 0) !important;
+        opacity: 1;
+        filter: blur(0);
+    }
+    
+    .btn-company-trigger {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        height: 70px;
+        padding: 0 20px;
+        text-align: left;
+    }
+    
+    .btn-company-trigger:hover {
+        transform: none; /* disable desktop hover translate */
+    }
+    
+    .company-btn-num {
         margin-bottom: 0;
-        font-size: 24px;
+        order: 2; /* number on right */
+    }
+    
+    .company-btn-title {
+        order: 1;
+        font-size: 15px;
     }
 }
-
-
-
-

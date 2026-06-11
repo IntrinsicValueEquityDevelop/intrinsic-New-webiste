@@ -611,37 +611,29 @@ function initFeaturedSection() {
 // CASE STUDIES MODALS & INTERACTIVE HANDLERS
 // ==========================================================================
 function initCaseStudies() {
-    const items = document.querySelectorAll('.case-accordion-item');
-    const accordionContainer = document.querySelector('.cases-horizontal-accordion');
+    const wrappers = document.querySelectorAll('.company-card-wrapper');
 
-    if (items.length === 0) return;
+    if (wrappers.length === 0) return;
 
-    items.forEach(item => {
-        const trigger = item.querySelector('.case-accordion-trigger');
+    wrappers.forEach(wrapper => {
+        const trigger = wrapper.querySelector('.btn-company-trigger');
         
         if (trigger) {
             trigger.addEventListener('click', (e) => {
-                const isAlreadyExpanded = item.classList.contains('expanded');
+                const isAlreadyExpanded = wrapper.classList.contains('expanded');
 
-                // 1. Collapse all items first
-                items.forEach(i => i.classList.remove('expanded'));
+                // 1. Collapse all other wrappers first
+                wrappers.forEach(w => w.classList.remove('expanded'));
 
-                // 2. Toggle this item if it wasn't already expanded
+                // 2. Toggle this wrapper if it wasn't already expanded
                 if (!isAlreadyExpanded) {
-                    item.classList.add('expanded');
-                    if (accordionContainer) {
-                        accordionContainer.classList.add('has-expanded');
-                    }
-                } else {
-                    if (accordionContainer) {
-                        accordionContainer.classList.remove('has-expanded');
-                    }
+                    wrapper.classList.add('expanded');
                 }
             });
         }
 
         // 3. Prevent click propagation inside report links
-        const reportLinks = item.querySelectorAll('.btn-report-option-horiz');
+        const reportLinks = wrapper.querySelectorAll('.btn-report-item');
         reportLinks.forEach(link => {
             link.addEventListener('click', (e) => {
                 e.stopPropagation();
