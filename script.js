@@ -429,10 +429,19 @@ function init3DSpiral() {
                         c.targetY = 50 * (1 - cardsProg);
                     });
 
-                    // Trigger dynamic count-down when cards zoom in
-                    if (cardsProg > 0.05 && !pricingState.hasAnimatedCounter) {
-                        pricingState.hasAnimatedCounter = true;
-                        animatePriceCounter();
+                    // Trigger dynamic count-down when cards zoom entrance is 80% complete (visible properly)
+                    if (cardsProg >= 0.8) {
+                        if (!pricingState.hasAnimatedCounter) {
+                            pricingState.hasAnimatedCounter = true;
+                            animatePriceCounter();
+                        }
+                    } else if (cardsProg < 0.5) {
+                        // Reset counter animation flag and text if user scrolls back up significantly
+                        pricingState.hasAnimatedCounter = false;
+                        const counterSpan = document.querySelector('.pricing-discount-counter');
+                        if (counterSpan) {
+                            counterSpan.textContent = "45,000";
+                        }
                     }
                 } else if (scrollY >= pricingFadeOutStart && scrollY <= pricingFadeOutEnd) {
                     // Fade Out Phase
