@@ -389,7 +389,7 @@ function init3DSpiral() {
                 // Lerp scale, radius (depth), depth opacity, and blur amount
                 let currentScale = 0.62 + 0.43 * t; // scales from 0.62 (back) to 1.05 (front)
                 let currentRadius = radius * (0.55 + 0.53 * t); // tight core (0.55*R) to expanded front (1.08*R)
-                let depthOpacity = 0.15 + 0.85 * t; // fades to 0.15 in back
+                let depthOpacity = Math.pow(t, 3); // drop opacity rapidly as cards rotate away to prevent ghost reflections
                 let finalOpacity = boundaryOpacity * depthOpacity;
                 let blurAmount = (1 - t) * 7.5; // up to 7.5px blur in back, 0px in front
                 
