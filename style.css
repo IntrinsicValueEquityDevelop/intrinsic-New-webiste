@@ -2722,7 +2722,7 @@ button {
 
 /* Chosen button: glows strongly from border */
 .company-card-wrapper.expanded .btn-company-trigger {
-    border-color: var(--accent);
+    border-color: transparent;
     background: rgba(18, 12, 7, 0.85); /* Keeps dark background */
     color: #ffffff;
     transform: translateY(0);
