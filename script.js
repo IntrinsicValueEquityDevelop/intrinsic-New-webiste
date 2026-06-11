@@ -429,8 +429,8 @@ function init3DSpiral() {
                         c.targetY = 50 * (1 - cardsProg);
                     });
 
-                    // Trigger dynamic count-down when cards zoom entrance is 80% complete (visible properly)
-                    if (cardsProg >= 0.8) {
+                    // Trigger dynamic count-down when cards zoom entrance is 100% complete (visible properly)
+                    if (cardsProg >= 1.0) {
                         if (!pricingState.hasAnimatedCounter) {
                             pricingState.hasAnimatedCounter = true;
                             animatePriceCounter();
@@ -1014,7 +1014,7 @@ function animatePriceCounter() {
     
     const startVal = 45000;
     const endVal = 39871;
-    const duration = 1500; // 1.5 seconds countdown
+    const duration = 2500; // 2.5 seconds countdown (slower rate)
     const startTime = performance.now();
     
     function update(now) {
