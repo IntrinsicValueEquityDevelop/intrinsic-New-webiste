@@ -92,6 +92,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Stats Counter Animation
     initStatsCounters();
+
+    // Initialize Comparison Modal
+    initComparisonModal();
 });
 
 
@@ -139,6 +142,7 @@ function init3DSpiral() {
         const philosophySticky = document.querySelector('.spiral-philosophy-sticky');
         const featuredSec = document.querySelector('.iv-featured-section');
         const casesSec = document.querySelector('.iv-cases-section');
+        const pricingSecEl = document.getElementById('pricing-scroll-section');
 
         // Setup lerped values for the sections to make all viewport transitions buttery smooth
         const sectionsState = {
@@ -171,7 +175,34 @@ function init3DSpiral() {
                 currScale: 0.95, targetScale: 0.95,
                 pointerEvents: 'none',
                 hasEntered: false
+            },
+            pricing: {
+                el: pricingSecEl,
+                currOpacity: 0, targetOpacity: 0,
+                currY: 60, targetY: 60,
+                currScale: 0.95, targetScale: 0.95,
+                pointerEvents: 'none'
             }
+        };
+
+        const pricingTitle = document.querySelector('.pricing-title-block');
+        const pricingCards = document.querySelectorAll('.pricing-card-3d');
+        
+        const pricingState = {
+            title: {
+                el: pricingTitle,
+                currZ: -600, targetZ: -600,
+                currScale: 0.3, targetScale: 0.3,
+                currOpacity: 0, targetOpacity: 0
+            },
+            cards: Array.from(pricingCards).map(card => ({
+                el: card,
+                currZ: -600, targetZ: -600,
+                currScale: 0.3, targetScale: 0.3,
+                currOpacity: 0, targetOpacity: 0,
+                currRotateX: 15, targetRotateX: 15,
+                currY: 50, targetY: 50
+            }))
         };
 
         const handleScrollTransitions = () => {
@@ -195,6 +226,15 @@ function init3DSpiral() {
 
             const casesFadeInStart = 4.8 * windowHeight;
             const casesFadeInEnd = 5.3 * windowHeight;
+            const casesFadeOutStart = 6.8 * windowHeight;
+            const casesFadeOutEnd = 7.3 * windowHeight;
+
+            const pricingFadeInStart = 6.8 * windowHeight;
+            const pricingFadeInEnd = 7.3 * windowHeight;
+            const pricingZoomStart = 7.3 * windowHeight;
+            const pricingZoomEnd = 9.3 * windowHeight;
+            const pricingFadeOutStart = 9.3 * windowHeight;
+            const pricingFadeOutEnd = 9.8 * windowHeight;
 
             // 1. Hero Section Fade & Translate (outward)
             if (heroSec) {
@@ -298,7 +338,7 @@ function init3DSpiral() {
                 }
             }
 
-            // 4. Case Studies Section Fade & Translate (inward)
+            // 4. Case Studies Section Fade & Translate (inward & outward)
             if (casesSec) {
                 if (scrollY >= casesFadeInStart && scrollY <= casesFadeInEnd) {
                     // Fade In Phase
@@ -308,19 +348,117 @@ function init3DSpiral() {
                     sectionsState.cases.targetScale = 0.95 + 0.05 * progress;
                     sectionsState.cases.pointerEvents = progress > 0.5 ? 'auto' : 'none';
                     sectionsState.cases.hasEntered = true;
-                } else if (scrollY > casesFadeInEnd) {
+                } else if (scrollY > casesFadeInEnd && scrollY < casesFadeOutStart) {
                     // Active Phase
                     sectionsState.cases.targetOpacity = 1;
                     sectionsState.cases.targetY = 0;
                     sectionsState.cases.targetScale = 1;
                     sectionsState.cases.pointerEvents = 'auto';
                     sectionsState.cases.hasEntered = true;
+                } else if (scrollY >= casesFadeOutStart && scrollY <= casesFadeOutEnd) {
+                    // Fade Out Phase
+                    const progress = (scrollY - casesFadeOutStart) / (casesFadeOutEnd - casesFadeOutStart);
+                    sectionsState.cases.targetOpacity = 1 - progress;
+                    sectionsState.cases.targetY = -progress * 60;
+                    sectionsState.cases.targetScale = 1 - progress * 0.05;
+                    sectionsState.cases.pointerEvents = (1 - progress) > 0.5 ? 'auto' : 'none';
+                    sectionsState.cases.hasEntered = true;
+                } else if (scrollY > casesFadeOutEnd) {
+                    // Past Exit
+                    sectionsState.cases.targetOpacity = 0;
+                    sectionsState.cases.targetY = -60;
+                    sectionsState.cases.targetScale = 0.95;
+                    sectionsState.cases.pointerEvents = 'none';
+                    sectionsState.cases.hasEntered = false;
                 } else {
                     sectionsState.cases.targetOpacity = 0;
                     sectionsState.cases.targetY = 60;
                     sectionsState.cases.targetScale = 0.95;
                     sectionsState.cases.pointerEvents = 'none';
                     sectionsState.cases.hasEntered = false;
+                }
+            }
+
+            // 5. Pricing Section Fade & Translate (inward & outward)
+            const pricingSec = sectionsState.pricing.el;
+            if (pricingSec) {
+                if (scrollY >= pricingFadeInStart && scrollY <= pricingFadeInEnd) {
+                    // Fade In Phase
+                    const progress = (scrollY - pricingFadeInStart) / (pricingFadeInEnd - pricingFadeInStart);
+                    sectionsState.pricing.targetOpacity = progress;
+                    sectionsState.pricing.targetY = 60 * (1 - progress);
+                    sectionsState.pricing.targetScale = 0.95 + 0.05 * progress;
+                    sectionsState.pricing.pointerEvents = progress > 0.5 ? 'auto' : 'none';
+                    
+                    // Reset zoom state to initial
+                    pricingState.title.targetZ = -600;
+                    pricingState.title.targetScale = 0.3;
+                    pricingState.title.targetOpacity = 0;
+                    pricingState.cards.forEach(c => {
+                        c.targetZ = -600;
+                        c.targetScale = 0.3;
+                        c.targetOpacity = 0;
+                        c.targetRotateX = 15;
+                        c.targetY = 50;
+                    });
+                } else if (scrollY > pricingFadeInEnd && scrollY < pricingFadeOutStart) {
+                    // Active Phase (Zoom entrance triggers based on scroll progress)
+                    sectionsState.pricing.targetOpacity = 1;
+                    sectionsState.pricing.targetY = 0;
+                    sectionsState.pricing.targetScale = 1;
+                    sectionsState.pricing.pointerEvents = 'auto';
+
+                    const zoomProgress = (scrollY - pricingZoomStart) / (pricingZoomEnd - pricingZoomStart);
+                    const clampedZoom = Math.max(0, Math.min(1, zoomProgress));
+
+                    // Title: 0.0 -> 0.4
+                    const titleProg = Math.max(0, Math.min(1, clampedZoom / 0.4));
+                    pricingState.title.targetZ = -600 + 600 * titleProg;
+                    pricingState.title.targetScale = 0.3 + 0.7 * titleProg;
+                    pricingState.title.targetOpacity = titleProg;
+
+                    // Cards: 0.2 -> 0.6, 0.4 -> 0.8, 0.6 -> 1.0
+                    pricingState.cards.forEach((c, idx) => {
+                        const cardStart = 0.2 + idx * 0.2;
+                        const cardProg = Math.max(0, Math.min(1, (clampedZoom - cardStart) / 0.4));
+                        
+                        c.targetZ = -600 + 600 * cardProg;
+                        c.targetScale = 0.3 + 0.7 * cardProg;
+                        c.targetOpacity = cardProg;
+                        c.targetRotateX = 15 * (1 - cardProg);
+                        c.targetY = 50 * (1 - cardProg);
+                    });
+                } else if (scrollY >= pricingFadeOutStart && scrollY <= pricingFadeOutEnd) {
+                    // Fade Out Phase
+                    const progress = (scrollY - pricingFadeOutStart) / (pricingFadeOutEnd - pricingFadeOutStart);
+                    sectionsState.pricing.targetOpacity = 1 - progress;
+                    sectionsState.pricing.targetY = -progress * 60;
+                    sectionsState.pricing.targetScale = 1 - progress * 0.05;
+                    sectionsState.pricing.pointerEvents = (1 - progress) > 0.5 ? 'auto' : 'none';
+
+                    // Title & Cards remain zoomed forward
+                    pricingState.title.targetZ = 0;
+                    pricingState.title.targetScale = 1;
+                    pricingState.title.targetOpacity = 1;
+                    pricingState.cards.forEach(c => {
+                        c.targetZ = 0;
+                        c.targetScale = 1;
+                        c.targetOpacity = 1;
+                        c.targetRotateX = 0;
+                        c.targetY = 0;
+                    });
+                } else if (scrollY > pricingFadeOutEnd) {
+                    // Past Exit
+                    sectionsState.pricing.targetOpacity = 0;
+                    sectionsState.pricing.targetY = -60;
+                    sectionsState.pricing.targetScale = 0.95;
+                    sectionsState.pricing.pointerEvents = 'none';
+                } else {
+                    // Before Entrance
+                    sectionsState.pricing.targetOpacity = 0;
+                    sectionsState.pricing.targetY = 60;
+                    sectionsState.pricing.targetScale = 0.95;
+                    sectionsState.pricing.pointerEvents = 'none';
                 }
             }
         };
@@ -430,6 +568,35 @@ function init3DSpiral() {
                     card.style.pointerEvents = isBackside ? 'none' : 'auto';
                 }
             });
+            
+            // C. Smoothly update and apply Pricing Section elements
+            if (pricingSecEl) {
+                const pricingLerp = 0.08;
+                
+                // Interpolate Title
+                pricingState.title.currZ += (pricingState.title.targetZ - pricingState.title.currZ) * pricingLerp;
+                pricingState.title.currScale += (pricingState.title.targetScale - pricingState.title.currScale) * pricingLerp;
+                pricingState.title.currOpacity += (pricingState.title.targetOpacity - pricingState.title.currOpacity) * pricingLerp;
+                
+                if (pricingState.title.el) {
+                    pricingState.title.el.style.transform = `translate3d(0, 0, ${pricingState.title.currZ.toFixed(1)}px) scale(${pricingState.title.currScale.toFixed(3)})`;
+                    pricingState.title.el.style.opacity = pricingState.title.currOpacity.toFixed(3);
+                }
+                
+                // Interpolate Cards
+                pricingState.cards.forEach(c => {
+                    c.currZ += (c.targetZ - c.currZ) * pricingLerp;
+                    c.currScale += (c.targetScale - c.currScale) * pricingLerp;
+                    c.currOpacity += (c.targetOpacity - c.currOpacity) * pricingLerp;
+                    c.currRotateX += (c.targetRotateX - c.currRotateX) * pricingLerp;
+                    c.currY += (c.targetY - c.currY) * pricingLerp;
+                    
+                    if (c.el) {
+                        c.el.style.transform = `translate3d(0, ${c.currY.toFixed(1)}px, ${c.currZ.toFixed(1)}px) scale(${c.currScale.toFixed(3)}) rotateX(${c.currRotateX.toFixed(1)}deg)`;
+                        c.el.style.opacity = c.currOpacity.toFixed(3);
+                    }
+                });
+            }
             
             requestAnimationFrame(animateSpiral);
         }
@@ -777,5 +944,46 @@ function initStatsCounters() {
     counters.forEach(counter => {
         observer.observe(counter);
     });
+}
+
+// PRICING COMPARISON MODAL CONTROLLER
+// ==========================================================================
+function initComparisonModal() {
+    const comparisonModal = document.getElementById('comparisonModal');
+    const openComparisonBtns = document.querySelectorAll('.open-comparison-btn');
+    
+    if (comparisonModal) {
+        const closeBtn = comparisonModal.querySelector('.comparison-close');
+        
+        openComparisonBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                comparisonModal.style.display = 'flex';
+                void comparisonModal.offsetWidth; // Force layout repaint
+                comparisonModal.classList.add('active');
+            });
+        });
+        
+        if (closeBtn) {
+            closeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                comparisonModal.classList.remove('active');
+                setTimeout(() => {
+                    comparisonModal.style.display = 'none';
+                }, 400);
+            });
+        }
+        
+        comparisonModal.addEventListener('click', (e) => {
+            if (e.target === comparisonModal) {
+                comparisonModal.classList.remove('active');
+                setTimeout(() => {
+                    comparisonModal.style.display = 'none';
+                }, 400);
+            }
+        });
+    }
 }
 

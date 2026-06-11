@@ -536,6 +536,98 @@
                 </div>
             </div>
         </section>
+
+        <!-- ==========================================================================
+             PRICING SECTION: 3D ZOOM ENTRANCE
+             ========================================================================== -->
+        <section id="pricing-scroll-section" class="pricing-scroll-section" style="opacity: 0; transform: translateY(60px) scale(0.95); pointer-events: none;">
+            <div class="container pricing-container">
+                <div class="pricing-title-block">
+                    <span class="pricing-pre-title">INVESTMENT ADVISORY</span>
+                    <h2 class="pricing-main-title">Select Your Advisory <em>Tier</em>.</h2>
+                </div>
+                
+                <div class="pricing-cards-grid">
+                    <!-- Plan 1: HNI Premium -->
+                    <div class="pricing-card-3d" data-index="0">
+                        <div class="pricing-card-glow"></div>
+                        <div class="pricing-card-header">
+                            <span class="pricing-plan-badge">Standard</span>
+                            <h3 class="pricing-plan-name">HNI Premium</h3>
+                            <div class="pricing-price-box">
+                                <span class="pricing-price">&bull;&bull;&bull;</span>
+                                <span class="pricing-price-period">/ year</span>
+                            </div>
+                            <p class="pricing-plan-desc">For investors looking to build a high-conviction, research-backed equity portfolio.</p>
+                        </div>
+                        <div class="pricing-card-body">
+                            <ul class="pricing-features-list">
+                                <li><i class="fas fa-check"></i> <span>Structured Research reports</span></li>
+                                <li><i class="fas fa-check"></i> <span>15-20 High-Conviction Stocks</span></li>
+                                <li><i class="fas fa-check"></i> <span>Quarterly Portfolio Review</span></li>
+                                <li><i class="fas fa-check"></i> <span>Email &amp; App Support</span></li>
+                            </ul>
+                        </div>
+                        <div class="pricing-card-footer">
+                            <button class="open-comparison-btn btn-pricing-secondary" data-plan="hni">Read More</button>
+                            <a href="https://premium.exlyapp.com/?init_contact=true" target="_blank" rel="noopener noreferrer" class="btn-pricing-primary">Subscribe Now</a>
+                        </div>
+                    </div>
+
+                    <!-- Plan 2: Inner Circle -->
+                    <div class="pricing-card-3d pricing-popular" data-index="1">
+                        <div class="pricing-card-glow"></div>
+                        <div class="pricing-card-header">
+                            <span class="pricing-plan-badge badge-popular">Most Popular</span>
+                            <h3 class="pricing-plan-name">Inner Circle</h3>
+                            <div class="pricing-price-box">
+                                <span class="pricing-price">&bull;&bull;&bull;</span>
+                                <span class="pricing-price-period">/ year</span>
+                            </div>
+                            <p class="pricing-plan-desc">Premium advisory with direct founder access and priority sector-rotation reports.</p>
+                        </div>
+                        <div class="pricing-card-body">
+                            <ul class="pricing-features-list">
+                                <li><i class="fas fa-check"></i> <span>Direct Founder access</span></li>
+                                <li><i class="fas fa-check"></i> <span>Priority Sector Rotation insights</span></li>
+                                <li><i class="fas fa-check"></i> <span>Bi-monthly Portfolio Review</span></li>
+                                <li><i class="fas fa-check"></i> <span>Direct WhatsApp &amp; Call Support</span></li>
+                            </ul>
+                        </div>
+                        <div class="pricing-card-footer">
+                            <button class="open-comparison-btn btn-pricing-secondary" data-plan="inner">Read More</button>
+                            <a href="https://premium.exlyapp.com/?init_contact=true" target="_blank" rel="noopener noreferrer" class="btn-pricing-primary">Subscribe Now</a>
+                        </div>
+                    </div>
+
+                    <!-- Plan 3: Invest Biz -->
+                    <div class="pricing-card-3d" data-index="2">
+                        <div class="pricing-card-glow"></div>
+                        <div class="pricing-card-header">
+                            <span class="pricing-plan-badge">Enterprise</span>
+                            <h3 class="pricing-plan-name">Invest Biz</h3>
+                            <div class="pricing-price-box">
+                                <span class="pricing-price">&bull;&bull;&bull;</span>
+                                <span class="pricing-price-period">Custom Pricing</span>
+                            </div>
+                            <p class="pricing-plan-desc">Bespoke advisory for corporate treasuries, family offices, and ultra-HNIs.</p>
+                        </div>
+                        <div class="pricing-card-body">
+                            <ul class="pricing-features-list">
+                                <li><i class="fas fa-check"></i> <span>Bespoke research &amp; custom mandates</span></li>
+                                <li><i class="fas fa-check"></i> <span>Institutional grade risk compliance</span></li>
+                                <li><i class="fas fa-check"></i> <span>Monthly high-touch meetings</span></li>
+                                <li><i class="fas fa-check"></i> <span>Dedicated relationship manager</span></li>
+                            </ul>
+                        </div>
+                        <div class="pricing-card-footer">
+                            <button class="open-comparison-btn btn-pricing-secondary" data-plan="biz">Read More</button>
+                            <a href="https://premium.exlyapp.com/?init_contact=true" target="_blank" rel="noopener noreferrer" class="btn-pricing-primary">Contact Us</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
         </div>
     </main>
 
@@ -777,6 +869,90 @@
             <span class="close">&times;</span>
             <h2>Archive</h2>
             <p>Explore historical publications, newsletters, and reports across past market cycles.</p>
+        </div>
+    </div>
+
+    <!-- ==========================================
+       PRICING COMPARISON MODAL
+       ========================================== -->
+    <div id="comparisonModal" class="modal comparison-modal">
+        <div class="modal-content comparison-modal-content">
+            <span class="close comparison-close">&times;</span>
+            <div class="modal-header">
+                <h2>Advisory Tiers <em>Comparison</em></h2>
+                <p>Find the perfect tier aligned with your capital size and research requirement.</p>
+            </div>
+            <div class="modal-body-scroll">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Parameters</th>
+                            <th>HNI Premium</th>
+                            <th class="highlight-col">Inner Circle</th>
+                            <th>Invest Biz</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="param-name">Minimum Capital</td>
+                            <td>₹5 Lakhs - ₹15 Lakhs</td>
+                            <td class="highlight-col">₹15 Lakhs - ₹50 Lakhs</td>
+                            <td>₹50 Lakhs+</td>
+                        </tr>
+                        <tr>
+                            <td class="param-name">Ideal For</td>
+                            <td>Retail HNIs, growing portfolios</td>
+                            <td class="highlight-col">Serious wealth builders, active HNIs</td>
+                            <td>Ultra-HNIs, Family Offices, Corporate Treasuries</td>
+                        </tr>
+                        <tr>
+                            <td class="param-name">Research Focus</td>
+                            <td>Model Portfolio, Long-term Value</td>
+                            <td class="highlight-col">Sector Rotations, Deep Value, Special Situations</td>
+                            <td>Custom Mandates, Bespoke Hedging/Allocation</td>
+                        </tr>
+                        <tr>
+                            <td class="param-name">Number of Stocks</td>
+                            <td>15 - 20 Stocks</td>
+                            <td class="highlight-col">15 - 25 Stocks (Priority allocation)</td>
+                            <td>Custom allocation limits</td>
+                        </tr>
+                        <tr>
+                            <td class="param-name">Founder Interaction</td>
+                            <td>Quarterly Webinar / Q&amp;A</td>
+                            <td class="highlight-col">Direct Call / Bi-monthly scheduled one-on-one</td>
+                            <td>On-demand meetings &amp; Board reviews</td>
+                        </tr>
+                        <tr>
+                            <td class="param-name">Portfolio Review</td>
+                            <td>Quarterly updates</td>
+                            <td class="highlight-col">Bi-monthly thorough check</td>
+                            <td>Monthly / Real-time monitoring</td>
+                        </tr>
+                        <tr>
+                            <td class="param-name">Support Channels</td>
+                            <td>In-App Ticket, Email Support</td>
+                            <td class="highlight-col">Priority WhatsApp, Direct Call Access</td>
+                            <td>Dedicated Relationship Manager, 24/7 Hotline</td>
+                        </tr>
+                        <tr>
+                            <td class="param-name">Research Reports</td>
+                            <td>Standard Quarterly report</td>
+                            <td class="highlight-col">Detailed rotation briefs + Sector deep-dives</td>
+                            <td>Custom industry research on-demand</td>
+                        </tr>
+                        <tr>
+                            <td class="param-name">Subscription Fee</td>
+                            <td>&bull;&bull;&bull;</td>
+                            <td class="highlight-col">&bull;&bull;&bull;</td>
+                            <td>Bespoke Quote</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer-cta">
+                <a href="https://premium.exlyapp.com/?init_contact=true" target="_blank" rel="noopener noreferrer" class="btn-pricing-primary">Get Started Today</a>
+            </div>
         </div>
     </div>
 
