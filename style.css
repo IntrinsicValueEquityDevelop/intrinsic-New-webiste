@@ -1138,7 +1138,7 @@ button {
   box-shadow: var(--shadow-soft), 0 10px 30px rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: space-around;
-  align-items: center;
+  align-items: flex-start;
   position: relative;
   z-index: 2;
   box-sizing: border-box;
@@ -1153,21 +1153,21 @@ button {
 }
 
 .iv-stat-num {
-  font-size: clamp(22px, 3vw, 28px);
+  font-size: clamp(18px, 2.5vw, 26px);
   font-weight: 800;
   color: var(--accent);
   line-height: 1.1;
 }
 
 .iv-stat-label {
-  font-size: 10px;
+  font-size: clamp(8px, 1.8vw, 10px);
   color: var(--text-muted);
   font-weight: 500;
   margin-top: 4px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   line-height: 1.3;
-  max-width: 110px;
+  max-width: 90px;
 }
 
 .iv-stat-divider {
@@ -1175,6 +1175,7 @@ button {
   height: 40px;
   background: var(--border-color);
   flex-shrink: 0;
+  align-self: center;
 }
 
 /* Animations */
@@ -1246,11 +1247,23 @@ button {
   
   .iv-hero-stats-overlay {
     margin: -40px 10px 0 10px;
-    padding: 18px 12px;
+    padding: 16px 8px;
+    gap: 4px;
   }
   
   .iv-stat-num {
-    font-size: 20px;
+    font-size: 15px;
+  }
+
+  .iv-stat-label {
+    font-size: 7.5px;
+    letter-spacing: 0.1px;
+    max-width: 70px;
+    margin-top: 2px;
+  }
+
+  .iv-stat-divider {
+    height: 30px;
   }
 }
 

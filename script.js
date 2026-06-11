@@ -89,6 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Case Studies section and modals
     initCaseStudies();
+
+    // Initialize Stats Counter Animation
+    initStatsCounters();
 });
 
 
@@ -349,6 +352,13 @@ function init3DSpiral() {
                     s.el.style.opacity = s.currOpacity.toFixed(3);
                     s.el.style.transform = `translateY(${s.currY.toFixed(2)}px) scale(${s.currScale.toFixed(3)})`;
                     s.el.style.pointerEvents = s.pointerEvents;
+                    
+                    // Hide completely when inactive to prevent blocking clicks
+                    if (s.currOpacity < 0.01 && s.targetOpacity === 0) {
+                        s.el.style.display = 'none';
+                    } else {
+                        s.el.style.display = '';
+                    }
                     
                     // Toggle the entered class for trigger animations in case studies / featured
                     if (key === 'featured' || key === 'cases') {
@@ -715,5 +725,57 @@ function initCaseStudies() {
             container.classList.add('has-expanded');
         }
     }
+}
+
+// ==========================================================================
+// HERO STATS COUNTER ANIMATION
+// ==========================================================================
+function initStatsCounters() {
+    const counters = document.querySelectorAll('.count-up');
+    if (counters.length === 0) return;
+
+    // Options for Intersection Observer
+    const options = {
+        threshold: 0.1, // Trigger when 10% of the element is visible
+        rootMargin: "0px"
+    };
+
+    const countUp = (counter) => {
+        const target = parseInt(counter.getAttribute('data-target'), 10);
+        const duration = 3500; // Animation duration in ms (3.5 seconds)
+        const startTime = performance.now();
+
+        const animate = (currentTime) => {
+            const elapsedTime = currentTime - startTime;
+            const progress = Math.min(elapsedTime / duration, 1);
+
+            // Easing function: easeOutQuad
+            const easeProgress = progress * (2 - progress);
+            const currentValue = Math.floor(easeProgress * target);
+
+            counter.textContent = currentValue;
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                counter.textContent = target; // Ensure exact final value
+            }
+        };
+
+        requestAnimationFrame(animate);
+    };
+
+    const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                countUp(entry.target);
+                observer.unobserve(entry.target); // Run only once
+            }
+        });
+    }, options);
+
+    counters.forEach(counter => {
+        observer.observe(counter);
+    });
 }
 
