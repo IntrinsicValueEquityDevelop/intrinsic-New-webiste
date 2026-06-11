@@ -396,7 +396,7 @@ function init3DSpiral() {
                 // Lerp scale, radius (depth), depth opacity, and blur amount
                 let currentScale = 0.62 + 0.43 * t; // scales from 0.62 (back) to 1.05 (front)
                 let currentRadius = radius * (0.55 + 0.53 * t); // tight core (0.55*R) to expanded front (1.08*R)
-                let depthOpacity = Math.pow(t, 3); // drop opacity rapidly as cards rotate away to prevent ghost reflections
+                let depthOpacity = 0.08 + 0.92 * t; // fades to 0.08 in back to keep the helix populated
                 let finalOpacity = boundaryOpacity * depthOpacity;
                 let blurAmount = (1 - t) * 7.5; // up to 7.5px blur in back, 0px in front
                 
@@ -412,7 +412,7 @@ function init3DSpiral() {
                 
                 // Disable clicks and visibility of back-facing/out-of-bounds cards
                 const isBackside = (normAngle > 85 && normAngle < 275);
-                if (boundaryOpacity < 0.08 || finalOpacity < 0.12) {
+                if (boundaryOpacity < 0.08 || finalOpacity < 0.05) {
                     card.style.visibility = 'hidden';
                     card.style.pointerEvents = 'none';
                 } else {
