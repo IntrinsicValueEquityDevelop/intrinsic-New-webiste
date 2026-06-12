@@ -3,7 +3,31 @@
  * Core Interactivity & Animations Script (Velvet Marigold Theme)
  */
 
+// Global cached window dimensions to avoid mobile address bar scroll jumping
+let cachedWindowHeight = window.innerHeight;
+let cachedWindowWidth = window.innerWidth;
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Lock scroll stack height on load to prevent jumping when mobile address bar hides/shows
+    const scrollStack = document.querySelector('.scroll-stack');
+    if (scrollStack) {
+        scrollStack.style.height = `${11 * cachedWindowHeight}px`;
+    }
+
+    // Update dimensions on resize, ignoring minor height shifts (like mobile browser URL bar collapsing)
+    window.addEventListener('resize', () => {
+        const newWidth = window.innerWidth;
+        const newHeight = window.innerHeight;
+        // Trigger recalculation if width changes (desktop resize) or height changes significantly (orientation swap)
+        if (Math.abs(newWidth - cachedWindowWidth) > 5 || Math.abs(newHeight - cachedWindowHeight) > 100) {
+            cachedWindowHeight = newHeight;
+            cachedWindowWidth = newWidth;
+            if (scrollStack) {
+                scrollStack.style.height = `${11 * cachedWindowHeight}px`;
+            }
+        }
+    });
+
     // ==========================================================================
     // 1. SCROLL-SENSITIVE HEADER EFFECT
     // ==========================================================================
@@ -215,7 +239,7 @@ function init3DSpiral() {
 
         const handleScrollTransitions = () => {
             const scrollY = window.scrollY;
-            const windowHeight = window.innerHeight;
+            const windowHeight = cachedWindowHeight;
 
             // Define scroll transition checkpoints relative to viewport height
             const heroFadeEnd = 1.0 * windowHeight;
@@ -1101,7 +1125,7 @@ function initTestimonials() {
         const handleScroll = () => {
             const rect = stackedSection.getBoundingClientRect();
             const sectionHeight = rect.height;
-            const windowHeight = window.innerHeight;
+            const windowHeight = cachedWindowHeight;
             
             // Calculate scroll progress (0 when section hits the 80px stick point, 1 when track ends)
             const scrolled = 80 - rect.top;

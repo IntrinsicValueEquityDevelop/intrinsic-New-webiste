@@ -53,9 +53,6 @@ html {
     font-size: 16px;
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    
-    /* Custom default cursor pointing up-left */
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cpath d='M4.5,3.2 C4.1,3.2 3.8,3.5 3.8,4.0 L7.8,19.8 C8.1,20.8 9.6,21.0 10.2,20.0 Q13.0,15.0 19.8,13.6 C20.6,13.0 20.4,11.7 19.3,11.3 L5.0,3.8 C4.7,3.6 4.3,3.5 4.5,3.2 Z' fill='%23ffffff' stroke='%23000000' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 4 3, default;
 }
 
 body {
@@ -63,15 +60,25 @@ body {
     line-height: 1.6;
     overflow-x: clip;
     -webkit-font-smoothing: antialiased;
-    cursor: inherit; /* inherit the custom default cursor */
 }
 
-/* Custom pointer cursor for interactive elements (Marigold/orange stroke on hover) */
-a, button, [role="button"], input[type="submit"], input[type="button"], select,
-.btn-company-trigger, .btn-report-item, .spiral-card, .featured-logo-card,
-.close, .nav-link, .iv-hero-cta, .menu-trigger, .social-icon, .iv-hero-cta-arrow,
-.spiral-card a, .btn-report-item span, .btn-report-item i, label, summary, [tabindex="0"] {
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cpath d='M4.5,3.2 C4.1,3.2 3.8,3.5 3.8,4.0 L7.8,19.8 C8.1,20.8 9.6,21.0 10.2,20.0 Q13.0,15.0 19.8,13.6 C20.6,13.0 20.4,11.7 19.3,11.3 L5.0,3.8 C4.7,3.6 4.3,3.5 4.5,3.2 Z' fill='%23ffffff' stroke='%23ff8c00' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E") 4 3, pointer !important;
+/* Custom cursors applied only to devices with mouse/trackpad (hover capability) to prevent touch delays or glitches on mobile */
+@media (hover: hover) and (pointer: fine) {
+    html {
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cpath d='M4.5,3.2 C4.1,3.2 3.8,3.5 3.8,4.0 L7.8,19.8 C8.1,20.8 9.6,21.0 10.2,20.0 Q13.0,15.0 19.8,13.6 C20.6,13.0 20.4,11.7 19.3,11.3 L5.0,3.8 C4.7,3.6 4.3,3.5 4.5,3.2 Z' fill='%23ffffff' stroke='%23000000' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 4 3, default;
+    }
+    
+    body {
+        cursor: inherit;
+    }
+
+    a, button, [role="button"], input[type="submit"], input[type="button"], select,
+    .btn-company-trigger, .btn-report-item, .spiral-card, .featured-logo-card,
+    .close, .nav-link, .iv-hero-cta, .menu-trigger, .social-icon, .iv-hero-cta-arrow,
+    .spiral-card a, .btn-report-item span, .btn-report-item i, label, summary, [tabindex="0"],
+    .faq-question-header {
+        cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cpath d='M4.5,3.2 C4.1,3.2 3.8,3.5 3.8,4.0 L7.8,19.8 C8.1,20.8 9.6,21.0 10.2,20.0 Q13.0,15.0 19.8,13.6 C20.6,13.0 20.4,11.7 19.3,11.3 L5.0,3.8 C4.7,3.6 4.3,3.5 4.5,3.2 Z' fill='%23ffffff' stroke='%23ff8c00' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E") 4 3, pointer !important;
+    }
 }
 
 /* Typography */
@@ -3728,7 +3735,7 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cpath d='M4.5,3.2 C4.1,3.2 3.8,3.5 3.8,4.0 L7.8,19.8 C8.1,20.8 9.6,21.0 10.2,20.0 Q13.0,15.0 19.8,13.6 C20.6,13.0 20.4,11.7 19.3,11.3 L5.0,3.8 C4.7,3.6 4.3,3.5 4.5,3.2 Z' fill='%23ffffff' stroke='%23ff8c00' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E") 4 3, pointer !important;
+    cursor: pointer;
     user-select: none;
 }
 
