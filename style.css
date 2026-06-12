@@ -3469,7 +3469,7 @@ button {
     font-size: 11vw;
     font-family: var(--font-heading);
     font-weight: 850;
-    color: var(--accent); /* Solid orange color */
+    color: #ffffff; /* Solid white color */
     text-shadow: 0 0 15px rgba(255, 140, 0, 0.6), 0 0 35px rgba(255, 140, 0, 0.4), 0 0 75px rgba(255, 140, 0, 0.2); /* Borders glowing */
     text-transform: uppercase;
     letter-spacing: -0.04em;
