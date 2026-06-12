@@ -403,7 +403,6 @@ function init3DSpiral() {
                         c.targetRotateX = 15;
                         c.targetY = 50;
                     });
-                    pricingState.hasAnimatedCounter = false;
                     if (pricingState.counterTimeout) {
                         clearTimeout(pricingState.counterTimeout);
                         pricingState.counterTimeout = null;
@@ -434,8 +433,8 @@ function init3DSpiral() {
                         c.targetY = 50 * (1 - cardsProg);
                     });
 
-                    // Trigger dynamic count-down when cards zoom entrance is 100% complete (visible properly)
-                    if (cardsProg >= 1.0) {
+                    // Trigger dynamic count-down when cards zoom entrance is 90% complete (visible properly)
+                    if (cardsProg >= 0.9) {
                         if (!pricingState.hasAnimatedCounter && !pricingState.counterTimeout) {
                             pricingState.counterTimeout = setTimeout(() => {
                                 animatePriceCounter();
@@ -447,14 +446,6 @@ function init3DSpiral() {
                         if (pricingState.counterTimeout) {
                             clearTimeout(pricingState.counterTimeout);
                             pricingState.counterTimeout = null;
-                        }
-                        if (cardsProg < 0.5) {
-                            // Reset counter animation flag and text if user scrolls back up significantly
-                            pricingState.hasAnimatedCounter = false;
-                            const counterSpan = document.querySelector('.pricing-discount-counter');
-                            if (counterSpan) {
-                                counterSpan.textContent = "45,000";
-                            }
                         }
                     }
                 } else if (scrollY >= pricingFadeOutStart && scrollY <= pricingFadeOutEnd) {
@@ -476,7 +467,6 @@ function init3DSpiral() {
                         c.targetRotateX = 0;
                         c.targetY = 0;
                     });
-                    pricingState.hasAnimatedCounter = false;
                     if (pricingState.counterTimeout) {
                         clearTimeout(pricingState.counterTimeout);
                         pricingState.counterTimeout = null;
@@ -487,7 +477,6 @@ function init3DSpiral() {
                     sectionsState.pricing.targetY = -60;
                     sectionsState.pricing.targetScale = 0.95;
                     sectionsState.pricing.pointerEvents = 'none';
-                    pricingState.hasAnimatedCounter = false;
                     if (pricingState.counterTimeout) {
                         clearTimeout(pricingState.counterTimeout);
                         pricingState.counterTimeout = null;
@@ -498,7 +487,6 @@ function init3DSpiral() {
                     sectionsState.pricing.targetY = 60;
                     sectionsState.pricing.targetScale = 0.95;
                     sectionsState.pricing.pointerEvents = 'none';
-                    pricingState.hasAnimatedCounter = false;
                     if (pricingState.counterTimeout) {
                         clearTimeout(pricingState.counterTimeout);
                         pricingState.counterTimeout = null;
