@@ -140,11 +140,11 @@ function init3DSpiral() {
     if (philosophySection && carousel && spiralCards.length > 0) {
         // Dynamic adjustments for helix spacing depending on device width
         const getSpiralRadius = () => {
-            return window.innerWidth <= 480 ? 150 : (window.innerWidth <= 768 ? 200 : 380);
+            return window.innerWidth <= 480 ? 165 : (window.innerWidth <= 768 ? 190 : 380);
         };
         
         const getSpiralYSpacingFactor = () => {
-            return window.innerWidth <= 480 ? 0.75 : (window.innerWidth <= 768 ? 1.05 : 1.35);
+            return window.innerWidth <= 480 ? 2.5 : (window.innerWidth <= 768 ? 1.7 : 1.35);
         };
         
         // Bind hover listeners for scale pop
