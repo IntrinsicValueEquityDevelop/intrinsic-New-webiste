@@ -98,6 +98,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Stacked Testimonials
     initTestimonials();
+
+    // Initialize Collapsible FAQs
+    initFAQs();
 });
 
 
@@ -1155,6 +1158,69 @@ function initTestimonials() {
         
         // Recalculate if window resizes
         window.addEventListener('resize', handleScroll);
+    }
+}
+
+// ==========================================================================
+// FAQ ACCORDION & SCROLL REVEAL EFFECT
+// ==========================================================================
+function initFAQs() {
+    const faqItems = document.querySelectorAll('.faq-item');
+    const faqSection = document.getElementById('faq');
+    
+    if (faqItems.length > 0) {
+        faqItems.forEach(item => {
+            const header = item.querySelector('.faq-question-header');
+            const answer = item.querySelector('.faq-answer');
+            
+            if (header && answer) {
+                header.addEventListener('click', () => {
+                    const isOpen = item.classList.contains('active');
+                    
+                    // Close all other FAQ items first for an accordion effect
+                    faqItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                            const otherAnswer = otherItem.querySelector('.faq-answer');
+                            if (otherAnswer) {
+                                otherAnswer.style.maxHeight = '0px';
+                                otherAnswer.style.opacity = '0';
+                            }
+                        }
+                    });
+                    
+                    // Toggle this FAQ item
+                    if (isOpen) {
+                        item.classList.remove('active');
+                        answer.style.maxHeight = '0px';
+                        answer.style.opacity = '0';
+                    } else {
+                        item.classList.add('active');
+                        answer.style.maxHeight = answer.scrollHeight + 'px';
+                        answer.style.opacity = '1';
+                    }
+                });
+            }
+        });
+    }
+    
+    // Scroll reveal observer (fading and sliding effect)
+    if (faqSection) {
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: "0px"
+        };
+        
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        revealObserver.observe(faqSection);
     }
 }
 
