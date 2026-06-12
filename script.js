@@ -716,7 +716,16 @@ function initFeaturedSection() {
     }
     
     // Recalculate metrics once window is fully loaded to ensure styles/fonts are ready
-    window.addEventListener('load', initScrollMetrics);
+    if (document.readyState === 'complete') {
+        setTimeout(initScrollMetrics, 100);
+    } else {
+        window.addEventListener('load', initScrollMetrics);
+    }
+    
+    // Recalculate when any image finishes loading (to handle layout shifts/cache)
+    cardsRow.querySelectorAll('img').forEach(img => {
+        img.addEventListener('load', initScrollMetrics);
+    });
     
     // Run metrics recalculation on window resize
     window.addEventListener('resize', initScrollMetrics);
@@ -816,6 +825,9 @@ function initFeaturedSection() {
     
     // 7. Auto Scroll Loop (marquee animation)
     function tickScroll() {
+        if (halfScrollWidth === 0) {
+            initScrollMetrics();
+        }
         if (!isPaused && halfScrollWidth > 0) {
             cardsRow.scrollLeft += scrollSpeed;
             
