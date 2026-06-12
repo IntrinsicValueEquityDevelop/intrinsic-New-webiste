@@ -95,6 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Comparison Modal
     initComparisonModal();
+
+    // Initialize Stacked Testimonials
+    initTestimonials();
 });
 
 
@@ -1061,5 +1064,97 @@ function animatePriceCounter() {
     }
     
     requestAnimationFrame(update);
+}
+
+// ==========================================================================
+// STACKED TESTIMONIALS CARD-THROW ANIMATION
+// ==========================================================================
+function initTestimonials() {
+    const stackedSection = document.querySelector('.stacked-testimonials-section');
+    const stackedCards = document.querySelectorAll('.testimonial-card');
+    
+    if (stackedSection && stackedCards.length > 0) {
+        const totalCards = stackedCards.length;
+        
+        // Initialize cards stack layout
+        const setupCards = () => {
+            stackedCards.forEach((card, idx) => {
+                // Card 0 is the top card and should be on top
+                card.style.zIndex = totalCards - idx;
+                
+                // Messy deck layout rotation (staggered slightly)
+                const rot = (idx % 2 === 0 ? 1 : -1) * (idx * 0.8 + 0.5);
+                // Stack depth offset using translateY and translateZ
+                const transY = idx * 4;
+                const transZ = -idx * 8;
+                card.style.transform = `translate3d(0, ${transY}px, ${transZ}px) rotate(${rot}deg)`;
+                card.style.opacity = '1';
+                card.style.visibility = 'visible';
+            });
+        };
+        
+        setupCards();
+
+        const handleScroll = () => {
+            const rect = stackedSection.getBoundingClientRect();
+            const sectionHeight = rect.height;
+            const windowHeight = window.innerHeight;
+            
+            // Calculate scroll progress (0 when section hits the 80px stick point, 1 when track ends)
+            const scrolled = 80 - rect.top;
+            const scrollRange = sectionHeight - windowHeight;
+            
+            if (scrollRange <= 0) return;
+            
+            let progress = scrolled / scrollRange;
+            progress = Math.max(0, Math.min(1, progress));
+            
+            // We divide the progress range 0..1 into segments for throwing cards one by one
+            const segmentCount = totalCards;
+            
+            stackedCards.forEach((card, idx) => {
+                const startThresh = idx / segmentCount;
+                const endThresh = (idx + 1) / segmentCount;
+                
+                if (progress <= startThresh) {
+                    // Card is resting in the stack
+                    const rot = (idx % 2 === 0 ? 1 : -1) * (idx * 0.8 + 0.5);
+                    const transY = idx * 4;
+                    const transZ = -idx * 8;
+                    card.style.transform = `translate3d(0, ${transY}px, ${transZ}px) rotate(${rot}deg)`;
+                    card.style.opacity = '1';
+                    card.style.visibility = 'visible';
+                } else if (progress > startThresh && progress < endThresh) {
+                    // Card is currently being thrown away
+                    const subProgress = (progress - startThresh) / (endThresh - startThresh);
+                    
+                    // Stagger throw directions: Card 0 up-left, Card 1 up-right, Card 2 up-left, etc.
+                    let dirX = 1;
+                    if (idx % 3 === 0) dirX = -1.2;
+                    else if (idx % 3 === 1) dirX = 1.2;
+                    else dirX = -0.3; // fly mostly up
+                    
+                    const flyX = dirX * subProgress * 1100; // Fly completely off the screen
+                    const flyY = -subProgress * 550; // fly up
+                    const flyRot = ((idx % 2 === 0 ? 1 : -1) * 12) + (subProgress * dirX * 45);
+                    
+                    card.style.transform = `translate3d(${flyX}px, ${flyY}px, 0) rotate(${flyRot}deg)`;
+                    card.style.opacity = (1 - subProgress).toString();
+                    card.style.visibility = 'visible';
+                } else {
+                    // Card is completely thrown away
+                    card.style.opacity = '0';
+                    card.style.visibility = 'hidden';
+                }
+            });
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        // Call initially in case page loaded in the middle of testimonials section
+        handleScroll();
+        
+        // Recalculate if window resizes
+        window.addEventListener('resize', handleScroll);
+    }
 }
 
