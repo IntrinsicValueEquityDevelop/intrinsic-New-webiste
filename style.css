@@ -3624,7 +3624,7 @@ button {
    FAQ SECTION (Velvet Marigold Dark Theme)
    ========================================================================== */
 .iv-faq-section {
-    padding: 100px 0;
+    padding: 70px 0;
     background-color: var(--bg-primary);
     position: relative;
     overflow: hidden;
@@ -3653,7 +3653,7 @@ button {
 
 .faq-header-block {
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: 35px;
 }
 
 .faq-pre-title {
@@ -3663,14 +3663,14 @@ button {
     color: var(--accent);
     text-transform: uppercase;
     display: block;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
 }
 
 .faq-main-title {
     font-size: 2.8rem;
     font-weight: 700;
     letter-spacing: -0.02em;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .faq-main-title em {
@@ -3698,7 +3698,7 @@ button {
 .faq-accordion-list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 14px;
 }
 
 .faq-item {
@@ -3707,7 +3707,7 @@ button {
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 16px;
-    padding: 24px 30px;
+    padding: 16px 24px;
     transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
     overflow: hidden;
 }
@@ -3752,9 +3752,9 @@ button {
 /* Gold Accent bar */
 .faq-accent-bar {
     width: 30px;
-    height: 3px;
+    height: 2px;
     background: var(--accent);
-    margin-top: 12px;
+    margin-top: 8px;
     border-radius: 2px;
     transition: width 0.35s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease;
     box-shadow: 0 0 8px var(--accent-glow);
@@ -3816,7 +3816,7 @@ button {
 }
 
 .faq-answer-inner {
-    padding-top: 20px;
+    padding-top: 12px;
     font-size: 1rem;
     line-height: 1.7;
     color: #E5E5EA;
@@ -3846,7 +3846,7 @@ button {
 }
 
 .faq-answer-inner ol li {
-    margin-bottom: 8px;
+    margin-bottom: 5px;
     color: #E5E5EA;
 }
 
@@ -3874,7 +3874,7 @@ button {
     }
     
     .faq-item {
-        padding: 20px 24px;
+        padding: 12px 18px;
     }
     
     .faq-question {
