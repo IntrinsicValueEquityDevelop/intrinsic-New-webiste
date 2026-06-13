@@ -108,6 +108,11 @@ button {
 }
 
 /* Scrollbar Styling */
+html {
+    scrollbar-color: var(--accent) var(--bg-primary);
+    scrollbar-width: auto;
+}
+
 ::-webkit-scrollbar {
     width: 8px;
 }
@@ -115,12 +120,12 @@ button {
     background: var(--bg-primary);
 }
 ::-webkit-scrollbar-thumb {
-    background: var(--bg-secondary);
+    background: var(--accent);
     border: 2px solid var(--bg-primary);
     border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--accent);
+    background: var(--accent-hover);
 }
 
 /* ==========================================================================
