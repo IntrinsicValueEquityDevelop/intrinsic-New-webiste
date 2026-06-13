@@ -2806,7 +2806,7 @@ html {
     flex: 2.0;
     border-color: var(--accent);
     background: rgba(24, 18, 12, 0.85);
-    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6), 0 0 25px var(--accent-glow-dim);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6), 0 0 12px rgba(255, 140, 0, 0.1);
 }
 
 /* Crossing travel paths: Alternating start coordinates */
@@ -2839,6 +2839,7 @@ html {
     transform: translate3d(0, 0, 0) scale(1);
     opacity: 1;
     filter: blur(0);
+    transition-delay: 0s !important;
 }
 
 /* Company Button Trigger */
@@ -3089,7 +3090,7 @@ html {
         border-right: none;
         background: rgba(18, 12, 7, 0.85);
         border-color: transparent;
-        box-shadow: 0 0 40px rgba(255, 140, 0, 0.75), 0 0 15px rgba(255, 140, 0, 0.45);
+        box-shadow: 0 0 20px rgba(255, 140, 0, 0.3), 0 0 8px rgba(255, 140, 0, 0.15);
     }
     
     .company-btn-num {
