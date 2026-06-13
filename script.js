@@ -334,7 +334,7 @@ function init3DSpiral() {
             const windowHeight = cachedWindowHeight;
 
             // Check if user has reached bottom (FAQ/footer)
-            if (scrollY >= 9.25 * windowHeight) {
+            if (scrollY >= 14.75 * windowHeight) {
                 window.hasReachedBottom = true;
             } else if (scrollY < 50) {
                 window.hasReachedBottom = false;
