@@ -2754,7 +2754,7 @@ html {
     gap: 16px;
     align-items: center;
     width: 100%;
-    max-width: 900px;
+    max-width: 720px;
     height: 340px; /* Consistent height for horizontal accordion on desktop */
     margin: 0 auto;
     box-sizing: border-box;
@@ -2803,7 +2803,7 @@ html {
 
 /* Expanded wrapper expands horizontally */
 .company-card-wrapper.expanded {
-    flex: 4.5;
+    flex: 2.4;
     border-color: var(--accent);
     background: rgba(24, 18, 12, 0.85);
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6), 0 0 25px var(--accent-glow-dim);
@@ -2874,7 +2874,7 @@ html {
 
 /* When expanded, the trigger acts as a vertical sidebar on the left */
 .company-card-wrapper.expanded .btn-company-trigger {
-    width: 80px;
+    width: 60px;
     height: 100%;
     flex-shrink: 0;
     background: rgba(255, 140, 0, 0.05);
@@ -2910,16 +2910,16 @@ html {
     height: 100%;
     flex-grow: 1;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
-    gap: 16px;
+    justify-content: center;
+    gap: 12px;
     z-index: 10;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
     box-sizing: border-box;
-    padding: 20px;
+    padding: 15px;
     transition: opacity 0.4s ease,
                 transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
                 visibility 0.4s;
@@ -2936,19 +2936,20 @@ html {
 /* Reduced size report link boxes */
 .btn-report-item {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    width: 140px;
-    height: 110px;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 190px;
+    height: 52px;
     background: rgba(26, 18, 10, 0.85);
     border: 1px solid rgba(255, 140, 0, 0.2);
-    border-radius: 14px;
+    border-radius: 12px;
     color: #ffffff;
     text-decoration: none;
     box-sizing: border-box;
-    padding: 12px;
-    text-align: center;
+    padding: 10px 16px;
+    text-align: left;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
     transition: background-color 0.3s ease,
                 border-color 0.3s ease,
@@ -2958,23 +2959,23 @@ html {
 }
 
 .btn-report-item i {
-    font-size: 24px;
+    font-size: 20px;
     color: var(--accent);
-    margin-bottom: 8px;
+    margin-bottom: 0;
     transition: transform 0.3s ease;
 }
 
 .btn-report-item span {
-    font-size: 11.5px;
+    font-size: 11px;
     font-weight: 700;
-    line-height: 1.25;
+    line-height: 1.2;
 }
 
 .btn-report-item:hover {
     background: rgba(255, 140, 0, 0.12);
     border-color: var(--accent);
     color: #ffffff;
-    transform: translateY(-5px) !important;
+    transform: translateX(5px) !important;
     box-shadow: 0 12px 30px rgba(255, 140, 0, 0.25);
 }
 
