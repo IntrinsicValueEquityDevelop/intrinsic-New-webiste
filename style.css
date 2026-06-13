@@ -1859,42 +1859,6 @@ html {
 }
 
 @media screen and (max-width: 768px) {
-    .spiral-scene {
-        perspective: none !important;
-        perspective-origin: 50% 50% !important;
-        overflow: hidden !important;
-        padding: 140px 20px 60px 20px;
-        box-sizing: border-box;
-        display: block !important;
-    }
-    
-    .spiral-carousel {
-        display: flex !important;
-        flex-direction: row !important;
-        gap: 20px !important;
-        width: max-content !important;
-        height: auto !important;
-        margin: 0 !important;
-        transform-style: flat !important;
-    }
-    
-    .spiral-card {
-        position: relative !important;
-        left: auto !important;
-        top: auto !important;
-        margin: 0 !important;
-        width: 300px !important;
-        flex-shrink: 0 !important;
-        height: auto !important;
-        min-height: 180px !important;
-        transform: none !important;
-        opacity: 1 !important;
-        filter: none !important;
-        visibility: visible !important;
-        pointer-events: auto !important;
-        padding: 22px !important;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
-    }
     
     .spiral-card h5 {
         font-size: 15px;
@@ -3534,37 +3498,30 @@ html {
    ========================================================================== */
 .stacked-testimonials-section {
     position: relative;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    height: 480vh; /* Scroll track length for 9 cards */
     background-color: var(--bg-primary);
-    padding: 120px 0;
     width: 100%;
     overflow: visible;
     box-sizing: border-box;
 }
 
 .stacked-testimonials-sticky {
-    position: relative;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 80px; /* Align below the sticky header */
+    height: calc(100vh - 80px);
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: var(--bg-primary);
     width: 100%;
-    gap: 35px;
 }
 
 /* Carousel Controls & Pagination Dots */
 .testimonials-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 24px;
-    z-index: 10;
-    position: relative;
-    margin-top: 25px;
+    display: none !important;
 }
 
 .testimonials-nav-btn {
@@ -3767,8 +3724,8 @@ html {
 
 @media screen and (max-width: 768px) {
     .testimonials-stack {
-        width: 92%;
-        height: 400px;
+        width: 330px !important;
+        height: 480px !important;
     }
     .testimonial-card {
         padding: 24px;
@@ -3786,8 +3743,8 @@ html {
 
 @media screen and (max-width: 480px) {
     .testimonials-stack {
-        width: 94%;
-        height: 430px;
+        width: 290px !important;
+        height: 500px !important;
     }
     .testimonial-card {
         padding: 20px;

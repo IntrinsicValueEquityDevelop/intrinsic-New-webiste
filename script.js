@@ -115,6 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    window.hasReachedBottom = false;
+
     // Truncate long philosophy text and bind to modals
     initPhilosophyModals();
 
@@ -218,6 +220,46 @@ function init3DSpiral() {
         let targetScrollOffsetAngle = 0;
         let currentScrollOffsetAngle = 0;
         
+        // touch / drag rotation for mobile view (x-axis drag rotates the 3D helix)
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let dragStartAngle = 0;
+        
+        const sceneEl = document.querySelector('.spiral-scene');
+        if (sceneEl) {
+            sceneEl.addEventListener('touchstart', (e) => {
+                if (window.innerWidth <= 768) {
+                    isDragging = true;
+                    dragStartX = e.touches[0].clientX;
+                    dragStartY = e.touches[0].clientY;
+                    dragStartAngle = targetScrollOffsetAngle;
+                }
+            }, { passive: false });
+            
+            sceneEl.addEventListener('touchmove', (e) => {
+                if (isDragging && window.innerWidth <= 768) {
+                    const clientX = e.touches[0].clientX;
+                    const clientY = e.touches[0].clientY;
+                    const deltaX = clientX - dragStartX;
+                    const deltaY = clientY - dragStartY;
+                    
+                    // If drag is primarily horizontal, prevent page scrolling so helix rotates smoothly
+                    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+                        if (e.cancelable) e.preventDefault();
+                    }
+                    
+                    // Drag left (negative deltaX) should rotate forward
+                    const newAngle = dragStartAngle - deltaX * 0.8;
+                    targetScrollOffsetAngle = Math.max(0, Math.min(540, newAngle));
+                }
+            }, { passive: false });
+            
+            sceneEl.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+        }
+        
         const heroSec = document.querySelector('.iv-hero');
         const philosophySticky = document.querySelector('.spiral-philosophy-sticky');
         const featuredSec = document.querySelector('.iv-featured-section');
@@ -291,6 +333,65 @@ function init3DSpiral() {
             const scrollY = window.scrollY;
             const windowHeight = cachedWindowHeight;
 
+            // Check if user has reached bottom (FAQ/footer)
+            if (scrollY >= 9.25 * windowHeight) {
+                window.hasReachedBottom = true;
+            } else if (scrollY < 50) {
+                window.hasReachedBottom = false;
+            }
+
+            if (window.hasReachedBottom) {
+                // Map sections linearly as if they were in a normal long page
+                const scaleFactor = 0.4;
+                const referenceScroll = Math.min(scrollY, 10.0 * windowHeight);
+                
+                // Hero (0)
+                sectionsState.hero.targetOpacity = 1;
+                sectionsState.hero.targetScale = 1;
+                sectionsState.hero.targetY = -referenceScroll * scaleFactor;
+                sectionsState.hero.pointerEvents = 'auto';
+                
+                // Philosophy (1)
+                sectionsState.philosophy.targetOpacity = 1;
+                sectionsState.philosophy.targetScale = 1;
+                sectionsState.philosophy.targetY = 1.0 * windowHeight - referenceScroll * scaleFactor;
+                sectionsState.philosophy.pointerEvents = 'auto';
+                
+                // Featured (2)
+                sectionsState.featured.targetOpacity = 1;
+                sectionsState.featured.targetScale = 1;
+                sectionsState.featured.targetY = 2.0 * windowHeight - referenceScroll * scaleFactor;
+                sectionsState.featured.pointerEvents = 'auto';
+                sectionsState.featured.hasEntered = true;
+                
+                // Cases (3)
+                sectionsState.cases.targetOpacity = 1;
+                sectionsState.cases.targetScale = 1;
+                sectionsState.cases.targetY = 3.0 * windowHeight - referenceScroll * scaleFactor;
+                sectionsState.cases.pointerEvents = 'auto';
+                sectionsState.cases.hasEntered = true;
+                
+                // Pricing (4)
+                sectionsState.pricing.targetOpacity = 1;
+                sectionsState.pricing.targetScale = 1;
+                sectionsState.pricing.targetY = 4.0 * windowHeight - referenceScroll * scaleFactor;
+                sectionsState.pricing.pointerEvents = 'auto';
+                
+                // Keep pricing zoom elements fully forward
+                pricingState.title.targetZ = 0;
+                pricingState.title.targetScale = 1;
+                pricingState.title.targetOpacity = 1;
+                pricingState.cards.forEach(c => {
+                    c.targetZ = 0;
+                    c.targetScale = 1;
+                    c.targetOpacity = 1;
+                    c.targetRotateX = 0;
+                    c.targetY = 0;
+                });
+                
+                return;
+            }
+
             // Define scroll transition checkpoints relative to viewport height
             const heroFadeEnd = 1.0 * windowHeight;
 
@@ -329,7 +430,9 @@ function init3DSpiral() {
                     sectionsState.philosophy.targetY = windowHeight;
                     sectionsState.philosophy.targetScale = 1;
                     sectionsState.philosophy.pointerEvents = 'none';
-                    targetScrollOffsetAngle = 0;
+                    if (window.innerWidth > 768) {
+                        targetScrollOffsetAngle = 0;
+                    }
                 } else if (scrollY >= philFadeInStart && scrollY <= philFadeInEnd) {
                     // Entrance Phase
                     const progress = (scrollY - philFadeInStart) / (philFadeInEnd - philFadeInStart);
@@ -337,7 +440,9 @@ function init3DSpiral() {
                     sectionsState.philosophy.targetY = windowHeight * (1 - progress);
                     sectionsState.philosophy.targetScale = 1;
                     sectionsState.philosophy.pointerEvents = progress > 0.5 ? 'auto' : 'none';
-                    targetScrollOffsetAngle = 0;
+                    if (window.innerWidth > 768) {
+                        targetScrollOffsetAngle = 0;
+                    }
                 } else if (scrollY > philFadeInEnd && scrollY < philFadeOutStart) {
                     // Active Spin Phase
                     sectionsState.philosophy.targetOpacity = 1;
@@ -347,14 +452,18 @@ function init3DSpiral() {
 
                     const spinProgress = (scrollY - philSpinStart) / (philSpinEnd - philSpinStart);
                     const clampedProgress = Math.max(0, Math.min(1, spinProgress));
-                    targetScrollOffsetAngle = clampedProgress * 540;
+                    if (window.innerWidth > 768) {
+                        targetScrollOffsetAngle = clampedProgress * 540;
+                    }
                 } else {
                     // Exiting Philosophy Section (scrollY >= philFadeOutStart) - scroll up naturally
                     sectionsState.philosophy.targetOpacity = 1;
                     sectionsState.philosophy.targetY = -(scrollY - philFadeOutStart);
                     sectionsState.philosophy.targetScale = 1;
                     sectionsState.philosophy.pointerEvents = 'none';
-                    targetScrollOffsetAngle = 540;
+                    if (window.innerWidth > 768) {
+                        targetScrollOffsetAngle = 540;
+                    }
                 }
             }
 
@@ -531,24 +640,7 @@ function init3DSpiral() {
         
         // Continuous Animation Loop
         function animateSpiral() {
-            // Mobile flat carousel scroll translation (horizontal scroll-driven)
-            if (window.innerWidth <= 768 && carousel) {
-                const scrollY = window.scrollY;
-                const windowHeight = cachedWindowHeight;
-                const philSpinStart = 1.0 * windowHeight;
-                const philSpinEnd = 3.2 * windowHeight;
-                const spinProgress = (scrollY - philSpinStart) / (philSpinEnd - philSpinStart);
-                const clampedProgress = Math.max(0, Math.min(1, spinProgress));
-                
-                const carouselWidth = carousel.scrollWidth || 2500;
-                // Keep the last card visible inside viewport (add 40px for margin/padding)
-                const maxScroll = Math.max(0, carouselWidth - window.innerWidth + 40);
-                const targetX = -clampedProgress * maxScroll;
-                
-                if (typeof carousel.currentX === 'undefined') carousel.currentX = 0;
-                carousel.currentX += (targetX - carousel.currentX) * 0.08;
-                carousel.style.transform = `translateX(${carousel.currentX.toFixed(1)}px)`;
-            } else if (carousel) {
+            if (carousel) {
                 carousel.style.transform = '';
                 carousel.currentX = 0;
             }
@@ -1114,133 +1206,89 @@ function animatePriceCounter() {
 function initTestimonials() {
     const stackedSection = document.querySelector('.stacked-testimonials-section');
     const stackedCards = document.querySelectorAll('.testimonial-card');
-    const prevBtn = document.querySelector('.testimonials-controls .prev-btn');
-    const nextBtn = document.querySelector('.testimonials-controls .next-btn');
-    const dotsContainer = document.querySelector('.testimonials-pagination-dots');
     
     if (stackedSection && stackedCards.length > 0) {
         const totalCards = stackedCards.length;
-        let currentIndex = 0;
-        let autoplayTimer = null;
         
-        // 1. Build pagination dots dynamically
-        if (dotsContainer) {
-            dotsContainer.innerHTML = '';
-            for (let i = 0; i < totalCards; i++) {
-                const dot = document.createElement('button');
-                dot.className = `dot ${i === 0 ? 'active' : ''}`;
-                dot.setAttribute('aria-label', `Go to testimonial ${i + 1}`);
-                dot.addEventListener('click', () => {
-                    const dir = i > currentIndex ? 'next' : 'prev';
-                    showCard(i, dir);
-                    resetAutoplay();
-                });
-                dotsContainer.appendChild(dot);
+        // Initialize cards stack layout
+        const setupCards = () => {
+            stackedCards.forEach((card, idx) => {
+                // Card 0 is the top card and should be on top
+                card.style.zIndex = totalCards - idx;
+                
+                // Messy deck layout rotation (staggered slightly)
+                const rot = (idx % 2 === 0 ? 1 : -1) * (idx * 0.8 + 0.5);
+                const transY = idx * 4;
+                const transZ = -idx * 8;
+                card.style.transform = `translate3d(0, ${transY}px, ${transZ}px) rotate(${rot}deg)`;
+                card.style.opacity = '1';
+                card.style.visibility = 'visible';
+            });
+        };
+        
+        setupCards();
+
+        const handleScroll = () => {
+            if (window.hasReachedBottom) {
+                setupCards();
+                return;
             }
-        }
-        
-        // 2. Main transition function (combines left/right swipe, z-index stack depth, and card blur effects)
-        const showCard = (index, dir = 'next') => {
-            currentIndex = index;
             
-            // Update indicator dots
-            if (dotsContainer) {
-                const dots = dotsContainer.querySelectorAll('.dot');
-                dots.forEach((dot, idx) => {
-                    dot.classList.toggle('active', idx === currentIndex);
-                });
-            }
+            const rect = stackedSection.getBoundingClientRect();
+            const sectionHeight = rect.height;
+            const windowHeight = cachedWindowHeight;
+            
+            // Calculate scroll progress (0 when section hits the 80px stick point, 1 when track ends)
+            const scrolled = 80 - rect.top;
+            const scrollRange = sectionHeight - windowHeight;
+            
+            if (scrollRange <= 0) return;
+            
+            let progress = scrolled / scrollRange;
+            progress = Math.max(0, Math.min(1, progress));
+            
+            const segmentCount = totalCards;
             
             stackedCards.forEach((card, idx) => {
-                const diff = (idx - currentIndex + totalCards) % totalCards;
+                const startThresh = idx / segmentCount;
+                const endThresh = (idx + 1) / segmentCount;
                 
-                // Clear any inline styles set by legacy scroll calculations
-                card.style.visibility = '';
-                
-                // Apply custom high-performance transforms for 3D depth stack
-                if (diff === 0) {
-                    // Active card (centered at front)
-                    card.style.transform = 'translate3d(0, 0, 0) scale(1) rotate(0deg)';
+                if (progress <= startThresh) {
+                    // Card is resting in the stack
+                    const rot = (idx % 2 === 0 ? 1 : -1) * (idx * 0.8 + 0.5);
+                    const transY = idx * 4;
+                    const transZ = -idx * 8;
+                    card.style.transform = `translate3d(0, ${transY}px, ${transZ}px) rotate(${rot}deg)`;
                     card.style.opacity = '1';
-                    card.style.filter = 'none';
-                    card.style.zIndex = '10';
-                    card.style.pointerEvents = 'auto';
-                } else if (diff === 1) {
-                    // Staggered card 1 (just behind active)
-                    card.style.transform = 'translate3d(0, 15px, -30px) scale(0.95) rotate(2deg)';
-                    card.style.opacity = '0.85';
-                    card.style.filter = 'blur(1px)';
-                    card.style.zIndex = '9';
-                    card.style.pointerEvents = 'none';
-                } else if (diff === 2) {
-                    // Staggered card 2 (further behind active)
-                    card.style.transform = 'translate3d(0, 30px, -60px) scale(0.9) rotate(-2deg)';
-                    card.style.opacity = '0.5';
-                    card.style.filter = 'blur(2px)';
-                    card.style.zIndex = '8';
-                    card.style.pointerEvents = 'none';
-                } else if (diff === totalCards - 1) {
-                    // Old active card that was just swiped/thrown away
-                    const flyX = dir === 'next' ? '-130%' : '130%';
-                    const flyRot = dir === 'next' ? '-15deg' : '15deg';
-                    card.style.transform = `translate3d(${flyX}, -20px, 0) rotate(${flyRot})`;
-                    card.style.opacity = '0';
-                    card.style.filter = 'blur(3px)';
-                    card.style.zIndex = '11';
-                    card.style.pointerEvents = 'none';
+                    card.style.visibility = 'visible';
+                } else if (progress > startThresh && progress < endThresh) {
+                    // Card is currently being thrown away
+                    const subProgress = (progress - startThresh) / (endThresh - startThresh);
+                    
+                    // Stagger throw directions: Card 0 up-left, Card 1 up-right, Card 2 up-left, etc.
+                    let dirX = 1;
+                    if (idx % 3 === 0) dirX = -1.2;
+                    else if (idx % 3 === 1) dirX = 1.2;
+                    else dirX = -0.3; // fly mostly up
+                    
+                    const flyX = dirX * subProgress * 1100; // Fly completely off the screen
+                    const flyY = -subProgress * 550; // fly up
+                    const flyRot = ((idx % 2 === 0 ? 1 : -1) * 12) + (subProgress * dirX * 45);
+                    
+                    card.style.transform = `translate3d(${flyX}px, ${flyY}px, 0) rotate(${flyRot}deg)`;
+                    card.style.opacity = (1 - subProgress).toString();
+                    card.style.visibility = 'visible';
                 } else {
-                    // Completely hidden cards resting in background pool
-                    card.style.transform = 'translate3d(0, 40px, -90px) scale(0.85) rotate(0deg)';
+                    // Card is completely thrown away
                     card.style.opacity = '0';
-                    card.style.filter = 'blur(4px)';
-                    card.style.zIndex = '1';
-                    card.style.pointerEvents = 'none';
+                    card.style.visibility = 'hidden';
                 }
             });
         };
-        
-        // 3. Autoplay handlers
-        const startAutoplay = () => {
-            if (autoplayTimer) clearInterval(autoplayTimer);
-            autoplayTimer = setInterval(() => {
-                const nextIdx = (currentIndex + 1) % totalCards;
-                showCard(nextIdx, 'next');
-            }, 4500); // swipe every 4.5 seconds
-        };
-        
-        const resetAutoplay = () => {
-            startAutoplay();
-        };
-        
-        // 4. Register event listeners for navigation buttons
-        if (prevBtn) {
-            prevBtn.addEventListener('click', () => {
-                const prevIdx = (currentIndex - 1 + totalCards) % totalCards;
-                showCard(prevIdx, 'prev');
-                resetAutoplay();
-            });
-        }
-        
-        if (nextBtn) {
-            nextBtn.addEventListener('click', () => {
-                const nextIdx = (currentIndex + 1) % totalCards;
-                showCard(nextIdx, 'next');
-                resetAutoplay();
-            });
-        }
-        
-        // Pause auto-play when user hovers over the testimonials
-        stackedSection.addEventListener('mouseenter', () => {
-            if (autoplayTimer) clearInterval(autoplayTimer);
-        });
-        
-        stackedSection.addEventListener('mouseleave', () => {
-            startAutoplay();
-        });
-        
-        // Initial setup
-        showCard(0, 'next');
-        startAutoplay();
+
+        window.addEventListener('scroll', handleScroll);
+        handleScroll();
+        window.addEventListener('resize', handleScroll);
     }
 }
 
