@@ -394,8 +394,9 @@ function init3DSpiral() {
 
             progress = Math.max(0, Math.min(1, progress));
 
-            const radius = 16;
-            const circumference = 2 * Math.PI * radius; // ~100.53
+            const radius = 18;
+            const circumference = 2 * Math.PI * radius; // ~113.10
+            progressCircleFg.style.strokeDasharray = circumference.toFixed(2);
             const offset = circumference - progress * circumference;
             progressCircleFg.style.strokeDashoffset = offset.toFixed(2);
 
