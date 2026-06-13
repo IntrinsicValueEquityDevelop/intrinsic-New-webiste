@@ -728,8 +728,50 @@ button {
 
 .contact-item:hover .contact-icon-wrapper {
     transform: scale(1.08);
-    background: rgba(255, 140, 0, 0.15);
-    border-color: var(--accent);
+}
+
+/* 1. Phone Icon (Green) */
+.footer-contact-bar .contact-item:nth-child(1) .contact-icon-wrapper {
+    color: #2ecc71;
+    background: rgba(46, 204, 113, 0.08);
+    border-color: rgba(46, 204, 113, 0.15);
+}
+.footer-contact-bar .contact-item:nth-child(1):hover .contact-icon-wrapper {
+    background: rgba(46, 204, 113, 0.15);
+    border-color: #2ecc71;
+}
+
+/* 2. Mail Icon (Blue) */
+.footer-contact-bar .contact-item:nth-child(2) .contact-icon-wrapper {
+    color: #3498db;
+    background: rgba(52, 152, 219, 0.08);
+    border-color: rgba(52, 152, 219, 0.15);
+}
+.footer-contact-bar .contact-item:nth-child(2):hover .contact-icon-wrapper {
+    background: rgba(52, 152, 219, 0.15);
+    border-color: #3498db;
+}
+
+/* 3. Location Icon (Red) */
+.footer-contact-bar .contact-item:nth-child(3) .contact-icon-wrapper {
+    color: #e74c3c;
+    background: rgba(231, 76, 60, 0.08);
+    border-color: rgba(231, 76, 60, 0.15);
+}
+.footer-contact-bar .contact-item:nth-child(3):hover .contact-icon-wrapper {
+    background: rgba(231, 76, 60, 0.15);
+    border-color: #e74c3c;
+}
+
+/* 4. Timing Icon (Yellow/Amber) */
+.footer-contact-bar .contact-item:nth-child(4) .contact-icon-wrapper {
+    color: #FBBC05;
+    background: rgba(251, 188, 5, 0.08);
+    border-color: rgba(251, 188, 5, 0.15);
+}
+.footer-contact-bar .contact-item:nth-child(4):hover .contact-icon-wrapper {
+    background: rgba(251, 188, 5, 0.15);
+    border-color: #FBBC05;
 }
 
 .contact-icon {
@@ -2680,37 +2722,62 @@ button {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    gap: 24px;
-    align-items: flex-start;
+    gap: 16px;
+    align-items: center;
     width: 100%;
-    max-width: 1100px;
+    max-width: 900px;
+    height: 340px; /* Consistent height for horizontal accordion on desktop */
     margin: 0 auto;
     box-sizing: border-box;
     padding: 20px 0;
     position: relative;
-    transition: padding-bottom 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-.cases-buttons-container.has-expanded {
-    padding-bottom: 210px; /* Increased to accommodate 60px spacing */
-}
-
+/* Initially, all wrappers are flex: 1 and equal width */
 .company-card-wrapper {
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* Trigger on left, dropdown reports on right */
     align-items: center;
-    flex: 1 1 0;
-    min-width: 180px;
-    max-width: 250px;
+    height: 100%;
+    flex: 1;
+    min-width: 80px;
     box-sizing: border-box;
     position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(255, 140, 0, 0.15);
+    background: rgba(26, 18, 10, 0.4);
+    border-radius: 20px;
     
     /* 3D Entrance animations: fly in from different directions and fade in - SLOWER (1.8s) */
     opacity: 0;
     filter: blur(5px);
-    transition: transform 1.8s cubic-bezier(0.34, 1.56, 0.64, 1),
+    transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+                border-color 0.4s ease,
+                background-color 0.4s ease,
+                box-shadow 0.4s ease,
+                transform 1.8s cubic-bezier(0.34, 1.56, 0.64, 1),
                 opacity 1.8s cubic-bezier(0.34, 1.56, 0.64, 1),
                 filter 1.8s ease;
+}
+
+/* Inactive wrappers shrink slightly when another is expanded */
+.cases-buttons-container.has-expanded .company-card-wrapper:not(.expanded) {
+    flex: 0.7;
+    background: rgba(10, 8, 6, 0.2);
+    border-color: rgba(255, 140, 0, 0.08);
+}
+
+.company-card-wrapper:hover {
+    border-color: rgba(255, 140, 0, 0.35);
+    background: rgba(255, 140, 0, 0.03);
+}
+
+/* Expanded wrapper expands horizontally */
+.company-card-wrapper.expanded {
+    flex: 4.5;
+    border-color: var(--accent);
+    background: rgba(24, 18, 12, 0.85);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6), 0 0 25px var(--accent-glow-dim);
 }
 
 /* Crossing travel paths: Alternating start coordinates */
@@ -2745,84 +2812,85 @@ button {
     filter: blur(0);
 }
 
-/* Reduced Area Company Button Trigger */
+/* Company Button Trigger */
 .btn-company-trigger {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    padding: 16px 12px;
+    gap: 16px;
     width: 100%;
-    height: 85px;
-    background: rgba(26, 18, 10, 0.45);
-    border: 1px solid rgba(255, 140, 0, 0.18);
-    border-radius: 16px;
-    color: #ffffff;
+    height: 100%;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    color: rgba(255, 255, 255, 0.8);
     cursor: pointer;
     transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
     box-sizing: border-box;
     text-align: center;
     user-select: none;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    overflow: hidden; /* clips the rotating conic border-tracing element */
     position: relative;
     z-index: 1;
+    
+    /* Sideways vertical writing mode for collapsed state */
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
 }
 
-.btn-company-trigger:hover {
-    background: rgba(255, 140, 0, 0.08);
-    border-color: var(--accent);
-    transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(255, 140, 0, 0.15);
-}
-
-/* Chosen button: glows strongly from border */
-.company-card-wrapper.expanded .btn-company-trigger {
-    border-color: transparent;
-    background: rgba(18, 12, 7, 0.85); /* Keeps dark background */
+.company-card-wrapper:hover .btn-company-trigger {
     color: #ffffff;
-    transform: translateY(0);
-    box-shadow: 0 0 40px rgba(255, 140, 0, 0.75), 0 0 15px rgba(255, 140, 0, 0.45);
+}
+
+/* When expanded, the trigger acts as a vertical sidebar on the left */
+.company-card-wrapper.expanded .btn-company-trigger {
+    width: 80px;
+    height: 100%;
+    flex-shrink: 0;
+    background: rgba(255, 140, 0, 0.05);
+    border-right: 1px solid rgba(255, 140, 0, 0.2);
+    color: #ffffff;
+    box-shadow: none;
 }
 
 .company-btn-num {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 800;
     color: var(--accent);
-    margin-bottom: 4px;
     font-family: var(--font-heading);
     letter-spacing: 1.5px;
     transition: color 0.4s ease;
 }
 
-.company-card-wrapper.expanded .company-btn-num {
-    color: var(--accent);
-}
-
 .company-btn-title {
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 700;
     font-family: var(--font-heading);
     letter-spacing: 0.5px;
     line-height: 1.2;
 }
 
-/* Reports Dropdown Stack: Centered HORIZONTALLY below the active button with larger spacing (60px) */
+/* Reports Dropdown Container - shows on the right side of trigger on desktop */
 .company-reports-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translate3d(-50%, 10px, 0) scale(0.95);
-    width: 460px;
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: translateX(20px);
+    width: auto;
+    height: 100%;
+    flex-grow: 1;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-evenly;
     gap: 16px;
     z-index: 10;
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
     box-sizing: border-box;
+    padding: 20px;
     transition: opacity 0.4s ease,
                 transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
                 visibility 0.4s;
@@ -2832,7 +2900,8 @@ button {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transform: translate3d(-50%, 60px, 0) scale(1); /* Pushed further down to 60px */
+    transform: translateX(0);
+}
 }
 
 /* Reduced size report link boxes */
@@ -2925,6 +2994,7 @@ button {
         align-items: center;
         gap: 16px;
         padding: 10px 0;
+        height: auto; /* reset desktop height */
     }
     
     .cases-buttons-container.has-expanded {
@@ -2932,13 +3002,32 @@ button {
     }
     
     .company-card-wrapper {
+        display: flex;
+        flex-direction: column; /* stack button and reports vertically */
         width: 100%;
         max-width: 100%;
-        flex: none;
+        height: auto; /* reset desktop height */
+        flex: none !important; /* disable desktop flex columns */
+        min-width: 0;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 140, 0, 0.18);
+        background: rgba(26, 18, 10, 0.45);
         
         /* Simpler slide transition for mobile to avoid side overflow */
         transform: translate3d(0, 30px, 0) !important;
         transition-delay: 0s !important;
+    }
+    
+    .cases-buttons-container.has-expanded .company-card-wrapper:not(.expanded) {
+        flex: none !important;
+        background: rgba(26, 18, 10, 0.45);
+        border-color: rgba(255, 140, 0, 0.18);
+    }
+    
+    .company-card-wrapper.expanded {
+        border-color: var(--accent);
+        background: rgba(24, 18, 12, 0.85);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
     }
     
     .iv-cases-section.entered .company-card-wrapper {
@@ -2948,9 +3037,13 @@ button {
     }
     
     .btn-company-trigger {
+        writing-mode: horizontal-tb; /* reset desktop rotated text */
+        transform: none; /* reset desktop rotation */
+        white-space: normal;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        width: 100%;
         height: 70px;
         padding: 0 20px;
         text-align: left;
@@ -2958,6 +3051,15 @@ button {
     
     .btn-company-trigger:hover {
         transform: none; /* disable desktop hover translate */
+    }
+    
+    .company-card-wrapper.expanded .btn-company-trigger {
+        width: 100% !important;
+        height: 70px !important;
+        border-right: none;
+        background: rgba(18, 12, 7, 0.85);
+        border-color: transparent;
+        box-shadow: 0 0 40px rgba(255, 140, 0, 0.75), 0 0 15px rgba(255, 140, 0, 0.45);
     }
     
     .company-btn-num {
@@ -2975,6 +3077,7 @@ button {
         position: static;
         transform: none;
         width: 100%;
+        height: auto; /* reset desktop height */
         display: flex;
         flex-direction: column;
         gap: 12px;
@@ -2983,6 +3086,7 @@ button {
         visibility: visible;
         max-height: 0;
         pointer-events: none;
+        padding: 0; /* reset desktop padding */
         transition: max-height 0.4s ease, opacity 0.3s ease;
     }
     
@@ -2991,6 +3095,7 @@ button {
         opacity: 1;
         pointer-events: auto;
         transform: none;
+        padding: 16px; /* add internal padding when expanded */
     }
     
     .btn-report-item {
@@ -3992,3 +4097,489 @@ button {
         font-size: 0.95rem;
     }
 }
+
+/* ==========================================================================
+   REGULATORY DISCLOSURES SECTION (Velvet Marigold Theme)
+   ========================================================================== */
+.iv-disclosures-section {
+    padding: 70px 0;
+    background-color: var(--bg-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle background grid overlay */
+.iv-disclosures-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 140, 0, 0.01) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 140, 0, 0.01) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.iv-disclosures-container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px; /* Centered, clean reading width to match FAQs */
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.disclosures-header-block {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.disclosures-pre-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.disclosures-main-title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 10px;
+    font-family: var(--font-heading);
+}
+
+.disclosures-main-title em {
+    font-style: normal;
+    color: var(--accent);
+}
+
+.disclosures-sub-title {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+}
+
+.disclosures-accordion-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.disclosure-item {
+    background: rgba(18, 18, 18, 0.55);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 16px 24px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    overflow: hidden;
+}
+
+.disclosure-item:hover {
+    border-color: rgba(255, 140, 0, 0.2);
+    background: rgba(22, 22, 22, 0.65);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 140, 0, 0.02);
+}
+
+.disclosure-item.active {
+    border-color: var(--accent);
+    background: rgba(24, 24, 24, 0.8);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 20px var(--accent-glow-dim);
+}
+
+.disclosure-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.disclosure-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    font-family: var(--font-heading);
+    transition: color 0.3s ease;
+}
+
+.disclosure-item:hover .disclosure-title,
+.disclosure-item.active .disclosure-title {
+    color: #ffffff;
+}
+
+/* Gold Accent bar */
+.disclosure-accent-bar {
+    width: 30px;
+    height: 2px;
+    background: var(--accent);
+    margin-top: 8px;
+    border-radius: 2px;
+    transition: width 0.35s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease;
+    box-shadow: 0 0 8px var(--accent-glow);
+}
+
+.disclosure-item.active .disclosure-accent-bar {
+    width: 60px;
+    background: linear-gradient(90deg, var(--accent), #ffb347);
+}
+
+/* Plus/Minus Icon */
+.disclosure-icon {
+    position: relative;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    margin-left: 20px;
+}
+
+.disclosure-icon .line {
+    position: absolute;
+    background-color: var(--accent);
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.3s ease;
+    border-radius: 1px;
+}
+
+.disclosure-icon .line.horizontal {
+    top: 6px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+}
+
+.disclosure-icon .line.vertical {
+    top: 0;
+    left: 6px;
+    width: 2px;
+    height: 100%;
+}
+
+.disclosure-item.active .disclosure-icon .line.vertical {
+    transform: rotate(90deg) scaleY(0);
+}
+
+.disclosure-item.active .disclosure-icon .line.horizontal {
+    transform: rotate(180deg);
+}
+
+.disclosure-item.active .disclosure-icon .line {
+    background-color: #ffffff;
+}
+
+/* Expanding Content Panel */
+.disclosure-panel {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+}
+
+.disclosure-panel-inner {
+    padding-top: 20px;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #E5E5EA;
+    font-family: var(--font-body);
+}
+
+.disclosure-intro-text {
+    margin-bottom: 20px;
+    font-style: italic;
+    color: #E5E5EA;
+    font-size: 0.95rem;
+}
+
+/* Responsive Table Container */
+.table-responsive-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    margin: 20px 0;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background-color: rgba(10, 10, 10, 0.4);
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-hover) transparent;
+}
+
+.table-responsive-wrapper::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-responsive-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.table-responsive-wrapper::-webkit-scrollbar-thumb {
+    background: var(--border-hover);
+    border-radius: 3px;
+}
+
+.table-responsive-wrapper::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+}
+
+/* Disclosure Table Styling */
+.disclosure-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.9rem;
+    min-width: 700px; /* Keep minimum width to force scrolling instead of crushing cells */
+}
+
+.disclosure-table th, 
+.disclosure-table td {
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.disclosure-table th {
+    background-color: rgba(255, 140, 0, 0.05);
+    color: var(--text-primary);
+    font-family: var(--font-heading);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    border-bottom: 2px solid rgba(255, 140, 0, 0.15);
+}
+
+.disclosure-table tbody tr {
+    transition: background-color var(--transition-fast);
+}
+
+.disclosure-table tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.disclosure-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Grand Total Row Accent */
+.disclosure-table tr.grand-total-row {
+    background-color: rgba(255, 140, 0, 0.03);
+    border-top: 2px solid var(--border-color);
+}
+
+.disclosure-table tr.grand-total-row td {
+    font-weight: 700;
+    color: #ffffff;
+    border-bottom: none;
+}
+
+/* Status Badge */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-badge.conducted {
+    background-color: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    box-shadow: 0 0 10px rgba(46, 204, 113, 0.05);
+}
+
+/* Footnotes */
+.disclosure-footnotes {
+    margin-top: 15px;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 12px;
+}
+
+.disclosure-footnotes p {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin-bottom: 6px;
+}
+
+.disclosure-footnotes p:last-child {
+    margin-bottom: 0;
+}
+
+/* Month Selector Styles */
+.month-selector-wrapper {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+    font-family: var(--font-body);
+}
+
+.month-select-label {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.custom-select-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.month-select-input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 8px 36px 8px 16px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.month-select-input:focus,
+.month-select-input:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 8px var(--accent-glow-dim);
+}
+
+/* Custom dropdown chevron arrow */
+.custom-select-wrapper::after {
+    content: '';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--accent);
+    pointer-events: none;
+    transition: transform var(--transition-fast);
+}
+
+.custom-select-wrapper:focus-within::after {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+/* ==========================================================================
+   NESTED SUB-DISCLOSURES (Research Analyst Dropdown)
+   ========================================================================== */
+.sub-disclosure-item {
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    background-color: rgba(18, 18, 18, 0.3);
+    transition: border-color var(--transition-fast);
+}
+
+.sub-disclosure-item:hover {
+    border-color: rgba(255, 140, 0, 0.15);
+}
+
+.sub-disclosure-item.active {
+    border-color: rgba(255, 140, 0, 0.3);
+}
+
+.sub-disclosure-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.01);
+    user-select: none;
+}
+
+.sub-disclosure-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    font-family: var(--font-heading);
+}
+
+.sub-disclosure-chevron {
+    color: var(--accent);
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.sub-disclosure-item.active .sub-disclosure-chevron {
+    transform: rotate(180deg);
+    color: #ffffff;
+}
+
+.sub-disclosure-panel {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.35s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
+}
+
+.sub-disclosure-panel-inner {
+    padding: 20px;
+    border-top: 1px solid var(--border-color);
+    background-color: rgba(5, 5, 5, 0.2);
+}
+
+/* Fading Scroll-Reveal Animation for Disclosures */
+.disclosures-reveal-el {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.disclosures-reveal-el.revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive Media Queries */
+@media (max-width: 768px) {
+    .disclosures-main-title {
+        font-size: 2.2rem;
+    }
+    
+    .disclosure-item {
+        padding: 12px 18px;
+    }
+    
+    .disclosure-title {
+        font-size: 1.1rem;
+    }
+    
+    .disclosure-panel-inner {
+        font-size: 0.95rem;
+    }
+    
+    .sub-disclosure-header {
+        padding: 12px 16px;
+    }
+    
+    .sub-disclosure-panel-inner {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .disclosures-main-title {
+        font-size: 1.8rem;
+    }
+    
+    .disclosures-sub-title {
+        font-size: 0.95rem;
+    }
+}
+

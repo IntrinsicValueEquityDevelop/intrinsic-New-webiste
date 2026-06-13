@@ -125,6 +125,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Collapsible FAQs
     initFAQs();
+
+    // Initialize Regulatory Disclosures Accordion
+    initDisclosures();
 });
 
 
@@ -958,14 +961,6 @@ function initCaseStudies() {
             });
         });
     });
-
-    // 4. Select/Expand the first company card wrapper by default
-    if (wrappers[0]) {
-        wrappers[0].classList.add('expanded');
-        if (container) {
-            container.classList.add('has-expanded');
-        }
-    }
 }
 
 // ==========================================================================
@@ -1245,6 +1240,153 @@ function initFAQs() {
         }, observerOptions);
         
         revealObserver.observe(faqSection);
+    }
+}
+
+// ==========================================================================
+// REGULATORY DISCLOSURES ACCORDION CONTROLLER
+// ==========================================================================
+function initDisclosures() {
+    const disclosureItems = document.querySelectorAll('.disclosure-item');
+    const disclosuresSection = document.getElementById('disclosures');
+    
+    if (disclosureItems.length > 0) {
+        disclosureItems.forEach(item => {
+            const header = item.querySelector('.disclosure-header');
+            const panel = item.querySelector('.disclosure-panel');
+            
+            if (header && panel) {
+                header.addEventListener('click', () => {
+                    const isOpen = item.classList.contains('active');
+                    
+                    // Close all other main disclosure items first for accordion effect
+                    disclosureItems.forEach(otherItem => {
+                        if (otherItem !== item) {
+                            otherItem.classList.remove('active');
+                            const otherPanel = otherItem.querySelector('.disclosure-panel');
+                            if (otherPanel) {
+                                otherPanel.style.maxHeight = '0px';
+                                otherPanel.style.opacity = '0';
+                            }
+                        }
+                    });
+                    
+                    // Toggle this item
+                    if (isOpen) {
+                        // Collapse
+                        item.classList.remove('active');
+                        panel.style.maxHeight = panel.scrollHeight + 'px';
+                        panel.offsetHeight; // Force reflow
+                        panel.style.maxHeight = '0px';
+                        panel.style.opacity = '0';
+                    } else {
+                        // Expand
+                        item.classList.add('active');
+                        panel.style.maxHeight = panel.scrollHeight + 'px';
+                        panel.style.opacity = '1';
+                        
+                        const handleTransitionEnd = (e) => {
+                            if (e.propertyName === 'max-height' && item.classList.contains('active')) {
+                                panel.style.maxHeight = 'none';
+                            }
+                            panel.removeEventListener('transitionend', handleTransitionEnd);
+                        };
+                        panel.addEventListener('transitionend', handleTransitionEnd);
+                    }
+                });
+            }
+            
+            // Nested sub-disclosure toggles
+            const subItems = item.querySelectorAll('.sub-disclosure-item');
+            subItems.forEach(subItem => {
+                const subHeader = subItem.querySelector('.sub-disclosure-header');
+                const subPanel = subItem.querySelector('.sub-disclosure-panel');
+                
+                if (subHeader && subPanel) {
+                    // Set initial state for items with active class on load
+                    if (subItem.classList.contains('active')) {
+                        subPanel.style.maxHeight = subPanel.scrollHeight + 'px';
+                        subPanel.style.opacity = '1';
+                    }
+                    
+                    subHeader.addEventListener('click', (e) => {
+                        e.stopPropagation(); // Prevent parent accordion click events
+                        
+                        const isSubOpen = subItem.classList.contains('active');
+                        const parentPanel = item.querySelector('.disclosure-panel');
+                        
+                        if (isSubOpen) {
+                            // Collapse sub item
+                            subItem.classList.remove('active');
+                            
+                            if (parentPanel && parentPanel.style.maxHeight === 'none') {
+                                parentPanel.style.maxHeight = parentPanel.scrollHeight + 'px';
+                                parentPanel.offsetHeight; // Force reflow
+                            }
+                            
+                            subPanel.style.maxHeight = '0px';
+                            subPanel.style.opacity = '0';
+                            
+                            if (parentPanel) {
+                                const newParentHeight = parentPanel.scrollHeight - subPanel.scrollHeight;
+                                parentPanel.style.maxHeight = Math.max(0, newParentHeight) + 'px';
+                                
+                                const restoreParentNone = (evt) => {
+                                    if (evt.propertyName === 'max-height' && item.classList.contains('active')) {
+                                        parentPanel.style.maxHeight = 'none';
+                                    }
+                                    parentPanel.removeEventListener('transitionend', restoreParentNone);
+                                };
+                                parentPanel.addEventListener('transitionend', restoreParentNone);
+                            }
+                        } else {
+                            // Expand sub item
+                            subItem.classList.add('active');
+                            
+                            if (parentPanel && parentPanel.style.maxHeight === 'none') {
+                                parentPanel.style.maxHeight = parentPanel.scrollHeight + 'px';
+                                parentPanel.offsetHeight; // Force reflow
+                            }
+                            
+                            subPanel.style.maxHeight = subPanel.scrollHeight + 'px';
+                            subPanel.style.opacity = '1';
+                            
+                            if (parentPanel) {
+                                const newParentHeight = parentPanel.scrollHeight + subPanel.scrollHeight;
+                                parentPanel.style.maxHeight = newParentHeight + 'px';
+                                
+                                const restoreParentNone = (evt) => {
+                                    if (evt.propertyName === 'max-height' && item.classList.contains('active')) {
+                                        parentPanel.style.maxHeight = 'none';
+                                    }
+                                    parentPanel.removeEventListener('transitionend', restoreParentNone);
+                                };
+                                parentPanel.addEventListener('transitionend', restoreParentNone);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    }
+    
+    // Scroll reveal observer
+    if (disclosuresSection) {
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: "0px"
+        };
+        
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        
+        revealObserver.observe(disclosuresSection);
     }
 }
 
