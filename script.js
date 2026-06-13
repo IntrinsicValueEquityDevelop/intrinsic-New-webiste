@@ -531,7 +531,7 @@ function init3DSpiral() {
         
         // Continuous Animation Loop
         function animateSpiral() {
-            // Mobile flat carousel scroll translation
+            // Mobile flat carousel scroll translation (horizontal scroll-driven)
             if (window.innerWidth <= 768 && carousel) {
                 const scrollY = window.scrollY;
                 const windowHeight = cachedWindowHeight;
@@ -540,16 +540,17 @@ function init3DSpiral() {
                 const spinProgress = (scrollY - philSpinStart) / (philSpinEnd - philSpinStart);
                 const clampedProgress = Math.max(0, Math.min(1, spinProgress));
                 
-                const carouselHeight = carousel.scrollHeight || 1800;
-                const maxScroll = Math.max(0, carouselHeight - windowHeight + 180);
-                const targetY = -clampedProgress * maxScroll;
+                const carouselWidth = carousel.scrollWidth || 2500;
+                // Keep the last card visible inside viewport (add 40px for margin/padding)
+                const maxScroll = Math.max(0, carouselWidth - window.innerWidth + 40);
+                const targetX = -clampedProgress * maxScroll;
                 
-                if (typeof carousel.currentY === 'undefined') carousel.currentY = 0;
-                carousel.currentY += (targetY - carousel.currentY) * 0.08;
-                carousel.style.transform = `translateY(${carousel.currentY.toFixed(1)}px)`;
+                if (typeof carousel.currentX === 'undefined') carousel.currentX = 0;
+                carousel.currentX += (targetX - carousel.currentX) * 0.08;
+                carousel.style.transform = `translateX(${carousel.currentX.toFixed(1)}px)`;
             } else if (carousel) {
                 carousel.style.transform = '';
-                carousel.currentY = 0;
+                carousel.currentX = 0;
             }
 
             // Idle rotation (slowly clockwise, moving cards upward)

@@ -1862,20 +1862,19 @@ html {
     .spiral-scene {
         perspective: none !important;
         perspective-origin: 50% 50% !important;
-        overflow: visible !important;
-        padding: 140px 16px 60px 16px;
+        overflow: hidden !important;
+        padding: 140px 20px 60px 20px;
         box-sizing: border-box;
         display: block !important;
     }
     
     .spiral-carousel {
         display: flex !important;
-        flex-direction: column !important;
-        gap: 16px !important;
-        width: 100% !important;
-        max-width: 440px !important;
+        flex-direction: row !important;
+        gap: 20px !important;
+        width: max-content !important;
         height: auto !important;
-        margin: 0 auto !important;
+        margin: 0 !important;
         transform-style: flat !important;
     }
     
@@ -1884,9 +1883,10 @@ html {
         left: auto !important;
         top: auto !important;
         margin: 0 !important;
-        width: 100% !important;
+        width: 300px !important;
+        flex-shrink: 0 !important;
         height: auto !important;
-        min-height: 160px !important;
+        min-height: 180px !important;
         transform: none !important;
         opacity: 1 !important;
         filter: none !important;
