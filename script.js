@@ -43,15 +43,25 @@ document.addEventListener('DOMContentLoaded', () => {
             header.classList.remove('scrolled');
         }
 
-        // Smart Header Reveal Logic
-        if (currentScrollY <= 80) {
-            // Always show header at the very top of the page
-            header.classList.remove('header-hidden');
-        } else if (currentScrollY > lastScrollY) {
-            // Scrolling down -> Hide header
-            header.classList.add('header-hidden');
+        // Smart Header Reveal Logic - Home page only
+        const isHomePage = window.location.pathname.endsWith('index.html') || 
+                           window.location.pathname === '/' || 
+                           window.location.pathname === '' ||
+                           window.location.pathname.endsWith('/');
+        
+        if (isHomePage) {
+            if (currentScrollY <= 80) {
+                // Always show header at the very top of the page
+                header.classList.remove('header-hidden');
+            } else if (currentScrollY > lastScrollY) {
+                // Scrolling down -> Hide header
+                header.classList.add('header-hidden');
+            } else {
+                // Scrolling up -> Reveal header
+                header.classList.remove('header-hidden');
+            }
         } else {
-            // Scrolling up -> Reveal header
+            // Always ensure header is visible on other pages
             header.classList.remove('header-hidden');
         }
         
