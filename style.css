@@ -263,10 +263,34 @@ button {
     transition: var(--transition-normal);
 }
 
-.main-header.header-hidden {
-    transform: translateY(-100%);
+.main-header.header-hidden,
+.main-header.scrolled.header-hidden {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    pointer-events: none;
+}
+
+.main-header.header-hidden .logo {
+    pointer-events: auto;
+    opacity: 1;
+    transform: none;
+}
+
+.main-header.header-hidden nav,
+.main-header.header-hidden .nav-actions,
+.main-header.header-hidden .menu-trigger {
+    transform: translateY(-50px);
     opacity: 0;
     pointer-events: none;
+}
+
+.main-header nav,
+.main-header .nav-actions,
+.main-header .menu-trigger {
+    transition: transform var(--transition-normal), opacity var(--transition-normal);
 }
 
 .main-header.scrolled {
