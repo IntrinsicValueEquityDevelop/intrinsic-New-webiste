@@ -115,6 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Truncate long philosophy text and bind to modals
+    initPhilosophyModals();
+
     // Initialize 3D Philosophy Spiral Carousel
     init3DSpiral();
 
@@ -141,6 +144,40 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+
+// ==========================================================================
+// PHILOSOPHY TEXT TRUNCATION & MODAL BINDING
+// ==========================================================================
+function initPhilosophyModals() {
+    const spiralCards = document.querySelectorAll('.spiral-card');
+    spiralCards.forEach(card => {
+        const p = card.querySelector('p');
+        const link = card.querySelector('a');
+        if (!p || !link) return;
+        
+        const fullText = p.innerHTML; // get original HTML content
+        const textContent = p.textContent.trim();
+        
+        // Find the target modal
+        const modalId = link.getAttribute('href');
+        if (modalId && modalId.startsWith('#')) {
+            const targetModal = document.querySelector(modalId);
+            if (targetModal) {
+                const modalParagraph = targetModal.querySelector('p');
+                if (modalParagraph) {
+                    // Populate modal with full text from the card
+                    modalParagraph.innerHTML = fullText;
+                }
+            }
+        }
+        
+        // Truncate card text to a clean preview (e.g. 110 characters)
+        const maxLength = 110;
+        if (textContent.length > maxLength) {
+            p.textContent = textContent.substring(0, maxLength).trim() + '...';
+        }
+    });
+}
 
 // ==========================================================================
 // 3D SPIRAL PHILOSOPHY CAROUSEL

@@ -3699,11 +3699,15 @@ html {
    ========================================================================== */
 .stacked-testimonials-section {
     position: relative;
-    height: auto;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: var(--bg-primary);
-    padding: 100px 0;
+    padding: 120px 0;
     width: 100%;
     overflow: visible;
+    box-sizing: border-box;
 }
 
 .stacked-testimonials-sticky {
@@ -3714,7 +3718,7 @@ html {
     justify-content: center;
     background-color: var(--bg-primary);
     width: 100%;
-    gap: 30px;
+    gap: 35px;
 }
 
 /* Carousel Controls & Pagination Dots */
