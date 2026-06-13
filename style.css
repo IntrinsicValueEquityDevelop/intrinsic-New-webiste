@@ -566,12 +566,14 @@ html {
         padding: 6rem 2.5rem 3rem 2.5rem;
         gap: 2rem;
         z-index: 1000;
-        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        visibility: hidden;
+        transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.4s;
         box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
     }
     
     .nav-menu.open {
         right: 0;
+        visibility: visible;
         border-color: var(--accent-glow-dim);
     }
     
@@ -3019,13 +3021,17 @@ html {
 }
 
 /* Responsive styles for Case Studies */
+/* Responsive styles for Case Studies */
 @media (max-width: 768px) {
     .cases-buttons-container {
-        flex-direction: column;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
         align-items: center;
-        gap: 16px;
+        width: 100%;
+        height: 320px; /* Consistent height for mobile horizontal accordion */
         padding: 10px 0;
-        height: auto; /* reset desktop height */
     }
     
     .cases-buttons-container.has-expanded {
@@ -3034,28 +3040,26 @@ html {
     
     .company-card-wrapper {
         display: flex;
-        flex-direction: column; /* stack button and reports vertically */
-        width: 100%;
-        max-width: 100%;
-        height: auto; /* reset desktop height */
-        flex: none !important; /* disable desktop flex columns */
-        min-width: 0;
+        flex-direction: row;
+        height: 100%;
+        flex: 1;
+        min-width: 50px;
         border-radius: 16px;
         border: 1px solid rgba(255, 140, 0, 0.18);
         background: rgba(26, 18, 10, 0.45);
-        
-        /* Simpler slide transition for mobile to avoid side overflow */
         transform: translate3d(0, 30px, 0) !important;
         transition-delay: 0s !important;
     }
     
     .cases-buttons-container.has-expanded .company-card-wrapper:not(.expanded) {
-        flex: none !important;
-        background: rgba(26, 18, 10, 0.45);
-        border-color: rgba(255, 140, 0, 0.18);
+        flex: 0.6 !important;
+        min-width: 45px;
+        background: rgba(10, 8, 6, 0.2);
+        border-color: rgba(255, 140, 0, 0.08);
     }
     
     .company-card-wrapper.expanded {
+        flex: 3.5 !important;
         border-color: var(--accent);
         background: rgba(24, 18, 12, 0.85);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
@@ -3068,86 +3072,105 @@ html {
     }
     
     .btn-company-trigger {
-        writing-mode: horizontal-tb; /* reset desktop rotated text */
-        transform: none; /* reset desktop rotation */
-        white-space: normal;
+        display: flex;
         flex-direction: row;
-        justify-content: space-between;
         align-items: center;
+        justify-content: center;
+        gap: 12px;
         width: 100%;
-        height: 70px;
-        padding: 0 20px;
-        text-align: left;
+        height: 100%;
+        background: transparent;
+        border: none;
+        color: rgba(255, 255, 255, 0.8);
+        cursor: pointer;
+        box-sizing: border-box;
+        text-align: center;
+        user-select: none;
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        white-space: nowrap;
     }
     
     .btn-company-trigger:hover {
-        transform: none; /* disable desktop hover translate */
+        transform: rotate(180deg);
     }
     
     .company-card-wrapper.expanded .btn-company-trigger {
-        width: 100% !important;
-        height: 70px !important;
-        border-right: none;
-        background: rgba(18, 12, 7, 0.85);
-        border-color: transparent;
-        box-shadow: 0 0 20px rgba(255, 140, 0, 0.3), 0 0 8px rgba(255, 140, 0, 0.15);
+        width: 45px !important;
+        height: 100% !important;
+        flex-shrink: 0;
+        background: rgba(255, 140, 0, 0.05);
+        border-right: 1px solid rgba(255, 140, 0, 0.2);
+        border-bottom: none;
+        color: #ffffff;
+        box-shadow: none;
     }
     
     .company-btn-num {
+        font-size: 11px;
         margin-bottom: 0;
-        order: 2; /* number on right */
     }
     
     .company-btn-title {
-        order: 1;
-        font-size: 15px;
+        font-size: 13px;
     }
     
-    /* Mobile fallback: Stacks dropdown vertically and makes it inline/static flow */
     .company-reports-dropdown {
-        position: static;
-        transform: none;
-        width: 100%;
-        height: auto; /* reset desktop height */
+        position: relative;
+        top: auto;
+        left: auto;
+        transform: translateX(10px);
+        width: auto;
+        height: 100%;
+        flex-grow: 1;
         display: flex;
         flex-direction: column;
-        gap: 12px;
-        z-index: auto;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        z-index: 10;
         opacity: 0;
-        visibility: visible;
-        max-height: 0;
+        visibility: hidden;
         pointer-events: none;
-        padding: 0; /* reset desktop padding */
-        transition: max-height 0.4s ease, opacity 0.3s ease;
+        box-sizing: border-box;
+        padding: 8px;
+        transition: opacity 0.4s ease,
+                    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                    visibility 0.4s;
     }
     
     .company-card-wrapper.expanded .company-reports-dropdown {
-        max-height: 500px;
         opacity: 1;
+        visibility: visible;
         pointer-events: auto;
-        transform: none;
-        padding: 16px; /* add internal padding when expanded */
+        transform: translateX(0);
+        max-height: none;
+        padding: 8px;
     }
     
     .btn-report-item {
+        display: flex;
         flex-direction: row;
+        align-items: center;
         justify-content: flex-start;
-        gap: 16px;
+        gap: 8px;
         width: 100% !important;
-        height: auto !important;
-        padding: 14px 20px;
-        border-radius: 10px;
+        max-width: 145px;
+        height: 42px !important;
+        padding: 8px 12px;
+        border-radius: 8px;
         box-shadow: none;
-        background: rgba(26, 18, 10, 0.6);
+        background: rgba(26, 18, 10, 0.85);
+        border: 1px solid rgba(255, 140, 0, 0.2);
     }
     
     .btn-report-item i {
         margin-bottom: 0;
-        font-size: 20px;
+        font-size: 16px;
     }
     
     .btn-report-item span {
-        font-size: 13px;
+        font-size: 11px;
     }
     
     .btn-report-item:hover {
