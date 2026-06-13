@@ -1859,28 +1859,58 @@ html {
 }
 
 @media screen and (max-width: 768px) {
-    .spiral-card {
-        width: 220px;
-        height: 150px;
-        margin-left: -110px;
-        margin-top: -75px;
-        padding: 15px;
+    .spiral-scene {
+        perspective: none !important;
+        perspective-origin: 50% 50% !important;
+        overflow: visible !important;
+        padding: 140px 16px 60px 16px;
+        box-sizing: border-box;
+        display: block !important;
     }
+    
+    .spiral-carousel {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+        width: 100% !important;
+        max-width: 440px !important;
+        height: auto !important;
+        margin: 0 auto !important;
+        transform-style: flat !important;
+    }
+    
+    .spiral-card {
+        position: relative !important;
+        left: auto !important;
+        top: auto !important;
+        margin: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        min-height: 160px !important;
+        transform: none !important;
+        opacity: 1 !important;
+        filter: none !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+        padding: 22px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+    }
+    
     .spiral-card h5 {
-        font-size: 13.5px;
-        margin-bottom: 4px !important;
+        font-size: 15px;
+        margin-bottom: 6px !important;
     }
     .spiral-card p {
-        font-size: 11px;
-        line-height: 1.4;
+        font-size: 13px;
+        line-height: 1.5;
     }
     .spiral-card-icon {
-        font-size: 18px;
-        margin-bottom: 4px;
+        font-size: 20px;
+        margin-bottom: 6px;
     }
     .spiral-card-readmore {
-        font-size: 10px;
-        margin-top: 6px;
+        font-size: 11px;
+        margin-top: 10px;
     }
     .spiral-philosophy-title h2 {
         font-size: 28px;
@@ -2353,201 +2383,6 @@ html {
     width: 100%;
     padding: 15px 10px 25px 10px;
     scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
-}
-
-.featured-cards-row::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
-}
-
-/* Logo Card styling */
-.featured-logo-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-    cursor: pointer;
-    flex: 0 0 auto;
-    min-width: 110px;
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.logo-icon-wrapper {
-    width: 104px;
-    height: 104px;
-    border-radius: 24px;
-    border: 1.5px solid rgba(255, 255, 255, 0.05);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05);
-    overflow: hidden;
-    position: relative;
-}
-
-.logo-card-label {
-    font-size: 11.5px;
-    font-weight: 600;
-    color: var(--text-muted);
-    transition: color 0.4s ease;
-    text-align: center;
-    max-width: 95px;
-    line-height: 1.3;
-}
-
-/* Custom logo styling */
-.svg-logo {
-    width: 100%;
-    height: 100%;
-    display: block;
-    color: #e2e2e6;
-}
-
-.logo-icon-img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    background-color: #ffffff;
-    padding: 12px;
-    box-sizing: border-box;
-    transition: transform 0.3s ease;
-}
-
-/* Hover & Active Card styles */
-.featured-logo-card:hover,
-.featured-logo-card.active {
-    transform: translateY(-5px);
-}
-
-.featured-logo-card:hover .logo-icon-wrapper,
-.featured-logo-card.active .logo-icon-wrapper {
-    border-color: rgba(255, 140, 0, 0.4);
-    box-shadow: 
-        inset 0 1px 1px rgba(255, 255, 255, 0.1),
-        0 12px 30px rgba(var(--brand-glow-rgb, 255, 140, 0), 0.3);
-}
-
-.featured-logo-card:hover .logo-card-label,
-.featured-logo-card.active .logo-card-label {
-    color: #ffffff;
-}
-
-/* Custom Brand Glow RGB values */
-.brand-bs { --brand-glow-rgb: 255, 255, 255; }
-.brand-josh { --brand-glow-rgb: 255, 140, 0; }
-.brand-et { --brand-glow-rgb: 216, 35, 42; }
-.brand-iitm { --brand-glow-rgb: 197, 160, 89; }
-.brand-bt { --brand-glow-rgb: 237, 28, 36; }
-.brand-upsurge { --brand-glow-rgb: 0, 210, 196; }
-.brand-smallcase { --brand-glow-rgb: 27, 131, 255; }
-.brand-stocktwits { --brand-glow-rgb: 38, 166, 154; }
-.brand-msn { --brand-glow-rgb: 0, 164, 239; }
-.brand-investing { --brand-glow-rgb: 255, 140, 0; }
-
-/* Pagination indicators */
-.featured-pagination-track {
-    position: relative;
-    width: 120px;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 2px;
-    margin-top: 10px;
-}
-
-.featured-pagination-dot {
-    position: absolute;
-    top: -1px;
-    left: 0;
-    width: 15px;
-    height: 5px;
-    background: #ffffff;
-    border-radius: 3px;
-    transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1), width 0.3s ease;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
-}
-
-/* ==========================================================================
-   CASE STUDIES SECTION STYLES & LAYOUT (HORIZONTAL ACCORDION)
-   ========================================================================== */
-.iv-cases-section {
-    position: absolute;
-    inset: 0;
-    height: 100%;
-    width: 100%;
-    z-index: 4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    background: transparent;
-    overflow: hidden;
-    perspective: 1200px;
-    will-change: transform, opacity;
-}
-
-.iv-cases-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    max-width: 1200px;
-    padding: 0 40px;
-    box-sizing: border-box;
-}
-
-/* 3D Entrance Transitions */
-.cases-title-block,
-.cases-horizontal-accordion {
-    opacity: 0;
-    transform: translate3d(0, 80px, -100px) rotateX(12deg);
-    filter: blur(4px);
-    transition: opacity 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), 
-                transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1), 
-                filter 1.2s ease;
-}
-
-.iv-cases-section.entered .cases-horizontal-accordion {
-    transition-delay: 0.15s;
-}
-
-.iv-cases-section.entered .cases-title-block,
-.iv-cases-section.entered .cases-horizontal-accordion {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) rotateX(0deg);
-    filter: blur(0);
-}
-
-.cases-title-block {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.cases-pre-title {
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    display: inline-block;
-}
-
-.cases-main-title {
-    font-size: 40px;
-    font-weight: 800;
-    color: #ffffff;
-    line-height: 1.25;
-    margin: 0;
-    font-family: var(--font-heading);
-}
-
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none; /* Firefox */
 }
@@ -3821,6 +3656,14 @@ html {
     opacity: 0.95;
 }
 
+
+.testimonials-carousel-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .testimonials-stack {
     position: relative;
     width: 820px;

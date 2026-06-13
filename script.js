@@ -531,6 +531,27 @@ function init3DSpiral() {
         
         // Continuous Animation Loop
         function animateSpiral() {
+            // Mobile flat carousel scroll translation
+            if (window.innerWidth <= 768 && carousel) {
+                const scrollY = window.scrollY;
+                const windowHeight = cachedWindowHeight;
+                const philSpinStart = 1.0 * windowHeight;
+                const philSpinEnd = 3.2 * windowHeight;
+                const spinProgress = (scrollY - philSpinStart) / (philSpinEnd - philSpinStart);
+                const clampedProgress = Math.max(0, Math.min(1, spinProgress));
+                
+                const carouselHeight = carousel.scrollHeight || 1800;
+                const maxScroll = Math.max(0, carouselHeight - windowHeight + 180);
+                const targetY = -clampedProgress * maxScroll;
+                
+                if (typeof carousel.currentY === 'undefined') carousel.currentY = 0;
+                carousel.currentY += (targetY - carousel.currentY) * 0.08;
+                carousel.style.transform = `translateY(${carousel.currentY.toFixed(1)}px)`;
+            } else if (carousel) {
+                carousel.style.transform = '';
+                carousel.currentY = 0;
+            }
+
             // Idle rotation (slowly clockwise, moving cards upward)
             idleOffsetAngle += 0.05; 
             
