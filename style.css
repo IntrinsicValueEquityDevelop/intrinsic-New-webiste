@@ -2754,7 +2754,7 @@ html {
     gap: 16px;
     align-items: center;
     width: 100%;
-    max-width: 720px;
+    max-width: 600px;
     height: 340px; /* Consistent height for horizontal accordion on desktop */
     margin: 0 auto;
     box-sizing: border-box;
@@ -2791,7 +2791,7 @@ html {
 
 /* Inactive wrappers shrink slightly when another is expanded */
 .cases-buttons-container.has-expanded .company-card-wrapper:not(.expanded) {
-    flex: 0.7;
+    flex: 0.75;
     background: rgba(10, 8, 6, 0.2);
     border-color: rgba(255, 140, 0, 0.08);
 }
@@ -2803,7 +2803,7 @@ html {
 
 /* Expanded wrapper expands horizontally */
 .company-card-wrapper.expanded {
-    flex: 2.4;
+    flex: 2.0;
     border-color: var(--accent);
     background: rgba(24, 18, 12, 0.85);
     box-shadow: 0 15px 45px rgba(0, 0, 0, 0.6), 0 0 25px var(--accent-glow-dim);
@@ -2939,16 +2939,16 @@ html {
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    gap: 12px;
-    width: 190px;
-    height: 52px;
+    gap: 10px;
+    width: 160px;
+    height: 46px;
     background: rgba(26, 18, 10, 0.85);
     border: 1px solid rgba(255, 140, 0, 0.2);
-    border-radius: 12px;
+    border-radius: 10px;
     color: #ffffff;
     text-decoration: none;
     box-sizing: border-box;
-    padding: 10px 16px;
+    padding: 8px 12px;
     text-align: left;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
     transition: background-color 0.3s ease,
@@ -2959,14 +2959,14 @@ html {
 }
 
 .btn-report-item i {
-    font-size: 20px;
+    font-size: 18px;
     color: var(--accent);
     margin-bottom: 0;
     transition: transform 0.3s ease;
 }
 
 .btn-report-item span {
-    font-size: 11px;
+    font-size: 10.5px;
     font-weight: 700;
     line-height: 1.2;
 }
