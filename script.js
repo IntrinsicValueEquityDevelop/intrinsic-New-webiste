@@ -332,35 +332,64 @@ function init3DSpiral() {
         const scrollIndicator = document.querySelector('.scroll-progress-indicator');
         const progressCircleFg = document.querySelector('.progress-circle-fg');
 
+        let scrollDirection = 'down';
+        let lastScrollY = window.scrollY;
+
+        const getOffsets = () => {
+            const windowHeight = cachedWindowHeight;
+            if (window.hasReachedBottom) {
+                // Linear offsets for scroll-up bypass mode
+                return [
+                    0,
+                    2.5 * windowHeight,
+                    5.0 * windowHeight,
+                    7.5 * windowHeight,
+                    10.0 * windowHeight,
+                    11.0 * windowHeight,
+                    14.8 * windowHeight
+                ];
+            } else {
+                // Sticky-locked offsets for scroll-down mode
+                return [
+                    0,
+                    1.0 * windowHeight,
+                    3.2 * windowHeight,
+                    4.8 * windowHeight,
+                    6.8 * windowHeight,
+                    11.0 * windowHeight,
+                    14.8 * windowHeight
+                ];
+            }
+        };
+
         const updateScrollIndicator = () => {
             if (!scrollIndicator || !progressCircleFg) return;
 
             const scrollY = window.scrollY;
             const windowHeight = cachedWindowHeight;
 
-            // Hide indicator when reaching testimonials/bottom
-            if (scrollY >= 10.0 * windowHeight || window.hasReachedBottom) {
+            // Update scroll direction
+            if (scrollY > lastScrollY + 4) {
+                scrollDirection = 'down';
+            } else if (scrollY < lastScrollY - 4) {
+                scrollDirection = 'up';
+            }
+            lastScrollY = scrollY;
+
+            // Hide indicator when reaching FAQ/Footer bottom (at/above 14.8vh)
+            if (scrollY >= 14.8 * windowHeight) {
                 scrollIndicator.classList.remove('visible');
                 return;
             }
 
+            const offsets = getOffsets();
             let progress = 0;
 
-            if (scrollY < 1.0 * windowHeight) {
-                // Hero
-                progress = scrollY / (1.0 * windowHeight);
-            } else if (scrollY < 3.2 * windowHeight) {
-                // Philosophy
-                progress = (scrollY - 1.0 * windowHeight) / (2.2 * windowHeight);
-            } else if (scrollY < 4.8 * windowHeight) {
-                // Featured
-                progress = (scrollY - 3.2 * windowHeight) / (1.6 * windowHeight);
-            } else if (scrollY < 6.8 * windowHeight) {
-                // Cases
-                progress = (scrollY - 4.8 * windowHeight) / (2.0 * windowHeight);
-            } else if (scrollY < 10.0 * windowHeight) {
-                // Pricing
-                progress = (scrollY - 6.8 * windowHeight) / (3.2 * windowHeight);
+            for (let i = 0; i < offsets.length - 1; i++) {
+                if (scrollY >= offsets[i] && scrollY < offsets[i+1]) {
+                    progress = (scrollY - offsets[i]) / (offsets[i+1] - offsets[i]);
+                    break;
+                }
             }
 
             progress = Math.max(0, Math.min(1, progress));
@@ -370,8 +399,57 @@ function init3DSpiral() {
             const offset = circumference - progress * circumference;
             progressCircleFg.style.strokeDashoffset = offset.toFixed(2);
 
+            // Update arrow rotation based on direction
+            const arrow = scrollIndicator.querySelector('.scroll-indicator-arrow');
+            if (arrow) {
+                arrow.style.transform = scrollDirection === 'up' ? 'rotate(180deg)' : 'rotate(0deg)';
+            }
+
             scrollIndicator.classList.add('visible');
         };
+
+        // Add click listener to progress button to scroll directly to the next/prev section
+        if (scrollIndicator) {
+            scrollIndicator.addEventListener('click', () => {
+                const scrollY = window.scrollY;
+                const windowHeight = cachedWindowHeight;
+                const offsets = getOffsets();
+                
+                let activeIdx = 0;
+                let progress = 0;
+                
+                for (let i = 0; i < offsets.length - 1; i++) {
+                    if (scrollY >= offsets[i] && scrollY < offsets[i+1]) {
+                        activeIdx = i;
+                        progress = (scrollY - offsets[i]) / (offsets[i+1] - offsets[i]);
+                        break;
+                    }
+                }
+                
+                if (scrollY >= offsets[offsets.length - 1]) {
+                    activeIdx = offsets.length - 1;
+                }
+                
+                let targetScroll = scrollY;
+                
+                if (scrollDirection === 'down') {
+                    if (activeIdx < offsets.length - 1) {
+                        targetScroll = offsets[activeIdx + 1];
+                    }
+                } else {
+                    if (progress > 0.08) {
+                        targetScroll = offsets[activeIdx];
+                    } else if (activeIdx > 0) {
+                        targetScroll = offsets[activeIdx - 1];
+                    }
+                }
+                
+                window.scrollTo({
+                    top: targetScroll,
+                    behavior: 'smooth'
+                });
+            });
+        }
 
         const handleScrollTransitions = () => {
             const scrollY = window.scrollY;
