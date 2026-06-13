@@ -3699,25 +3699,100 @@ html {
    ========================================================================== */
 .stacked-testimonials-section {
     position: relative;
-    height: 480vh; /* Scroll track length for 9 cards */
+    height: auto;
     background-color: var(--bg-primary);
-    margin-top: 100px;
-    margin-bottom: 100px;
+    padding: 100px 0;
     width: 100%;
     overflow: visible;
 }
 
 .stacked-testimonials-sticky {
-    position: -webkit-sticky;
-    position: sticky;
-    top: var(--header-height); /* Align below the sticky header */
-    height: calc(100vh - var(--header-height));
-    overflow: hidden;
+    position: relative;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     background-color: var(--bg-primary);
     width: 100%;
+    gap: 30px;
+}
+
+/* Carousel Controls & Pagination Dots */
+.testimonials-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    z-index: 10;
+    position: relative;
+    margin-top: 25px;
+}
+
+.testimonials-nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(18, 18, 18, 0.6);
+    border: 1px solid rgba(255, 140, 0, 0.25);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+}
+
+.testimonials-nav-btn:hover {
+    background: rgba(255, 140, 0, 0.12);
+    border-color: var(--accent);
+    color: #ffffff;
+    box-shadow: 0 0 15px rgba(255, 140, 0, 0.35), 0 0 5px rgba(255, 140, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.testimonials-nav-btn:active {
+    transform: translateY(0);
+}
+
+.nav-arrow-icon {
+    width: 22px;
+    height: 22px;
+    stroke: var(--accent);
+    transition: stroke 0.35s ease;
+}
+
+.testimonials-nav-btn:hover .nav-arrow-icon {
+    stroke: #ffffff;
+}
+
+.testimonials-pagination-dots {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.testimonials-pagination-dots .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.18);
+    cursor: pointer;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+}
+
+.testimonials-pagination-dots .dot:hover {
+    background: rgba(255, 140, 0, 0.5);
+}
+
+.testimonials-pagination-dots .dot.active {
+    width: 24px;
+    border-radius: 4px;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent-glow);
 }
 
 .testimonials-bg-text {

@@ -1050,94 +1050,138 @@ function animatePriceCounter() {
 }
 
 // ==========================================================================
-// STACKED TESTIMONIALS CARD-THROW ANIMATION
+// STACKED TESTIMONIALS 3D CAROUSEL ANIMATION (Auto-play + Manual Arrow Controls)
 // ==========================================================================
 function initTestimonials() {
     const stackedSection = document.querySelector('.stacked-testimonials-section');
     const stackedCards = document.querySelectorAll('.testimonial-card');
+    const prevBtn = document.querySelector('.testimonials-controls .prev-btn');
+    const nextBtn = document.querySelector('.testimonials-controls .next-btn');
+    const dotsContainer = document.querySelector('.testimonials-pagination-dots');
     
     if (stackedSection && stackedCards.length > 0) {
         const totalCards = stackedCards.length;
+        let currentIndex = 0;
+        let autoplayTimer = null;
         
-        // Initialize cards stack layout
-        const setupCards = () => {
-            stackedCards.forEach((card, idx) => {
-                // Card 0 is the top card and should be on top
-                card.style.zIndex = totalCards - idx;
-                
-                // Messy deck layout rotation (staggered slightly)
-                const rot = (idx % 2 === 0 ? 1 : -1) * (idx * 0.8 + 0.5);
-                // Stack depth offset using translateY and translateZ
-                const transY = idx * 4;
-                const transZ = -idx * 8;
-                card.style.transform = `translate3d(0, ${transY}px, ${transZ}px) rotate(${rot}deg)`;
-                card.style.opacity = '1';
-                card.style.visibility = 'visible';
-            });
-        };
+        // 1. Build pagination dots dynamically
+        if (dotsContainer) {
+            dotsContainer.innerHTML = '';
+            for (let i = 0; i < totalCards; i++) {
+                const dot = document.createElement('button');
+                dot.className = `dot ${i === 0 ? 'active' : ''}`;
+                dot.setAttribute('aria-label', `Go to testimonial ${i + 1}`);
+                dot.addEventListener('click', () => {
+                    const dir = i > currentIndex ? 'next' : 'prev';
+                    showCard(i, dir);
+                    resetAutoplay();
+                });
+                dotsContainer.appendChild(dot);
+            }
+        }
         
-        setupCards();
-
-        const handleScroll = () => {
-            const rect = stackedSection.getBoundingClientRect();
-            const sectionHeight = rect.height;
-            const windowHeight = cachedWindowHeight;
+        // 2. Main transition function (combines left/right swipe, z-index stack depth, and card blur effects)
+        const showCard = (index, dir = 'next') => {
+            currentIndex = index;
             
-            // Calculate scroll progress (0 when section hits the 80px stick point, 1 when track ends)
-            const scrolled = 80 - rect.top;
-            const scrollRange = sectionHeight - windowHeight;
-            
-            if (scrollRange <= 0) return;
-            
-            let progress = scrolled / scrollRange;
-            progress = Math.max(0, Math.min(1, progress));
-            
-            // We divide the progress range 0..1 into segments for throwing cards one by one
-            const segmentCount = totalCards;
+            // Update indicator dots
+            if (dotsContainer) {
+                const dots = dotsContainer.querySelectorAll('.dot');
+                dots.forEach((dot, idx) => {
+                    dot.classList.toggle('active', idx === currentIndex);
+                });
+            }
             
             stackedCards.forEach((card, idx) => {
-                const startThresh = idx / segmentCount;
-                const endThresh = (idx + 1) / segmentCount;
+                const diff = (idx - currentIndex + totalCards) % totalCards;
                 
-                if (progress <= startThresh) {
-                    // Card is resting in the stack
-                    const rot = (idx % 2 === 0 ? 1 : -1) * (idx * 0.8 + 0.5);
-                    const transY = idx * 4;
-                    const transZ = -idx * 8;
-                    card.style.transform = `translate3d(0, ${transY}px, ${transZ}px) rotate(${rot}deg)`;
+                // Clear any inline styles set by legacy scroll calculations
+                card.style.visibility = '';
+                
+                // Apply custom high-performance transforms for 3D depth stack
+                if (diff === 0) {
+                    // Active card (centered at front)
+                    card.style.transform = 'translate3d(0, 0, 0) scale(1) rotate(0deg)';
                     card.style.opacity = '1';
-                    card.style.visibility = 'visible';
-                } else if (progress > startThresh && progress < endThresh) {
-                    // Card is currently being thrown away
-                    const subProgress = (progress - startThresh) / (endThresh - startThresh);
-                    
-                    // Stagger throw directions: Card 0 up-left, Card 1 up-right, Card 2 up-left, etc.
-                    let dirX = 1;
-                    if (idx % 3 === 0) dirX = -1.2;
-                    else if (idx % 3 === 1) dirX = 1.2;
-                    else dirX = -0.3; // fly mostly up
-                    
-                    const flyX = dirX * subProgress * 1100; // Fly completely off the screen
-                    const flyY = -subProgress * 550; // fly up
-                    const flyRot = ((idx % 2 === 0 ? 1 : -1) * 12) + (subProgress * dirX * 45);
-                    
-                    card.style.transform = `translate3d(${flyX}px, ${flyY}px, 0) rotate(${flyRot}deg)`;
-                    card.style.opacity = (1 - subProgress).toString();
-                    card.style.visibility = 'visible';
-                } else {
-                    // Card is completely thrown away
+                    card.style.filter = 'none';
+                    card.style.zIndex = '10';
+                    card.style.pointerEvents = 'auto';
+                } else if (diff === 1) {
+                    // Staggered card 1 (just behind active)
+                    card.style.transform = 'translate3d(0, 15px, -30px) scale(0.95) rotate(2deg)';
+                    card.style.opacity = '0.85';
+                    card.style.filter = 'blur(1px)';
+                    card.style.zIndex = '9';
+                    card.style.pointerEvents = 'none';
+                } else if (diff === 2) {
+                    // Staggered card 2 (further behind active)
+                    card.style.transform = 'translate3d(0, 30px, -60px) scale(0.9) rotate(-2deg)';
+                    card.style.opacity = '0.5';
+                    card.style.filter = 'blur(2px)';
+                    card.style.zIndex = '8';
+                    card.style.pointerEvents = 'none';
+                } else if (diff === totalCards - 1) {
+                    // Old active card that was just swiped/thrown away
+                    const flyX = dir === 'next' ? '-130%' : '130%';
+                    const flyRot = dir === 'next' ? '-15deg' : '15deg';
+                    card.style.transform = `translate3d(${flyX}, -20px, 0) rotate(${flyRot})`;
                     card.style.opacity = '0';
-                    card.style.visibility = 'hidden';
+                    card.style.filter = 'blur(3px)';
+                    card.style.zIndex = '11';
+                    card.style.pointerEvents = 'none';
+                } else {
+                    // Completely hidden cards resting in background pool
+                    card.style.transform = 'translate3d(0, 40px, -90px) scale(0.85) rotate(0deg)';
+                    card.style.opacity = '0';
+                    card.style.filter = 'blur(4px)';
+                    card.style.zIndex = '1';
+                    card.style.pointerEvents = 'none';
                 }
             });
         };
-
-        window.addEventListener('scroll', handleScroll);
-        // Call initially in case page loaded in the middle of testimonials section
-        handleScroll();
         
-        // Recalculate if window resizes
-        window.addEventListener('resize', handleScroll);
+        // 3. Autoplay handlers
+        const startAutoplay = () => {
+            if (autoplayTimer) clearInterval(autoplayTimer);
+            autoplayTimer = setInterval(() => {
+                const nextIdx = (currentIndex + 1) % totalCards;
+                showCard(nextIdx, 'next');
+            }, 4500); // swipe every 4.5 seconds
+        };
+        
+        const resetAutoplay = () => {
+            startAutoplay();
+        };
+        
+        // 4. Register event listeners for navigation buttons
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                const prevIdx = (currentIndex - 1 + totalCards) % totalCards;
+                showCard(prevIdx, 'prev');
+                resetAutoplay();
+            });
+        }
+        
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                const nextIdx = (currentIndex + 1) % totalCards;
+                showCard(nextIdx, 'next');
+                resetAutoplay();
+            });
+        }
+        
+        // Pause auto-play when user hovers over the testimonials
+        stackedSection.addEventListener('mouseenter', () => {
+            if (autoplayTimer) clearInterval(autoplayTimer);
+        });
+        
+        stackedSection.addEventListener('mouseleave', () => {
+            startAutoplay();
+        });
+        
+        // Initial setup
+        showCard(0, 'next');
+        startAutoplay();
     }
 }
 
