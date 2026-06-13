@@ -329,6 +329,50 @@ function init3DSpiral() {
             }))
         };
 
+        const scrollIndicator = document.querySelector('.scroll-progress-indicator');
+        const progressCircleFg = document.querySelector('.progress-circle-fg');
+
+        const updateScrollIndicator = () => {
+            if (!scrollIndicator || !progressCircleFg) return;
+
+            const scrollY = window.scrollY;
+            const windowHeight = cachedWindowHeight;
+
+            // Hide indicator when reaching testimonials/bottom
+            if (scrollY >= 10.0 * windowHeight || window.hasReachedBottom) {
+                scrollIndicator.classList.remove('visible');
+                return;
+            }
+
+            let progress = 0;
+
+            if (scrollY < 1.0 * windowHeight) {
+                // Hero
+                progress = scrollY / (1.0 * windowHeight);
+            } else if (scrollY < 3.2 * windowHeight) {
+                // Philosophy
+                progress = (scrollY - 1.0 * windowHeight) / (2.2 * windowHeight);
+            } else if (scrollY < 4.8 * windowHeight) {
+                // Featured
+                progress = (scrollY - 3.2 * windowHeight) / (1.6 * windowHeight);
+            } else if (scrollY < 6.8 * windowHeight) {
+                // Cases
+                progress = (scrollY - 4.8 * windowHeight) / (2.0 * windowHeight);
+            } else if (scrollY < 10.0 * windowHeight) {
+                // Pricing
+                progress = (scrollY - 6.8 * windowHeight) / (3.2 * windowHeight);
+            }
+
+            progress = Math.max(0, Math.min(1, progress));
+
+            const radius = 16;
+            const circumference = 2 * Math.PI * radius; // ~100.53
+            const offset = circumference - progress * circumference;
+            progressCircleFg.style.strokeDashoffset = offset.toFixed(2);
+
+            scrollIndicator.classList.add('visible');
+        };
+
         const handleScrollTransitions = () => {
             const scrollY = window.scrollY;
             const windowHeight = cachedWindowHeight;
@@ -339,6 +383,8 @@ function init3DSpiral() {
             } else if (scrollY < 50) {
                 window.hasReachedBottom = false;
             }
+
+            updateScrollIndicator();
 
             if (window.hasReachedBottom) {
                 // Map sections linearly as if they were in a normal long page

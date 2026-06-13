@@ -4516,3 +4516,72 @@ html {
     }
 }
 
+/* Floating Scroll Progress Indicator inside sticky viewport */
+.scroll-progress-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    pointer-events: none;
+    background: rgba(10, 10, 10, 0.6);
+    border-radius: 50%;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1.5px solid rgba(255, 140, 0, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.scroll-progress-indicator.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.progress-circle-svg {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transform: rotate(-90deg);
+}
+
+.progress-circle-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.08);
+    stroke-width: 2.5;
+}
+
+.progress-circle-fg {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 100.5; /* 2 * PI * 16 = 100.53 */
+    stroke-dashoffset: 100.5;
+}
+
+.scroll-indicator-arrow {
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: bounceChevron 2s infinite;
+}
+
+@keyframes bounceChevron {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(3px);
+    }
+}
+
+
