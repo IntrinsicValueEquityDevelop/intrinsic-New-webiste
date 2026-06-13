@@ -262,49 +262,43 @@ function init3DSpiral() {
             const philSpinStart = 1.0 * windowHeight;
             const philSpinEnd = 3.2 * windowHeight;
             const philFadeOutStart = 3.2 * windowHeight;
-            const philFadeOutEnd = 3.7 * windowHeight;
 
             const featuredFadeInStart = 3.2 * windowHeight;
             const featuredFadeInEnd = 3.7 * windowHeight;
             const featuredFadeOutStart = 4.8 * windowHeight;
-            const featuredFadeOutEnd = 5.3 * windowHeight;
 
             const casesFadeInStart = 4.8 * windowHeight;
             const casesFadeInEnd = 5.3 * windowHeight;
             const casesFadeOutStart = 6.8 * windowHeight;
-            const casesFadeOutEnd = 7.3 * windowHeight;
 
             const pricingFadeInStart = 6.8 * windowHeight;
             const pricingFadeInEnd = 7.3 * windowHeight;
             const pricingZoomStart = 7.3 * windowHeight;
             const pricingZoomEnd = 9.3 * windowHeight;
             const pricingFadeOutStart = 9.3 * windowHeight;
-            const pricingFadeOutEnd = 9.8 * windowHeight;
 
             // 1. Hero Section Fade & Translate (outward)
             if (heroSec) {
-                if (scrollY <= heroFadeEnd) {
-                    const progress = scrollY / heroFadeEnd;
-                    sectionsState.hero.targetOpacity = 1 - progress;
-                    sectionsState.hero.targetY = -progress * 60;
-                    sectionsState.hero.targetScale = 1 - progress * 0.05;
-                    sectionsState.hero.pointerEvents = 'auto';
-                } else {
-                    sectionsState.hero.targetOpacity = 0;
-                    sectionsState.hero.targetY = -60;
-                    sectionsState.hero.targetScale = 0.95;
-                    sectionsState.hero.pointerEvents = 'none';
-                }
+                sectionsState.hero.targetOpacity = 1;
+                sectionsState.hero.targetScale = 1;
+                sectionsState.hero.targetY = -scrollY;
+                sectionsState.hero.pointerEvents = scrollY < heroFadeEnd ? 'auto' : 'none';
             }
 
             // 2. Philosophy Section (Entrance, Card Spin, and Exit)
             if (philosophySticky) {
-                if (scrollY >= philFadeInStart && scrollY <= philFadeInEnd) {
-                    // Fade In Phase
+                if (scrollY < philFadeInStart) {
+                    sectionsState.philosophy.targetOpacity = 0;
+                    sectionsState.philosophy.targetY = windowHeight;
+                    sectionsState.philosophy.targetScale = 1;
+                    sectionsState.philosophy.pointerEvents = 'none';
+                    targetScrollOffsetAngle = 0;
+                } else if (scrollY >= philFadeInStart && scrollY <= philFadeInEnd) {
+                    // Entrance Phase
                     const progress = (scrollY - philFadeInStart) / (philFadeInEnd - philFadeInStart);
                     sectionsState.philosophy.targetOpacity = progress;
-                    sectionsState.philosophy.targetY = 60 * (1 - progress);
-                    sectionsState.philosophy.targetScale = 0.95 + 0.05 * progress;
+                    sectionsState.philosophy.targetY = windowHeight * (1 - progress);
+                    sectionsState.philosophy.targetScale = 1;
                     sectionsState.philosophy.pointerEvents = progress > 0.5 ? 'auto' : 'none';
                     targetScrollOffsetAngle = 0;
                 } else if (scrollY > philFadeInEnd && scrollY < philFadeOutStart) {
@@ -317,39 +311,30 @@ function init3DSpiral() {
                     const spinProgress = (scrollY - philSpinStart) / (philSpinEnd - philSpinStart);
                     const clampedProgress = Math.max(0, Math.min(1, spinProgress));
                     targetScrollOffsetAngle = clampedProgress * 540;
-                } else if (scrollY >= philFadeOutStart && scrollY <= philFadeOutEnd) {
-                    // Fade Out Phase
-                    const progress = (scrollY - philFadeOutStart) / (philFadeOutEnd - philFadeOutStart);
-                    sectionsState.philosophy.targetOpacity = 1 - progress;
-                    sectionsState.philosophy.targetY = -progress * 60;
-                    sectionsState.philosophy.targetScale = 1 - progress * 0.05;
-                    sectionsState.philosophy.pointerEvents = (1 - progress) > 0.5 ? 'auto' : 'none';
-                    targetScrollOffsetAngle = 540;
-                } else if (scrollY > philFadeOutEnd) {
-                    // Past Exit
-                    sectionsState.philosophy.targetOpacity = 0;
-                    sectionsState.philosophy.targetY = -60;
-                    sectionsState.philosophy.targetScale = 0.95;
-                    sectionsState.philosophy.pointerEvents = 'none';
-                    targetScrollOffsetAngle = 540;
                 } else {
-                    // Before Entrance (scrollY < philFadeInStart, i.e. in Hero Section)
-                    sectionsState.philosophy.targetOpacity = 0;
-                    sectionsState.philosophy.targetY = 60;
-                    sectionsState.philosophy.targetScale = 0.95;
+                    // Exiting Philosophy Section (scrollY >= philFadeOutStart) - scroll up naturally
+                    sectionsState.philosophy.targetOpacity = 1;
+                    sectionsState.philosophy.targetY = -(scrollY - philFadeOutStart);
+                    sectionsState.philosophy.targetScale = 1;
                     sectionsState.philosophy.pointerEvents = 'none';
-                    targetScrollOffsetAngle = 0;
+                    targetScrollOffsetAngle = 540;
                 }
             }
 
             // 3. Featured Section Fade & Translate (inward & outward)
             if (featuredSec) {
-                if (scrollY >= featuredFadeInStart && scrollY <= featuredFadeInEnd) {
-                    // Fade In Phase
+                if (scrollY < featuredFadeInStart) {
+                    sectionsState.featured.targetOpacity = 0;
+                    sectionsState.featured.targetY = windowHeight;
+                    sectionsState.featured.targetScale = 1;
+                    sectionsState.featured.pointerEvents = 'none';
+                    sectionsState.featured.hasEntered = false;
+                } else if (scrollY >= featuredFadeInStart && scrollY <= featuredFadeInEnd) {
+                    // Entrance Phase
                     const progress = (scrollY - featuredFadeInStart) / (featuredFadeInEnd - featuredFadeInStart);
                     sectionsState.featured.targetOpacity = progress;
-                    sectionsState.featured.targetY = 60 * (1 - progress);
-                    sectionsState.featured.targetScale = 0.95 + 0.05 * progress;
+                    sectionsState.featured.targetY = windowHeight * (1 - progress);
+                    sectionsState.featured.targetScale = 1;
                     sectionsState.featured.pointerEvents = progress > 0.5 ? 'auto' : 'none';
                     sectionsState.featured.hasEntered = true;
                 } else if (scrollY > featuredFadeInEnd && scrollY < featuredFadeOutStart) {
@@ -359,38 +344,30 @@ function init3DSpiral() {
                     sectionsState.featured.targetScale = 1;
                     sectionsState.featured.pointerEvents = 'auto';
                     sectionsState.featured.hasEntered = true;
-                } else if (scrollY >= featuredFadeOutStart && scrollY <= featuredFadeOutEnd) {
-                    // Fade Out Phase
-                    const progress = (scrollY - featuredFadeOutStart) / (featuredFadeOutEnd - featuredFadeOutStart);
-                    sectionsState.featured.targetOpacity = 1 - progress;
-                    sectionsState.featured.targetY = -progress * 60;
-                    sectionsState.featured.targetScale = 1 - progress * 0.05;
-                    sectionsState.featured.pointerEvents = (1 - progress) > 0.5 ? 'auto' : 'none';
-                    sectionsState.featured.hasEntered = true;
-                } else if (scrollY > featuredFadeOutEnd) {
-                    // Past Exit
-                    sectionsState.featured.targetOpacity = 0;
-                    sectionsState.featured.targetY = -60;
-                    sectionsState.featured.targetScale = 0.95;
-                    sectionsState.featured.pointerEvents = 'none';
-                    sectionsState.featured.hasEntered = false;
                 } else {
-                    sectionsState.featured.targetOpacity = 0;
-                    sectionsState.featured.targetY = 60;
-                    sectionsState.featured.targetScale = 0.95;
+                    // Exiting Featured Section (scrollY >= featuredFadeOutStart) - scroll up naturally
+                    sectionsState.featured.targetOpacity = 1;
+                    sectionsState.featured.targetY = -(scrollY - featuredFadeOutStart);
+                    sectionsState.featured.targetScale = 1;
                     sectionsState.featured.pointerEvents = 'none';
-                    sectionsState.featured.hasEntered = false;
+                    sectionsState.featured.hasEntered = true;
                 }
             }
 
             // 4. Case Studies Section Fade & Translate (inward & outward)
             if (casesSec) {
-                if (scrollY >= casesFadeInStart && scrollY <= casesFadeInEnd) {
-                    // Fade In Phase
+                if (scrollY < casesFadeInStart) {
+                    sectionsState.cases.targetOpacity = 0;
+                    sectionsState.cases.targetY = windowHeight;
+                    sectionsState.cases.targetScale = 1;
+                    sectionsState.cases.pointerEvents = 'none';
+                    sectionsState.cases.hasEntered = false;
+                } else if (scrollY >= casesFadeInStart && scrollY <= casesFadeInEnd) {
+                    // Entrance Phase
                     const progress = (scrollY - casesFadeInStart) / (casesFadeInEnd - casesFadeInStart);
                     sectionsState.cases.targetOpacity = progress;
-                    sectionsState.cases.targetY = 60 * (1 - progress);
-                    sectionsState.cases.targetScale = 0.95 + 0.05 * progress;
+                    sectionsState.cases.targetY = windowHeight * (1 - progress);
+                    sectionsState.cases.targetScale = 1;
                     sectionsState.cases.pointerEvents = progress > 0.5 ? 'auto' : 'none';
                     sectionsState.cases.hasEntered = true;
                 } else if (scrollY > casesFadeInEnd && scrollY < casesFadeOutStart) {
@@ -400,39 +377,34 @@ function init3DSpiral() {
                     sectionsState.cases.targetScale = 1;
                     sectionsState.cases.pointerEvents = 'auto';
                     sectionsState.cases.hasEntered = true;
-                } else if (scrollY >= casesFadeOutStart && scrollY <= casesFadeOutEnd) {
-                    // Fade Out Phase
-                    const progress = (scrollY - casesFadeOutStart) / (casesFadeOutEnd - casesFadeOutStart);
-                    sectionsState.cases.targetOpacity = 1 - progress;
-                    sectionsState.cases.targetY = -progress * 60;
-                    sectionsState.cases.targetScale = 1 - progress * 0.05;
-                    sectionsState.cases.pointerEvents = (1 - progress) > 0.5 ? 'auto' : 'none';
-                    sectionsState.cases.hasEntered = true;
-                } else if (scrollY > casesFadeOutEnd) {
-                    // Past Exit
-                    sectionsState.cases.targetOpacity = 0;
-                    sectionsState.cases.targetY = -60;
-                    sectionsState.cases.targetScale = 0.95;
-                    sectionsState.cases.pointerEvents = 'none';
-                    sectionsState.cases.hasEntered = false;
                 } else {
-                    sectionsState.cases.targetOpacity = 0;
-                    sectionsState.cases.targetY = 60;
-                    sectionsState.cases.targetScale = 0.95;
+                    // Exiting Cases Section (scrollY >= casesFadeOutStart) - scroll up naturally
+                    sectionsState.cases.targetOpacity = 1;
+                    sectionsState.cases.targetY = -(scrollY - casesFadeOutStart);
+                    sectionsState.cases.targetScale = 1;
                     sectionsState.cases.pointerEvents = 'none';
-                    sectionsState.cases.hasEntered = false;
+                    sectionsState.cases.hasEntered = true;
                 }
             }
 
             // 5. Pricing Section Fade & Translate (inward & outward)
             const pricingSec = sectionsState.pricing.el;
             if (pricingSec) {
-                if (scrollY >= pricingFadeInStart && scrollY <= pricingFadeInEnd) {
-                    // Fade In Phase
+                if (scrollY < pricingFadeInStart) {
+                    sectionsState.pricing.targetOpacity = 0;
+                    sectionsState.pricing.targetY = windowHeight;
+                    sectionsState.pricing.targetScale = 1;
+                    sectionsState.pricing.pointerEvents = 'none';
+                    if (pricingState.counterTimeout) {
+                        clearTimeout(pricingState.counterTimeout);
+                        pricingState.counterTimeout = null;
+                    }
+                } else if (scrollY >= pricingFadeInStart && scrollY <= pricingFadeInEnd) {
+                    // Entrance Phase
                     const progress = (scrollY - pricingFadeInStart) / (pricingFadeInEnd - pricingFadeInStart);
                     sectionsState.pricing.targetOpacity = progress;
-                    sectionsState.pricing.targetY = 60 * (1 - progress);
-                    sectionsState.pricing.targetScale = 0.95 + 0.05 * progress;
+                    sectionsState.pricing.targetY = windowHeight * (1 - progress);
+                    sectionsState.pricing.targetScale = 1;
                     sectionsState.pricing.pointerEvents = progress > 0.5 ? 'auto' : 'none';
                     
                     // Reset zoom state to initial
@@ -491,13 +463,12 @@ function init3DSpiral() {
                             pricingState.counterTimeout = null;
                         }
                     }
-                } else if (scrollY >= pricingFadeOutStart && scrollY <= pricingFadeOutEnd) {
-                    // Fade Out Phase
-                    const progress = (scrollY - pricingFadeOutStart) / (pricingFadeOutEnd - pricingFadeOutStart);
-                    sectionsState.pricing.targetOpacity = 1 - progress;
-                    sectionsState.pricing.targetY = -progress * 60;
-                    sectionsState.pricing.targetScale = 1 - progress * 0.05;
-                    sectionsState.pricing.pointerEvents = (1 - progress) > 0.5 ? 'auto' : 'none';
+                } else {
+                    // Exiting Pricing Section (scrollY >= pricingFadeOutStart) - scroll up naturally
+                    sectionsState.pricing.targetOpacity = 1;
+                    sectionsState.pricing.targetY = -(scrollY - pricingFadeOutStart);
+                    sectionsState.pricing.targetScale = 1;
+                    sectionsState.pricing.pointerEvents = 'none';
 
                     // Title & Cards remain zoomed forward
                     pricingState.title.targetZ = 0;
@@ -510,26 +481,6 @@ function init3DSpiral() {
                         c.targetRotateX = 0;
                         c.targetY = 0;
                     });
-                    if (pricingState.counterTimeout) {
-                        clearTimeout(pricingState.counterTimeout);
-                        pricingState.counterTimeout = null;
-                    }
-                } else if (scrollY > pricingFadeOutEnd) {
-                    // Past Exit
-                    sectionsState.pricing.targetOpacity = 0;
-                    sectionsState.pricing.targetY = -60;
-                    sectionsState.pricing.targetScale = 0.95;
-                    sectionsState.pricing.pointerEvents = 'none';
-                    if (pricingState.counterTimeout) {
-                        clearTimeout(pricingState.counterTimeout);
-                        pricingState.counterTimeout = null;
-                    }
-                } else {
-                    // Before Entrance
-                    sectionsState.pricing.targetOpacity = 0;
-                    sectionsState.pricing.targetY = 60;
-                    sectionsState.pricing.targetScale = 0.95;
-                    sectionsState.pricing.pointerEvents = 'none';
                     if (pricingState.counterTimeout) {
                         clearTimeout(pricingState.counterTimeout);
                         pricingState.counterTimeout = null;
