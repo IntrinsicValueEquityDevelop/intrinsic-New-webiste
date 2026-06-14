@@ -2443,6 +2443,9 @@ html {
 .brand-stocktwits { --brand-glow-rgb: 38, 166, 154; }
 .brand-msn { --brand-glow-rgb: 0, 164, 239; }
 .brand-investing { --brand-glow-rgb: 255, 140, 0; }
+.brand-x { --brand-glow-rgb: 255, 255, 255; }
+.brand-youtube { --brand-glow-rgb: 255, 0, 0; }
+
 
 /* Pagination indicators */
 .featured-pagination-track {

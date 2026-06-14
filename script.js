@@ -961,6 +961,7 @@ function initFeaturedSection() {
     
     // 1. Clone cards for infinite loop marquee scroll
     const originalCardsList = Array.from(cardsRow.children);
+    const totalOriginalCards = originalCardsList.length;
     originalCardsList.forEach(card => {
         const clone = card.cloneNode(true);
         clone.classList.remove('active');
@@ -979,9 +980,9 @@ function initFeaturedSection() {
     
     // Calculate the wrap-around scroll width once layout is ready
     function initScrollMetrics() {
-        if (cards.length > 16) {
-            // offset of 17th card (index 16, start of cloned set) minus 1st card
-            halfScrollWidth = cards[16].offsetLeft - cards[0].offsetLeft;
+        if (cards.length > totalOriginalCards) {
+            // offset of start of cloned set minus 1st card
+            halfScrollWidth = cards[totalOriginalCards].offsetLeft - cards[0].offsetLeft;
         }
     }
     
@@ -1047,7 +1048,6 @@ function initFeaturedSection() {
     // 4. Position dynamic pagination indicator dot
     function updatePaginationDot(dataIndex) {
         if (!paginationDot) return;
-        const totalOriginalCards = 16; // We have 16 unique cards
         const trackWidth = 120; // matches CSS pagination track width (120px)
         const dotWidth = 15;   // matches CSS dot width (15px)
         
