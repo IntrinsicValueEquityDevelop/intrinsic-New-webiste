@@ -3900,7 +3900,7 @@ html {
 }
 
 .stacked-testimonials-section.flow-layout .testimonials-stack {
-    width: 320px !important; /* Increased width to fit ~3.5 cards on screen and reduce congestion */
+    width: 360px !important; /* Spaced out width to prevent congestion */
     height: 300px !important;
     perspective: none !important;
     transform-style: flat !important;
@@ -3908,9 +3908,9 @@ html {
 }
 
 .stacked-testimonials-section.flow-layout .testimonial-card {
-    width: 320px !important; /* Larger size to see fewer cards */
+    width: 360px !important; /* Spaced out card width */
     height: 300px !important;
-    padding: 16px !important;
+    padding: 20px !important;
     transition: opacity 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
 }
 
@@ -3994,13 +3994,13 @@ html {
     }
     
     .stacked-testimonials-section.flow-layout .testimonials-stack {
-        width: 260px !important;
+        width: 300px !important;
         height: 320px !important;
     }
     .stacked-testimonials-section.flow-layout .testimonial-card {
-        width: 260px !important;
+        width: 300px !important;
         height: 320px !important;
-        padding: 14px !important;
+        padding: 16px !important;
     }
     .stacked-testimonials-section.flow-layout .testimonial-quote {
         font-size: 0.78rem !important;
@@ -4011,13 +4011,13 @@ html {
 
 @media screen and (max-width: 480px) {
     .stacked-testimonials-section.flow-layout .testimonials-stack {
-        width: 210px !important;
+        width: 260px !important;
         height: 330px !important;
     }
     .stacked-testimonials-section.flow-layout .testimonial-card {
-        width: 210px !important;
+        width: 260px !important;
         height: 330px !important;
-        padding: 12px !important;
+        padding: 14px !important;
     }
     .stacked-testimonials-section.flow-layout .testimonial-quote {
         font-size: 0.74rem !important;

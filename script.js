@@ -1380,9 +1380,9 @@ function initTestimonials() {
         // Get card spacing based on viewport width (Card width + Gap)
         const getCardSpacing = () => {
             const windowWidth = window.innerWidth;
-            if (windowWidth <= 480) return 225; // 210px width + 15px gap
-            if (windowWidth <= 768) return 280; // 260px width + 20px gap
-            return 350; // 320px width + 30px gap
+            if (windowWidth <= 480) return 320; // 260px width + 60px gap
+            if (windowWidth <= 768) return 380; // 300px width + 80px gap
+            return 480; // 360px width + 120px gap
         };
 
         // Drag-to-scroll interactions (mouse and touch)
@@ -1505,7 +1505,7 @@ function initTestimonials() {
                     
                     if (!isTransitioning) {
                         // Display the active card centered with corners visible
-                        if (elapsed >= 3500) { // Stay for 3.5 seconds
+                        if (elapsed >= 2000) { // Stay for 2 seconds (reduced from 3.5s)
                             // Fade out corners first before starting the slide animation
                             stackedSection.classList.remove('show-corners');
                             isTransitioning = true;
