@@ -3866,7 +3866,7 @@ html {
 .stacked-testimonials-section.flow-layout .testimonials-header-block {
     display: block !important;
     position: absolute !important;
-    top: 60px !important;
+    top: 80px !important; /* Positioned relative to the sticky 100vh height */
     left: 50% !important;
     transform: translateX(-50%) !important;
     text-align: center !important;
@@ -3986,7 +3986,7 @@ html {
     }
 
     .stacked-testimonials-section.flow-layout .testimonials-header-block {
-        top: 40px !important;
+        top: 55px !important; /* Spacing from viewport top on tablet */
     }
 
     .stacked-testimonials-section.flow-layout .testimonials-main-title {
@@ -4029,7 +4029,7 @@ html {
         display: none !important;
     }
     .stacked-testimonials-section.flow-layout .testimonials-header-block {
-        top: 30px !important;
+        top: 35px !important; /* Spacing from viewport top on mobile */
     }
     .stacked-testimonials-section.flow-layout .testimonials-main-title {
         font-size: 1.8rem !important;
