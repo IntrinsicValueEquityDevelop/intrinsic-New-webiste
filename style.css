@@ -3776,32 +3776,39 @@ html {
     border-style: solid;
     z-index: 10;
     pointer-events: none;
-    opacity: 0.8;
+    opacity: 0;
+    visibility: hidden;
     box-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
-    transition: all 0.3s ease;
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                visibility 0.8s ease, 
+                top 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                bottom 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                left 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
+                right 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Initially expanded position for slide-in effect */
 .testimonials-frame-corner.top-left {
-    top: -20px;
-    left: -20px;
+    top: -45px;
+    left: -45px;
     border-width: 2px 0 0 2px;
 }
 
 .testimonials-frame-corner.top-right {
-    top: -20px;
-    right: -20px;
+    top: -45px;
+    right: -45px;
     border-width: 2px 2px 0 0;
 }
 
 .testimonials-frame-corner.bottom-left {
-    bottom: -20px;
-    left: -20px;
+    bottom: -45px;
+    left: -45px;
     border-width: 0 0 2px 2px;
 }
 
 .testimonials-frame-corner.bottom-right {
-    bottom: -20px;
-    right: -20px;
+    bottom: -45px;
+    right: -45px;
     border-width: 0 2px 2px 0;
 }
 
@@ -3819,14 +3826,69 @@ html {
     padding: 0 !important;
 }
 
+/* Show viewfinder and slide them to target position only in flow layout */
+.stacked-testimonials-section.flow-layout .testimonials-frame-corner {
+    opacity: 0.85;
+    visibility: visible;
+}
+
+.stacked-testimonials-section.flow-layout .testimonials-frame-corner.top-left {
+    top: -20px;
+    left: -20px;
+}
+
+.stacked-testimonials-section.flow-layout .testimonials-frame-corner.top-right {
+    top: -20px;
+    right: -20px;
+}
+
+.stacked-testimonials-section.flow-layout .testimonials-frame-corner.bottom-left {
+    bottom: -20px;
+    left: -20px;
+}
+
+.stacked-testimonials-section.flow-layout .testimonials-frame-corner.bottom-right {
+    bottom: -20px;
+    right: -20px;
+}
+
 .stacked-testimonials-section.flow-layout .testimonials-stack {
+    width: 280px !important; /* Reduced width to fit 4-5 cards on screen */
+    height: 300px !important;
     perspective: none !important;
     transform-style: flat !important;
     overflow: visible !important;
 }
 
 .stacked-testimonials-section.flow-layout .testimonial-card {
+    width: 280px !important; /* Smaller size to see 4-5 reviews */
+    height: 300px !important;
+    padding: 16px !important;
     transition: opacity 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+.stacked-testimonials-section.flow-layout .testimonial-avatar {
+    width: 40px !important;
+    height: 40px !important;
+}
+
+.stacked-testimonials-section.flow-layout .testimonial-quote {
+    font-size: 0.82rem !important;
+    line-height: 1.45 !important;
+    margin-bottom: 8px !important;
+}
+
+.stacked-testimonials-section.flow-layout .testimonial-card-header {
+    margin-bottom: 8px !important;
+}
+
+.stacked-testimonials-section.flow-layout .testimonial-author h6 {
+    font-size: 0.88rem !important;
+    margin-bottom: 2px !important;
+}
+
+.stacked-testimonials-section.flow-layout .testimonial-author .position {
+    font-size: 0.72rem !important;
 }
 
 @media screen and (max-width: 768px) {
@@ -3834,21 +3896,73 @@ html {
         width: 16px;
         height: 16px;
     }
+    
+    /* Mobile/tablet initial positions */
     .testimonials-frame-corner.top-left {
-        top: -12px;
-        left: -12px;
+        top: -30px;
+        left: -30px;
     }
     .testimonials-frame-corner.top-right {
+        top: -30px;
+        right: -30px;
+    }
+    .testimonials-frame-corner.bottom-left {
+        bottom: -30px;
+        left: -30px;
+    }
+    .testimonials-frame-corner.bottom-right {
+        bottom: -30px;
+        right: -30px;
+    }
+    
+    /* Target positions in flow layout */
+    .stacked-testimonials-section.flow-layout .testimonials-frame-corner.top-left {
+        top: -12px;
+        left: -12px;
+    }
+    .stacked-testimonials-section.flow-layout .testimonials-frame-corner.top-right {
         top: -12px;
         right: -12px;
     }
-    .testimonials-frame-corner.bottom-left {
+    .stacked-testimonials-section.flow-layout .testimonials-frame-corner.bottom-left {
         bottom: -12px;
         left: -12px;
     }
-    .testimonials-frame-corner.bottom-right {
+    .stacked-testimonials-section.flow-layout .testimonials-frame-corner.bottom-right {
         bottom: -12px;
         right: -12px;
+    }
+    
+    .stacked-testimonials-section.flow-layout .testimonials-stack {
+        width: 240px !important;
+        height: 320px !important;
+    }
+    .stacked-testimonials-section.flow-layout .testimonial-card {
+        width: 240px !important;
+        height: 320px !important;
+        padding: 14px !important;
+    }
+    .stacked-testimonials-section.flow-layout .testimonial-quote {
+        font-size: 0.78rem !important;
+        line-height: 1.4 !important;
+        margin-bottom: 6px !important;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .stacked-testimonials-section.flow-layout .testimonials-stack {
+        width: 200px !important;
+        height: 340px !important;
+    }
+    .stacked-testimonials-section.flow-layout .testimonial-card {
+        width: 200px !important;
+        height: 340px !important;
+        padding: 12px !important;
+    }
+    .stacked-testimonials-section.flow-layout .testimonial-quote {
+        font-size: 0.74rem !important;
+        line-height: 1.35 !important;
+        margin-bottom: 4px !important;
     }
 }
 

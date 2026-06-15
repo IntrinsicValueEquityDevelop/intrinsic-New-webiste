@@ -8,6 +8,12 @@ let cachedWindowHeight = window.innerHeight;
 let cachedWindowWidth = window.innerWidth;
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Force scroll restoration to manual and scroll to top on reload/load to reset layout states
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+
     // Lock scroll stack height on load to prevent jumping when mobile address bar hides/shows
     const scrollStack = document.querySelector('.scroll-stack');
     if (scrollStack) {
@@ -1355,8 +1361,13 @@ function initTestimonials() {
     if (stackedSection && stackedCards.length > 0) {
         const totalCards = stackedCards.length;
         let isHovered = false;
+        let isDragging = false;
+        let startX = 0;
+        let dragOffsetStart = 0;
+        let dragResumeTimeout = null;
         let autoScrollOffset = 0;
         let flowAnimationId = null;
+        let flowLayoutActivated = false;
         
         // Track hover state for pausing auto-scroll
         stackedCards.forEach(card => {
@@ -1364,13 +1375,98 @@ function initTestimonials() {
             card.addEventListener('mouseleave', () => { isHovered = false; });
         });
         
+        // Get card spacing based on viewport width (Card width + Gap)
+        const getCardSpacing = () => {
+            const windowWidth = window.innerWidth;
+            if (windowWidth <= 480) return 215; // 200px width + 15px gap
+            if (windowWidth <= 768) return 260; // 240px width + 20px gap
+            return 310; // 280px width + 30px gap
+        };
+
+        // Drag-to-scroll interactions (mouse and touch)
+        const container = document.querySelector('.testimonials-carousel-container');
+        if (container) {
+            const handleDragStart = (e) => {
+                if (!stackedSection.classList.contains('flow-layout')) return;
+                isDragging = true;
+                isHovered = true; // Pause auto-scroll
+                startX = e.pageX || (e.touches && e.touches[0].pageX);
+                dragOffsetStart = autoScrollOffset;
+                
+                if (dragResumeTimeout) {
+                    clearTimeout(dragResumeTimeout);
+                }
+            };
+            
+            const handleDragMove = (e) => {
+                if (!isDragging) return;
+                const x = e.pageX || (e.touches && e.touches[0].pageX);
+                if (!x) return;
+                const deltaX = x - startX;
+                
+                const S = getCardSpacing();
+                const L = totalCards * S;
+                
+                // Drag left (negative deltaX) moves cards to left (increases autoScrollOffset)
+                autoScrollOffset = (dragOffsetStart - deltaX) % L;
+                if (autoScrollOffset < 0) autoScrollOffset += L;
+            };
+            
+            const handleDragEnd = () => {
+                if (!isDragging) return;
+                isDragging = false;
+                
+                // Resume auto-scroll after 1.5 seconds of inactivity
+                dragResumeTimeout = setTimeout(() => {
+                    isHovered = false;
+                }, 1500);
+            };
+            
+            container.addEventListener('mousedown', (e) => {
+                if (stackedSection.classList.contains('flow-layout')) {
+                    e.preventDefault();
+                    handleDragStart(e);
+                }
+            });
+            window.addEventListener('mousemove', handleDragMove);
+            window.addEventListener('mouseup', handleDragEnd);
+            
+            container.addEventListener('touchstart', handleDragStart, { passive: true });
+            window.addEventListener('touchmove', handleDragMove, { passive: true });
+            window.addEventListener('touchend', handleDragEnd);
+
+            // Mouse wheel / Trackpad scrolling support
+            container.addEventListener('wheel', (e) => {
+                if (!stackedSection.classList.contains('flow-layout')) return;
+                
+                // Handle both horizontal and vertical scrolling from mouse/trackpad
+                const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+                
+                if (Math.abs(delta) > 0) {
+                    e.preventDefault();
+                    isHovered = true; // Pause auto-scroll
+                    
+                    const S = getCardSpacing();
+                    const L = totalCards * S;
+                    
+                    // Update offset based on delta scroll
+                    autoScrollOffset = (autoScrollOffset + delta * 0.4) % L;
+                    if (autoScrollOffset < 0) autoScrollOffset += L;
+                    
+                    if (dragResumeTimeout) {
+                        clearTimeout(dragResumeTimeout);
+                    }
+                    dragResumeTimeout = setTimeout(() => {
+                        isHovered = false;
+                    }, 1500);
+                }
+            }, { passive: false });
+        }
+        
         // Initialize cards stack layout
         const setupCards = () => {
             stackedCards.forEach((card, idx) => {
-                // Card 0 is the top card and should be on top
                 card.style.zIndex = totalCards - idx;
-                
-                // Messy deck layout rotation (staggered slightly)
                 const rot = (idx % 2 === 0 ? 1 : -1) * (idx * 0.8 + 0.5);
                 const transY = idx * 4;
                 const transZ = -idx * 8;
@@ -1388,15 +1484,11 @@ function initTestimonials() {
             const animateFlow = () => {
                 if (!stackedSection.classList.contains('flow-layout')) return;
                 
-                const windowWidth = window.innerWidth;
-                let S = 860;
-                if (windowWidth <= 480) S = 320;
-                else if (windowWidth <= 768) S = 360;
-                
+                const S = getCardSpacing();
                 const L = totalCards * S;
                 const midPoint = S / 2;
                 
-                if (!isHovered) {
+                if (!isHovered && !isDragging) {
                     autoScrollOffset += 0.8; // slow horizontal flow
                     if (autoScrollOffset >= L) {
                         autoScrollOffset -= L;
@@ -1405,7 +1497,6 @@ function initTestimonials() {
                 
                 stackedCards.forEach((card, idx) => {
                     const val = (idx * S) - autoScrollOffset;
-                    // Wrap to [-L/2, L/2] to center cards around stack position
                     let wrappedPosition = ((val + L/2) % L + L) % L - L/2;
                     
                     const d = Math.abs(wrappedPosition);
@@ -1439,7 +1530,7 @@ function initTestimonials() {
         const transitionToFlowLayout = () => {
             if (stackedSection.classList.contains('flow-layout')) return;
             
-            sessionStorage.setItem('testimonials_flow_layout', 'true');
+            flowLayoutActivated = true;
             
             const currentScrollY = window.scrollY;
             const windowHeight = cachedWindowHeight;
@@ -1449,11 +1540,9 @@ function initTestimonials() {
             
             stackedSection.classList.add('flow-layout');
             
-            // Remove scroll listener for stacked layout
             window.removeEventListener('scroll', handleScroll);
             window.removeEventListener('resize', handleScroll);
             
-            // Smoothly adjust scroll position to prevent vertical page jump
             window.scrollTo(0, currentScrollY - diff);
             
             startFlowAnimation();
@@ -1471,7 +1560,6 @@ function initTestimonials() {
             const sectionHeight = rect.height;
             const windowHeight = cachedWindowHeight;
             
-            // Calculate scroll progress (0 when section hits the 80px stick point, 1 when track ends)
             const scrolled = 80 - rect.top;
             const scrollRange = sectionHeight - windowHeight;
             
@@ -1480,7 +1568,6 @@ function initTestimonials() {
             let progress = scrolled / scrollRange;
             progress = Math.max(0, Math.min(1, progress));
             
-            // If the user reaches the end of the throw-away animation, convert to horizontal flow layout
             if (progress >= 0.98) {
                 transitionToFlowLayout();
                 return;
@@ -1493,7 +1580,6 @@ function initTestimonials() {
                 const endThresh = (idx + 1) / segmentCount;
                 
                 if (progress <= startThresh) {
-                    // Card is resting in the stack
                     const rot = (idx % 2 === 0 ? 1 : -1) * (idx * 0.8 + 0.5);
                     const transY = idx * 4;
                     const transZ = -idx * 8;
@@ -1501,40 +1587,32 @@ function initTestimonials() {
                     card.style.opacity = '1';
                     card.style.visibility = 'visible';
                 } else if (progress > startThresh && progress < endThresh) {
-                    // Card is currently being thrown away
                     const subProgress = (progress - startThresh) / (endThresh - startThresh);
                     
-                    // Stagger throw directions
                     let dirX = 1;
                     if (idx % 3 === 0) dirX = -1.2;
                     else if (idx % 3 === 1) dirX = 1.2;
-                    else dirX = -0.3; // fly mostly up
+                    else dirX = -0.3;
                     
-                    const flyX = dirX * subProgress * 1100; // Fly completely off the screen
-                    const flyY = -subProgress * 550; // fly up
+                    const flyX = dirX * subProgress * 1100;
+                    const flyY = -subProgress * 550;
                     const flyRot = ((idx % 2 === 0 ? 1 : -1) * 12) + (subProgress * dirX * 45);
                     
                     card.style.transform = `translate3d(${flyX}px, ${flyY}px, 0) rotate(${flyRot}deg)`;
                     card.style.opacity = (1 - subProgress).toString();
                     card.style.visibility = 'visible';
                 } else {
-                    // Card is completely thrown away
                     card.style.opacity = '0';
                     card.style.visibility = 'hidden';
                 }
             });
         };
 
-        // Initialize state on page load
-        if (sessionStorage.getItem('testimonials_flow_layout') === 'true') {
-            stackedSection.classList.add('flow-layout');
-            startFlowAnimation();
-        } else {
-            setupCards();
-            window.addEventListener('scroll', handleScroll);
-            handleScroll();
-            window.addEventListener('resize', handleScroll);
-        }
+        // Initialize state on page load (starts fresh, no sessionStorage check)
+        setupCards();
+        window.addEventListener('scroll', handleScroll);
+        handleScroll();
+        window.addEventListener('resize', handleScroll);
     }
 }
 
