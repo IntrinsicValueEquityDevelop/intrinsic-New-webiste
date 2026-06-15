@@ -574,8 +574,9 @@ function init3DSpiral() {
                     }
                 } else {
                     // Exiting Philosophy Section (scrollY >= philFadeOutStart) - scroll up naturally
+                    const progress = Math.max(0, Math.min(1, (scrollY - philFadeOutStart) / (3.7 * windowHeight - philFadeOutStart)));
                     sectionsState.philosophy.targetOpacity = 1;
-                    sectionsState.philosophy.targetY = -(scrollY - philFadeOutStart);
+                    sectionsState.philosophy.targetY = -progress * windowHeight;
                     sectionsState.philosophy.targetScale = 1;
                     sectionsState.philosophy.pointerEvents = 'none';
                     if (window.innerWidth > 768) {
@@ -609,8 +610,9 @@ function init3DSpiral() {
                     sectionsState.featured.hasEntered = true;
                 } else {
                     // Exiting Featured Section (scrollY >= featuredFadeOutStart) - scroll up naturally
+                    const progress = Math.max(0, Math.min(1, (scrollY - featuredFadeOutStart) / (5.3 * windowHeight - featuredFadeOutStart)));
                     sectionsState.featured.targetOpacity = 1;
-                    sectionsState.featured.targetY = -(scrollY - featuredFadeOutStart);
+                    sectionsState.featured.targetY = -progress * windowHeight;
                     sectionsState.featured.targetScale = 1;
                     sectionsState.featured.pointerEvents = 'none';
                     sectionsState.featured.hasEntered = true;
@@ -642,8 +644,9 @@ function init3DSpiral() {
                     sectionsState.cases.hasEntered = true;
                 } else {
                     // Exiting Cases Section (scrollY >= casesFadeOutStart) - scroll up naturally
+                    const progress = Math.max(0, Math.min(1, (scrollY - casesFadeOutStart) / (7.3 * windowHeight - casesFadeOutStart)));
                     sectionsState.cases.targetOpacity = 1;
-                    sectionsState.cases.targetY = -(scrollY - casesFadeOutStart);
+                    sectionsState.cases.targetY = -progress * windowHeight;
                     sectionsState.cases.targetScale = 1;
                     sectionsState.cases.pointerEvents = 'none';
                     sectionsState.cases.hasEntered = true;
@@ -728,8 +731,9 @@ function init3DSpiral() {
                     }
                 } else {
                     // Exiting Pricing Section (scrollY >= pricingFadeOutStart) - scroll up naturally
+                    const progress = Math.max(0, Math.min(1, (scrollY - pricingFadeOutStart) / (10.0 * windowHeight - pricingFadeOutStart)));
                     sectionsState.pricing.targetOpacity = 1;
-                    sectionsState.pricing.targetY = -(scrollY - pricingFadeOutStart);
+                    sectionsState.pricing.targetY = -progress * windowHeight;
                     sectionsState.pricing.targetScale = 1;
                     sectionsState.pricing.pointerEvents = 'none';
 
