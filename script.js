@@ -1380,9 +1380,9 @@ function initTestimonials() {
         // Get card spacing based on viewport width (Card width + Gap)
         const getCardSpacing = () => {
             const windowWidth = window.innerWidth;
-            if (windowWidth <= 480) return 215; // 200px width + 15px gap
-            if (windowWidth <= 768) return 240; // 220px width + 20px gap
-            return 290; // 260px width + 30px gap
+            if (windowWidth <= 480) return 225; // 210px width + 15px gap
+            if (windowWidth <= 768) return 280; // 260px width + 20px gap
+            return 350; // 320px width + 30px gap
         };
 
         // Drag-to-scroll interactions (mouse and touch)
