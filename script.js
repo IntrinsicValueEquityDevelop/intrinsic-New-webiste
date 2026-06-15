@@ -1377,18 +1377,12 @@ function initTestimonials() {
         let transitionStartTime = 0;
         let startScrollOffset = 0;
         
-        // Track hover state for pausing auto-scroll
-        stackedCards.forEach(card => {
-            card.addEventListener('mouseenter', () => { isHovered = true; });
-            card.addEventListener('mouseleave', () => { isHovered = false; });
-        });
-        
         // Get card spacing based on viewport width (Card width + Gap)
         const getCardSpacing = () => {
             const windowWidth = window.innerWidth;
             if (windowWidth <= 480) return 215; // 200px width + 15px gap
-            if (windowWidth <= 768) return 260; // 240px width + 20px gap
-            return 310; // 280px width + 30px gap
+            if (windowWidth <= 768) return 240; // 220px width + 20px gap
+            return 290; // 260px width + 30px gap
         };
 
         // Drag-to-scroll interactions (mouse and touch)
