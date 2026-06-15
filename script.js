@@ -1585,17 +1585,49 @@ function initTestimonials() {
             flowLayoutActivated = true;
             sessionStorage.setItem('testimonials_flow', 'true');
             
+            // Lock/Freeze scrolling during the 600ms transition to prevent user from yanking past the sticky bounds
+            const transitionScrollY = window.scrollY;
+            const preventScroll = (e) => {
+                e.preventDefault();
+            };
+            const preventKeyScroll = (e) => {
+                const keys = ['Space', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'End', 'Home'];
+                if (keys.includes(e.code)) {
+                    e.preventDefault();
+                }
+            };
+            const forceScroll = () => {
+                if (window.scrollY !== transitionScrollY) {
+                    window.scrollTo(0, transitionScrollY);
+                }
+            };
+            
+            window.addEventListener('wheel', preventScroll, { passive: false });
+            window.addEventListener('touchmove', preventScroll, { passive: false });
+            window.addEventListener('keydown', preventKeyScroll, { passive: false });
+            window.addEventListener('scroll', forceScroll);
+            
             // Phase 1 (Shrink): Add class to shrink & fade out the container
             stackedSection.classList.add('section-transition-zoom');
             
             // Phase 2 (Switch): After the shrink animation finishes, swap layouts and adjust scroll position
             setTimeout(() => {
-                const currentScrollY = window.scrollY;
                 const windowHeight = cachedWindowHeight;
                 const oldHeight = 4.8 * windowHeight;
                 const newHeight = 1.0 * windowHeight;
                 const diff = oldHeight - newHeight;
                 
+                // Unlock scrolling listeners
+                window.removeEventListener('wheel', preventScroll);
+                window.removeEventListener('touchmove', preventScroll);
+                window.removeEventListener('keydown', preventKeyScroll);
+                window.removeEventListener('scroll', forceScroll);
+                
+                // CRITICAL: Scroll up FIRST while the document is still long!
+                // This prevents the browser from clamping the scroll position to the bottom of the page when height shrinks.
+                window.scrollTo(0, transitionScrollY - diff);
+                
+                // Swap classes to shrink section height
                 stackedSection.classList.remove('section-transition-zoom');
                 stackedSection.classList.add('flow-layout');
                 stackedSection.classList.add('show-corners');
@@ -1609,8 +1641,6 @@ function initTestimonials() {
                 
                 window.removeEventListener('scroll', handleScroll);
                 window.removeEventListener('resize', handleScroll);
-                
-                window.scrollTo(0, currentScrollY - diff);
                 
                 // Phase 3 (Zoom-in): CSS animations handle the smooth zoom & fade in
                 startFlowAnimation();
@@ -1720,12 +1750,14 @@ function initTestimonials() {
         
         window.addEventListener('resize', handleScroll);
 
-        // Scroll listener to detect if the user scrolls back up, to safely restore stacked layout
-        window.addEventListener('scroll', () => {
-            if (flowLayoutActivated && window.scrollY < 7.4 * cachedWindowHeight) {
+        // Check scroll position 100ms after load (allowing the browser to restore scroll position).
+        // If the user refreshed or loaded the page while scrolled to the top, reset testimonials to stacked layout
+        // so that they see the 3D stack entrance animation when they scroll down for the first time.
+        setTimeout(() => {
+            if (window.scrollY < 7.4 * cachedWindowHeight) {
                 resetToStackedLayout();
             }
-        });
+        }, 100);
     }
 }
 
