@@ -3205,10 +3205,10 @@ html {
     background: rgba(18, 18, 18, 0.95);
     border: 1.5px solid rgba(255, 140, 0, 0.25);
     border-radius: 24px;
-    width: 90%;
-    max-width: 950px;
-    max-height: 85vh;
-    padding: 40px;
+    width: 95%;
+    max-width: 1250px;
+    max-height: 95vh;
+    padding: 30px;
     position: relative;
     box-shadow: 0 25px 50px rgba(0,0,0,0.8), var(--glow-soft);
     display: flex;
@@ -3258,9 +3258,10 @@ html {
 
 .modal-body-scroll {
     overflow-y: auto;
+    overflow-x: auto;
     flex-grow: 1;
-    margin-bottom: 25px;
-    padding-right: 15px;
+    margin-bottom: 15px;
+    padding-right: 10px;
 }
 
 /* Custom Scrollbar inside modal */
@@ -3289,7 +3290,7 @@ html {
 
 .comparison-table th, 
 .comparison-table td {
-    padding: 16px 20px;
+    padding: 10px 14px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -3305,7 +3306,7 @@ html {
 .comparison-table td:first-child {
     font-weight: 600;
     color: #ffffff;
-    width: 25%;
+    width: 22%;
     padding-left: 10px;
 }
 
@@ -3460,27 +3461,45 @@ html {
 
 @media (max-width: 768px) {
     .comparison-modal-content {
-        padding: 25px;
-        width: 95%;
-        max-height: 90vh;
+        padding: 16px 12px;
+        width: 98%;
+        max-height: 98vh;
+        border-radius: 16px;
+    }
+    
+    .comparison-modal-content .modal-header {
+        margin-bottom: 12px;
+        padding-right: 30px;
     }
     
     .comparison-modal-content .modal-header h2 {
-        font-size: 24px;
+        font-size: 20px;
+    }
+    
+    .comparison-modal-content .modal-header p {
+        font-size: 11px;
+        margin-top: 4px;
     }
     
     .comparison-table {
-        font-size: 12px;
+        font-size: 10.5px;
     }
     
     .comparison-table th, 
     .comparison-table td {
-        padding: 10px 8px;
+        padding: 6px 4px;
+    }
+    
+    .comparison-table th:first-child,
+    .comparison-table td:first-child {
+        width: 24%;
+        padding-left: 4px;
     }
     
     .comparison-close {
-        top: 15px;
-        right: 15px;
+        top: 10px;
+        right: 12px;
+        font-size: 28px;
     }
 }
 
