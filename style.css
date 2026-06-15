@@ -3637,6 +3637,7 @@ html {
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.6s ease;
 }
 .testimonials-stack {
     position: relative;
@@ -3828,7 +3829,12 @@ html {
     top: 0 !important;
     height: 100vh !important;
     overflow: visible !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
     padding: 0 !important;
+    padding-top: 100px !important;
 }
 
 /* Show viewfinder and slide them to target position only in flow layout and when show-corners is active */
@@ -3865,14 +3871,37 @@ html {
 /* Dedicated testimonials heading styling in flow layout */
 .stacked-testimonials-section.flow-layout .testimonials-header-block {
     display: block !important;
-    position: absolute !important;
-    top: 80px !important; /* Positioned relative to the sticky 100vh height */
-    left: 50% !important;
-    transform: translateX(-50%) !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
     text-align: center !important;
     z-index: 15 !important;
     width: 100% !important;
     max-width: 90% !important;
+    margin-bottom: 90px !important;
+}
+
+/* Shrink and fade out state during transition */
+.stacked-testimonials-section.section-transition-zoom .testimonials-carousel-container {
+    transform: scale(0.5) !important;
+    opacity: 0 !important;
+}
+
+/* Reveal keyframe animation for flow layout */
+@keyframes flowReveal {
+    from {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.stacked-testimonials-section.flow-layout .testimonials-carousel-container {
+    animation: flowReveal 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
 .stacked-testimonials-section.flow-layout .testimonials-pre-title {
@@ -3985,8 +4014,16 @@ html {
         display: none !important;
     }
 
+    .stacked-testimonials-section.flow-layout .stacked-testimonials-sticky {
+        padding-top: 80px !important;
+    }
+
     .stacked-testimonials-section.flow-layout .testimonials-header-block {
-        top: 55px !important; /* Spacing from viewport top on tablet */
+        margin-bottom: 60px !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
     }
 
     .stacked-testimonials-section.flow-layout .testimonials-main-title {
@@ -4028,8 +4065,16 @@ html {
     .stacked-testimonials-section.flow-layout .testimonials-bg-text {
         display: none !important;
     }
+    .stacked-testimonials-section.flow-layout .stacked-testimonials-sticky {
+        padding-top: 60px !important;
+    }
+
     .stacked-testimonials-section.flow-layout .testimonials-header-block {
-        top: 35px !important; /* Spacing from viewport top on mobile */
+        margin-bottom: 45px !important;
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
     }
     .stacked-testimonials-section.flow-layout .testimonials-main-title {
         font-size: 1.8rem !important;

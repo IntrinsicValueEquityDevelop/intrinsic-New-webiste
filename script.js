@@ -8,11 +8,11 @@ let cachedWindowHeight = window.innerHeight;
 let cachedWindowWidth = window.innerWidth;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Force scroll restoration to manual and scroll to top on reload/load to reset layout states
+    // Restore native browser scroll restoration on reload/load
     if ('scrollRestoration' in history) {
-        history.scrollRestoration = 'manual';
+        history.scrollRestoration = 'auto';
     }
-    window.scrollTo(0, 0);
+
 
     // Lock scroll stack height on load to prevent jumping when mobile address bar hides/shows
     const scrollStack = document.querySelector('.scroll-stack');
@@ -1580,32 +1580,62 @@ function initTestimonials() {
         };
         
         const transitionToFlowLayout = () => {
-            if (stackedSection.classList.contains('flow-layout')) return;
+            if (stackedSection.classList.contains('flow-layout') || stackedSection.classList.contains('section-transition-zoom')) return;
             
             flowLayoutActivated = true;
+            sessionStorage.setItem('testimonials_flow', 'true');
             
-            const currentScrollY = window.scrollY;
-            const windowHeight = cachedWindowHeight;
-            const oldHeight = 4.8 * windowHeight;
-            const newHeight = 1.0 * windowHeight;
-            const diff = oldHeight - newHeight;
+            // Phase 1 (Shrink): Add class to shrink & fade out the container
+            stackedSection.classList.add('section-transition-zoom');
             
-            stackedSection.classList.add('flow-layout');
-            stackedSection.classList.add('show-corners'); // Show corners initially for Card 0
+            // Phase 2 (Switch): After the shrink animation finishes, swap layouts and adjust scroll position
+            setTimeout(() => {
+                const currentScrollY = window.scrollY;
+                const windowHeight = cachedWindowHeight;
+                const oldHeight = 4.8 * windowHeight;
+                const newHeight = 1.0 * windowHeight;
+                const diff = oldHeight - newHeight;
+                
+                stackedSection.classList.remove('section-transition-zoom');
+                stackedSection.classList.add('flow-layout');
+                stackedSection.classList.add('show-corners');
+                
+                // Initialize slide machine values
+                targetCardIndex = 0;
+                targetScrollOffset = 0;
+                autoScrollOffset = 0;
+                slideTimer = Date.now();
+                isTransitioning = false;
+                
+                window.removeEventListener('scroll', handleScroll);
+                window.removeEventListener('resize', handleScroll);
+                
+                window.scrollTo(0, currentScrollY - diff);
+                
+                // Phase 3 (Zoom-in): CSS animations handle the smooth zoom & fade in
+                startFlowAnimation();
+            }, 600); // 600ms matching transition duration
+        };
+
+        const resetToStackedLayout = () => {
+            if (!stackedSection.classList.contains('flow-layout')) return;
             
-            // Initialize slide machine values
-            targetCardIndex = 0;
-            targetScrollOffset = 0;
-            autoScrollOffset = 0;
-            slideTimer = Date.now();
-            isTransitioning = false;
+            flowLayoutActivated = false;
+            sessionStorage.setItem('testimonials_flow', 'false');
+            
+            stackedSection.classList.remove('flow-layout');
+            stackedSection.classList.remove('show-corners');
+            
+            if (flowAnimationId) {
+                cancelAnimationFrame(flowAnimationId);
+                flowAnimationId = null;
+            }
             
             window.removeEventListener('scroll', handleScroll);
-            window.removeEventListener('resize', handleScroll);
+            window.addEventListener('scroll', handleScroll);
             
-            window.scrollTo(0, currentScrollY - diff);
-            
-            startFlowAnimation();
+            setupCards();
+            handleScroll();
         };
 
         const handleScroll = () => {
@@ -1668,11 +1698,34 @@ function initTestimonials() {
             });
         };
 
-        // Initialize state on page load (starts fresh, no sessionStorage check)
-        setupCards();
-        window.addEventListener('scroll', handleScroll);
-        handleScroll();
+        // Initialize state on page load based on session history
+        const savedFlow = sessionStorage.getItem('testimonials_flow');
+        if (savedFlow === 'true') {
+            flowLayoutActivated = true;
+            stackedSection.classList.add('flow-layout');
+            stackedSection.classList.add('show-corners');
+            
+            targetCardIndex = 0;
+            targetScrollOffset = 0;
+            autoScrollOffset = 0;
+            slideTimer = Date.now();
+            isTransitioning = false;
+            
+            startFlowAnimation();
+        } else {
+            setupCards();
+            window.addEventListener('scroll', handleScroll);
+            handleScroll();
+        }
+        
         window.addEventListener('resize', handleScroll);
+
+        // Scroll listener to detect if the user scrolls back up, to safely restore stacked layout
+        window.addEventListener('scroll', () => {
+            if (flowLayoutActivated && window.scrollY < 7.4 * cachedWindowHeight) {
+                resetToStackedLayout();
+            }
+        });
     }
 }
 
