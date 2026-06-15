@@ -1359,22 +1359,25 @@ function initTestimonials() {
     
     if (stackedSection && stackedCards.length > 0) {
         const totalCards = stackedCards.length;
-        let isHovered = false;
         let isDragging = false;
         let startX = 0;
         let dragOffsetStart = 0;
         let dragResumeTimeout = null;
-        let autoScrollOffset = 0;
+        
+        let autoScrollOffset = 0; // Target offset
+        let renderOffset = 0;     // Smoothly eased offset used for rendering
+        
+        let lastX = 0;
+        let lastMoveTime = 0;
+        let dragVelocity = 0;
+        let isMomentum = false;
+        let momentumVelocity = 0;
+        
+        let lastInteractionTime = Date.now();
+        let lastSlideTime = Date.now();
+        let autoPlayTargetIndex = 0;
         let flowAnimationId = null;
         let flowLayoutActivated = false;
-
-        // Discrete slideshow variables
-        let targetCardIndex = 0;
-        let targetScrollOffset = 0;
-        let slideTimer = Date.now();
-        let isTransitioning = false;
-        let transitionStartTime = 0;
-        let startScrollOffset = 0;
         
         // Get card spacing based on viewport width (Card width + Gap)
         const getCardSpacing = () => {
@@ -1390,9 +1393,17 @@ function initTestimonials() {
             const handleDragStart = (e) => {
                 if (!stackedSection.classList.contains('flow-layout')) return;
                 isDragging = true;
-                isHovered = true; // Pause auto-scroll
-                startX = e.pageX || (e.touches && e.touches[0].pageX);
+                isMomentum = false;
+                momentumVelocity = 0;
+                dragVelocity = 0;
+                
+                const x = e.pageX || (e.touches && e.touches[0].pageX);
+                startX = x;
+                lastX = x;
+                lastMoveTime = Date.now();
                 dragOffsetStart = autoScrollOffset;
+                
+                lastInteractionTime = Date.now();
                 
                 if (dragResumeTimeout) {
                     clearTimeout(dragResumeTimeout);
@@ -1411,16 +1422,40 @@ function initTestimonials() {
                 // Drag left (negative deltaX) moves cards to left (increases autoScrollOffset)
                 autoScrollOffset = (dragOffsetStart - deltaX) % L;
                 if (autoScrollOffset < 0) autoScrollOffset += L;
+                
+                // Track velocity
+                const now = Date.now();
+                const dt = now - lastMoveTime;
+                if (dt > 0) {
+                    const dx = x - lastX;
+                    dragVelocity = -dx / dt; // positive speed when moving left
+                }
+                lastX = x;
+                lastMoveTime = now;
+                lastInteractionTime = now;
             };
             
             const handleDragEnd = () => {
                 if (!isDragging) return;
                 isDragging = false;
                 
-                // Resume auto-scroll after 1.5 seconds of inactivity
-                dragResumeTimeout = setTimeout(() => {
-                    isHovered = false;
-                }, 1500);
+                const now = Date.now();
+                const S = getCardSpacing();
+                const L = totalCards * S;
+                
+                // If the user released recently after moving, apply momentum
+                if (now - lastMoveTime < 100 && Math.abs(dragVelocity) > 0.1) {
+                    isMomentum = true;
+                    const maxVel = 15;
+                    momentumVelocity = Math.max(-maxVel, Math.min(maxVel, dragVelocity * 16)); // scale velocity to frame rate (~16ms)
+                } else {
+                    isMomentum = false;
+                    autoPlayTargetIndex = Math.round(autoScrollOffset / S) % totalCards;
+                    if (autoPlayTargetIndex < 0) autoPlayTargetIndex += totalCards;
+                    autoScrollOffset = autoPlayTargetIndex * S;
+                }
+                
+                lastInteractionTime = now;
             };
             
             container.addEventListener('mousedown', (e) => {
@@ -1445,21 +1480,26 @@ function initTestimonials() {
                 
                 if (Math.abs(delta) > 0) {
                     e.preventDefault();
-                    isHovered = true; // Pause auto-scroll
+                    isMomentum = false; // Stop momentum on manual scroll
                     
                     const S = getCardSpacing();
                     const L = totalCards * S;
                     
                     // Update offset based on delta scroll
-                    autoScrollOffset = (autoScrollOffset + delta * 0.4) % L;
+                    autoScrollOffset = (autoScrollOffset + delta * 0.5) % L;
                     if (autoScrollOffset < 0) autoScrollOffset += L;
+                    
+                    lastInteractionTime = Date.now();
                     
                     if (dragResumeTimeout) {
                         clearTimeout(dragResumeTimeout);
                     }
                     dragResumeTimeout = setTimeout(() => {
-                        isHovered = false;
-                    }, 1500);
+                        autoPlayTargetIndex = Math.round(autoScrollOffset / S) % totalCards;
+                        if (autoPlayTargetIndex < 0) autoPlayTargetIndex += totalCards;
+                        autoScrollOffset = autoPlayTargetIndex * S;
+                        lastInteractionTime = Date.now();
+                    }, 250);
                 }
             }, { passive: false });
         }
@@ -1487,75 +1527,74 @@ function initTestimonials() {
                 
                 const S = getCardSpacing();
                 const L = totalCards * S;
-                const midPoint = S / 2;
+                const now = Date.now();
                 
-                if (isHovered || isDragging) {
-                    // Manual interactions reset play timers and snap targets
-                    slideTimer = Date.now();
-                    isTransitioning = false;
-                    stackedSection.classList.add('show-corners');
+                // 1. Momentum physics
+                if (isMomentum) {
+                    autoScrollOffset = (autoScrollOffset + momentumVelocity) % L;
+                    if (autoScrollOffset < 0) autoScrollOffset += L;
                     
-                    targetCardIndex = Math.round(autoScrollOffset / S) % totalCards;
-                    if (targetCardIndex < 0) targetCardIndex += totalCards;
-                    targetScrollOffset = targetCardIndex * S;
-                } else {
-                    const now = Date.now();
-                    const elapsed = now - slideTimer;
+                    momentumVelocity *= 0.95;
                     
-                    if (!isTransitioning) {
-                        // Display the active card centered with corners visible
-                        if (elapsed >= 2000) { // Stay for 2 seconds (reduced from 3.5s)
-                            // Fade out corners first before starting the slide animation
-                            stackedSection.classList.remove('show-corners');
-                            isTransitioning = true;
-                            transitionStartTime = now + 400; // 400ms delay for corner brackets fade-out
-                            startScrollOffset = autoScrollOffset;
-                            
-                            targetCardIndex = (targetCardIndex + 1) % totalCards;
-                            targetScrollOffset = targetCardIndex * S;
-                        }
-                    } else {
-                        // Interpolate the slide motion
-                        if (now >= transitionStartTime) {
-                            const transElapsed = now - transitionStartTime;
-                            const duration = 800; // slide transition time
-                            
-                            if (transElapsed >= duration) {
-                                autoScrollOffset = targetScrollOffset;
-                                isTransitioning = false;
-                                slideTimer = now;
-                                
-                                // Show corner brackets around new centered card
-                                stackedSection.classList.add('show-corners');
-                            } else {
-                                const t = transElapsed / duration;
-                                // Cubic ease-in-out curve
-                                const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-                                
-                                // Shortest path interpolation for circular marquee loop
-                                let diff = targetScrollOffset - startScrollOffset;
-                                if (diff > L / 2) diff -= L;
-                                if (diff < -L / 2) diff += L;
-                                
-                                autoScrollOffset = (startScrollOffset + diff * ease) % L;
-                                if (autoScrollOffset < 0) autoScrollOffset += L;
-                            }
-                        }
+                    if (Math.abs(momentumVelocity) < 0.2) {
+                        isMomentum = false;
+                        momentumVelocity = 0;
+                        autoPlayTargetIndex = Math.round(autoScrollOffset / S) % totalCards;
+                        if (autoPlayTargetIndex < 0) autoPlayTargetIndex += totalCards;
+                        autoScrollOffset = autoPlayTargetIndex * S;
+                        lastInteractionTime = now;
+                        lastSlideTime = now;
                     }
                 }
                 
+                // 2. Auto-play logic
+                const isIdle = !isDragging && !isMomentum && (now - lastInteractionTime > 2500);
+                if (isIdle) {
+                    if (now - lastSlideTime > 2500) {
+                        autoPlayTargetIndex = (autoPlayTargetIndex + 1) % totalCards;
+                        autoScrollOffset = autoPlayTargetIndex * S;
+                        lastSlideTime = now;
+                    }
+                } else if (!isDragging && !isMomentum) {
+                    lastSlideTime = now;
+                }
+                
+                // 3. Easing renderOffset to autoScrollOffset (shortest-path circular wrap)
+                let diff = autoScrollOffset - renderOffset;
+                if (diff > L / 2) diff -= L;
+                if (diff < -L / 2) diff += L;
+                
+                let easingFactor = 0.08; // default smooth slide ease
+                if (isDragging) {
+                    easingFactor = 0.25; // responsive drag follow
+                } else if (isMomentum) {
+                    easingFactor = 0.2;  // responsive momentum follow
+                }
+                
+                renderOffset = (renderOffset + diff * easingFactor) % L;
+                if (renderOffset < 0) renderOffset += L;
+                
+                // 4. Show/hide viewfinder corners dynamically
+                const distToTarget = Math.abs(diff);
+                if (distToTarget < 3 && !isDragging && !isMomentum) {
+                    stackedSection.classList.add('show-corners');
+                } else {
+                    stackedSection.classList.remove('show-corners');
+                }
+                
+                // 5. Position and transform all cards
                 stackedCards.forEach((card, idx) => {
-                    const val = (idx * S) - autoScrollOffset;
+                    const val = (idx * S) - renderOffset;
                     let wrappedPosition = ((val + L/2) % L + L) % L - L/2;
                     
                     const d = Math.abs(wrappedPosition);
+                    const midPoint = S / 2;
                     let scale = 1.0;
                     let glow = 0;
                     if (d < midPoint) {
                         const progress = 1 - d / midPoint;
-                        // Snappy cubic ease-out curve for active pop-up
                         const easeProgress = 1 - Math.pow(1 - progress, 3);
-                        scale = 1.0 + 0.16 * easeProgress; // Scale up to 1.16
+                        scale = 1.0 + 0.16 * easeProgress;
                         glow = easeProgress;
                     }
                     
@@ -1593,11 +1632,14 @@ function initTestimonials() {
                 stackedSection.classList.add('show-corners');
                 
                 // Initialize slide machine values
-                targetCardIndex = 0;
-                targetScrollOffset = 0;
                 autoScrollOffset = 0;
-                slideTimer = Date.now();
-                isTransitioning = false;
+                renderOffset = 0;
+                lastInteractionTime = Date.now() - 1500; // Trigger first slide in 1.0 second
+                lastSlideTime = Date.now() - 1500;
+                autoPlayTargetIndex = 0;
+                isMomentum = false;
+                momentumVelocity = 0;
+                isDragging = false;
                 
                 window.removeEventListener('scroll', handleScroll);
                 window.removeEventListener('resize', handleScroll);
