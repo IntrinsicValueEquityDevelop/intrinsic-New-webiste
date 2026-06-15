@@ -329,6 +329,9 @@ function init3DSpiral() {
 
         const getOffsets = () => {
             const windowHeight = cachedWindowHeight;
+            const stackedSection = document.querySelector('.stacked-testimonials-section');
+            const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
+            const endOffset = isFlow ? 8.4 * windowHeight : 12.2 * windowHeight;
             if (window.hasReachedBottom) {
                 // Linear offsets for scroll-up bypass mode
                 return [
@@ -338,7 +341,7 @@ function init3DSpiral() {
                     6.0 * windowHeight,
                     8.0 * windowHeight,
                     8.4 * windowHeight,
-                    12.2 * windowHeight
+                    endOffset
                 ];
             } else {
                 // Sticky-locked offsets for scroll-down mode
@@ -349,7 +352,7 @@ function init3DSpiral() {
                     3.7 * windowHeight,
                     4.2 * windowHeight,
                     8.4 * windowHeight,
-                    12.2 * windowHeight
+                    endOffset
                 ];
             }
         };
@@ -368,8 +371,11 @@ function init3DSpiral() {
             }
             lastScrollY = scrollY;
 
-            // Hide indicator when reaching FAQ/Footer bottom (at/above 12.2vh)
-            if (scrollY >= 12.2 * windowHeight) {
+            // Hide indicator when reaching FAQ/Footer bottom
+            const stackedSection = document.querySelector('.stacked-testimonials-section');
+            const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
+            const hideThreshold = isFlow ? 8.4 * windowHeight : 12.2 * windowHeight;
+            if (scrollY >= hideThreshold) {
                 scrollIndicator.classList.remove('visible');
                 return;
             }
@@ -449,7 +455,10 @@ function init3DSpiral() {
             const windowHeight = cachedWindowHeight;
 
             // Check if user has reached bottom (FAQ/footer)
-            if (scrollY >= 12.15 * windowHeight) {
+            const stackedSection = document.querySelector('.stacked-testimonials-section');
+            const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
+            const bottomThreshold = isFlow ? 8.35 * windowHeight : 12.15 * windowHeight;
+            if (scrollY >= bottomThreshold) {
                 window.hasReachedBottom = true;
             } else if (scrollY < 50) {
                 window.hasReachedBottom = false;
@@ -1345,6 +1354,15 @@ function initTestimonials() {
     
     if (stackedSection && stackedCards.length > 0) {
         const totalCards = stackedCards.length;
+        let isHovered = false;
+        let autoScrollOffset = 0;
+        let flowAnimationId = null;
+        
+        // Track hover state for pausing auto-scroll
+        stackedCards.forEach(card => {
+            card.addEventListener('mouseenter', () => { isHovered = true; });
+            card.addEventListener('mouseleave', () => { isHovered = false; });
+        });
         
         // Initialize cards stack layout
         const setupCards = () => {
@@ -1359,12 +1377,91 @@ function initTestimonials() {
                 card.style.transform = `translate3d(0, ${transY}px, ${transZ}px) rotate(${rot}deg)`;
                 card.style.opacity = '1';
                 card.style.visibility = 'visible';
+                card.style.boxShadow = '';
+                card.style.borderColor = '';
             });
         };
         
-        setupCards();
+        const startFlowAnimation = () => {
+            if (flowAnimationId) return;
+            
+            const animateFlow = () => {
+                if (!stackedSection.classList.contains('flow-layout')) return;
+                
+                const windowWidth = window.innerWidth;
+                let S = 860;
+                if (windowWidth <= 480) S = 320;
+                else if (windowWidth <= 768) S = 360;
+                
+                const L = totalCards * S;
+                const midPoint = S / 2;
+                
+                if (!isHovered) {
+                    autoScrollOffset += 0.8; // slow horizontal flow
+                    if (autoScrollOffset >= L) {
+                        autoScrollOffset -= L;
+                    }
+                }
+                
+                stackedCards.forEach((card, idx) => {
+                    const val = (idx * S) - autoScrollOffset;
+                    // Wrap to [-L/2, L/2] to center cards around stack position
+                    let wrappedPosition = ((val + L/2) % L + L) % L - L/2;
+                    
+                    const d = Math.abs(wrappedPosition);
+                    let scale = 1.0;
+                    let glow = 0;
+                    if (d < midPoint) {
+                        const progress = 1 - d / midPoint;
+                        scale = 1.0 + 0.08 * progress;
+                        glow = progress;
+                    }
+                    
+                    card.style.transform = `translate3d(${wrappedPosition.toFixed(1)}px, 0, 0) scale(${scale.toFixed(3)})`;
+                    card.style.opacity = '1';
+                    card.style.visibility = 'visible';
+                    card.style.zIndex = d < midPoint ? '10' : '5';
+                    
+                    card.style.boxShadow = glow > 0.01 
+                        ? `0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 140, 0, ${(0.45 * glow).toFixed(2)})` 
+                        : '';
+                    card.style.borderColor = glow > 0.01 
+                        ? `rgba(255, 140, 0, ${(0.08 + 0.5 * glow).toFixed(2)})` 
+                        : '';
+                });
+                
+                flowAnimationId = requestAnimationFrame(animateFlow);
+            };
+            
+            flowAnimationId = requestAnimationFrame(animateFlow);
+        };
+        
+        const transitionToFlowLayout = () => {
+            if (stackedSection.classList.contains('flow-layout')) return;
+            
+            sessionStorage.setItem('testimonials_flow_layout', 'true');
+            
+            const currentScrollY = window.scrollY;
+            const windowHeight = cachedWindowHeight;
+            const oldHeight = 4.8 * windowHeight;
+            const newHeight = 1.0 * windowHeight;
+            const diff = oldHeight - newHeight;
+            
+            stackedSection.classList.add('flow-layout');
+            
+            // Remove scroll listener for stacked layout
+            window.removeEventListener('scroll', handleScroll);
+            window.removeEventListener('resize', handleScroll);
+            
+            // Smoothly adjust scroll position to prevent vertical page jump
+            window.scrollTo(0, currentScrollY - diff);
+            
+            startFlowAnimation();
+        };
 
         const handleScroll = () => {
+            if (stackedSection.classList.contains('flow-layout')) return;
+            
             if (window.hasReachedBottom) {
                 setupCards();
                 return;
@@ -1382,6 +1479,12 @@ function initTestimonials() {
             
             let progress = scrolled / scrollRange;
             progress = Math.max(0, Math.min(1, progress));
+            
+            // If the user reaches the end of the throw-away animation, convert to horizontal flow layout
+            if (progress >= 0.98) {
+                transitionToFlowLayout();
+                return;
+            }
             
             const segmentCount = totalCards;
             
@@ -1401,7 +1504,7 @@ function initTestimonials() {
                     // Card is currently being thrown away
                     const subProgress = (progress - startThresh) / (endThresh - startThresh);
                     
-                    // Stagger throw directions: Card 0 up-left, Card 1 up-right, Card 2 up-left, etc.
+                    // Stagger throw directions
                     let dirX = 1;
                     if (idx % 3 === 0) dirX = -1.2;
                     else if (idx % 3 === 1) dirX = 1.2;
@@ -1422,9 +1525,16 @@ function initTestimonials() {
             });
         };
 
-        window.addEventListener('scroll', handleScroll);
-        handleScroll();
-        window.addEventListener('resize', handleScroll);
+        // Initialize state on page load
+        if (sessionStorage.getItem('testimonials_flow_layout') === 'true') {
+            stackedSection.classList.add('flow-layout');
+            startFlowAnimation();
+        } else {
+            setupCards();
+            window.addEventListener('scroll', handleScroll);
+            handleScroll();
+            window.addEventListener('resize', handleScroll);
+        }
     }
 }
 

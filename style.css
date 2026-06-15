@@ -3767,6 +3767,91 @@ html {
     }
 }
 
+/* Decorative Viewfinder Corner Brackets */
+.testimonials-frame-corner {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    border-color: var(--accent);
+    border-style: solid;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0.8;
+    box-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
+    transition: all 0.3s ease;
+}
+
+.testimonials-frame-corner.top-left {
+    top: -20px;
+    left: -20px;
+    border-width: 2px 0 0 2px;
+}
+
+.testimonials-frame-corner.top-right {
+    top: -20px;
+    right: -20px;
+    border-width: 2px 2px 0 0;
+}
+
+.testimonials-frame-corner.bottom-left {
+    bottom: -20px;
+    left: -20px;
+    border-width: 0 0 2px 2px;
+}
+
+.testimonials-frame-corner.bottom-right {
+    bottom: -20px;
+    right: -20px;
+    border-width: 0 2px 2px 0;
+}
+
+/* Testimonials Flow Layout overrides */
+.stacked-testimonials-section.flow-layout {
+    height: 100vh !important;
+    padding: 0 !important;
+}
+
+.stacked-testimonials-section.flow-layout .stacked-testimonials-sticky {
+    position: relative !important;
+    top: 0 !important;
+    height: 100vh !important;
+    overflow: visible !important;
+    padding: 0 !important;
+}
+
+.stacked-testimonials-section.flow-layout .testimonials-stack {
+    perspective: none !important;
+    transform-style: flat !important;
+    overflow: visible !important;
+}
+
+.stacked-testimonials-section.flow-layout .testimonial-card {
+    transition: opacity 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
+
+@media screen and (max-width: 768px) {
+    .testimonials-frame-corner {
+        width: 16px;
+        height: 16px;
+    }
+    .testimonials-frame-corner.top-left {
+        top: -12px;
+        left: -12px;
+    }
+    .testimonials-frame-corner.top-right {
+        top: -12px;
+        right: -12px;
+    }
+    .testimonials-frame-corner.bottom-left {
+        bottom: -12px;
+        left: -12px;
+    }
+    .testimonials-frame-corner.bottom-right {
+        bottom: -12px;
+        right: -12px;
+    }
+}
+
 /* ==========================================================================
    FAQ SECTION (Velvet Marigold Dark Theme)
    ========================================================================== */
