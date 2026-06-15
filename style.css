@@ -3879,7 +3879,7 @@ html {
     z-index: 15 !important;
     width: 100% !important;
     max-width: 90% !important;
-    margin-bottom: 2cm !important;
+    margin-bottom: 3.5cm !important;
 }
 
 /* Shrink and fade out state during transition */
@@ -4019,7 +4019,7 @@ html {
     }
 
     .stacked-testimonials-section.flow-layout .testimonials-header-block {
-        margin-bottom: 2cm !important;
+        margin-bottom: 2.8cm !important;
         position: relative !important;
         top: auto !important;
         left: auto !important;
@@ -4070,7 +4070,7 @@ html {
     }
 
     .stacked-testimonials-section.flow-layout .testimonials-header-block {
-        margin-bottom: 2cm !important;
+        margin-bottom: 2.2cm !important;
         position: relative !important;
         top: auto !important;
         left: auto !important;
