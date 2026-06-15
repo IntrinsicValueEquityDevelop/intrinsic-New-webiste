@@ -339,29 +339,15 @@ function init3DSpiral() {
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
             const endOffset = isFlow ? 8.4 * windowHeight : 12.2 * windowHeight;
-            if (window.hasReachedBottom) {
-                // Linear offsets for scroll-up bypass mode
-                return [
-                    0,
-                    2.0 * windowHeight,
-                    4.0 * windowHeight,
-                    6.0 * windowHeight,
-                    8.0 * windowHeight,
-                    8.4 * windowHeight,
-                    endOffset
-                ];
-            } else {
-                // Sticky-locked offsets for scroll-down mode
-                return [
-                    0,
-                    1.0 * windowHeight,
-                    3.2 * windowHeight,
-                    3.7 * windowHeight,
-                    4.2 * windowHeight,
-                    8.4 * windowHeight,
-                    endOffset
-                ];
-            }
+            return [
+                0,
+                1.0 * windowHeight,
+                3.2 * windowHeight,
+                3.7 * windowHeight,
+                4.2 * windowHeight,
+                8.4 * windowHeight,
+                endOffset
+            ];
         };
 
         const updateScrollIndicator = () => {
@@ -461,67 +447,7 @@ function init3DSpiral() {
             const scrollY = window.scrollY;
             const windowHeight = cachedWindowHeight;
 
-            // Check if user has reached bottom (FAQ/footer)
-            const bottomThreshold = 12.15 * windowHeight;
-            if (scrollY >= bottomThreshold) {
-                window.hasReachedBottom = true;
-            } else if (scrollY < 50) {
-                window.hasReachedBottom = false;
-            }
-
             updateScrollIndicator();
-
-            if (window.hasReachedBottom) {
-                // Map sections linearly as if they were in a normal long page
-                const scaleFactor = 0.5;
-                const referenceScroll = Math.min(scrollY, 10.0 * windowHeight);
-                
-                // Hero (0)
-                sectionsState.hero.targetOpacity = 1;
-                sectionsState.hero.targetScale = 1;
-                sectionsState.hero.targetY = -referenceScroll * scaleFactor;
-                sectionsState.hero.pointerEvents = 'auto';
-                
-                // Philosophy (1)
-                sectionsState.philosophy.targetOpacity = 1;
-                sectionsState.philosophy.targetScale = 1;
-                sectionsState.philosophy.targetY = 1.0 * windowHeight - referenceScroll * scaleFactor;
-                sectionsState.philosophy.pointerEvents = 'auto';
-                
-                // Featured (2)
-                sectionsState.featured.targetOpacity = 1;
-                sectionsState.featured.targetScale = 1;
-                sectionsState.featured.targetY = 2.0 * windowHeight - referenceScroll * scaleFactor;
-                sectionsState.featured.pointerEvents = 'auto';
-                sectionsState.featured.hasEntered = true;
-                
-                // Cases (3)
-                sectionsState.cases.targetOpacity = 1;
-                sectionsState.cases.targetScale = 1;
-                sectionsState.cases.targetY = 3.0 * windowHeight - referenceScroll * scaleFactor;
-                sectionsState.cases.pointerEvents = 'auto';
-                sectionsState.cases.hasEntered = true;
-                
-                // Pricing (4)
-                sectionsState.pricing.targetOpacity = 1;
-                sectionsState.pricing.targetScale = 1;
-                sectionsState.pricing.targetY = 4.0 * windowHeight - referenceScroll * scaleFactor;
-                sectionsState.pricing.pointerEvents = 'auto';
-                
-                // Keep pricing zoom elements fully forward
-                pricingState.title.targetZ = 0;
-                pricingState.title.targetScale = 1;
-                pricingState.title.targetOpacity = 1;
-                pricingState.cards.forEach(c => {
-                    c.targetZ = 0;
-                    c.targetScale = 1;
-                    c.targetOpacity = 1;
-                    c.targetRotateX = 0;
-                    c.targetY = 0;
-                });
-                
-                return;
-            }
 
             // Define scroll transition checkpoints relative to viewport height
             const heroFadeEnd = 1.0 * windowHeight;
@@ -562,7 +488,7 @@ function init3DSpiral() {
                     sectionsState.philosophy.targetScale = 1;
                     sectionsState.philosophy.pointerEvents = 'none';
                     if (window.innerWidth > 768) {
-                        targetScrollOffsetAngle = 0;
+                        targetScrollOffsetAngle = scrollDirection === 'up' ? 540 : 0;
                     }
                 } else if (scrollY >= philFadeInStart && scrollY <= philFadeInEnd) {
                     // Entrance Phase
@@ -572,7 +498,7 @@ function init3DSpiral() {
                     sectionsState.philosophy.targetScale = 1;
                     sectionsState.philosophy.pointerEvents = 'auto';
                     if (window.innerWidth > 768) {
-                        targetScrollOffsetAngle = 0;
+                        targetScrollOffsetAngle = scrollDirection === 'up' ? 540 : 0;
                     }
                 } else if (scrollY > philFadeInEnd && scrollY < philFadeOutStart) {
                     // Active Spin Phase
@@ -584,7 +510,7 @@ function init3DSpiral() {
                     const spinProgress = (scrollY - philSpinStart) / (philSpinEnd - philSpinStart);
                     const clampedProgress = Math.max(0, Math.min(1, spinProgress));
                     if (window.innerWidth > 768) {
-                        targetScrollOffsetAngle = clampedProgress * 540;
+                        targetScrollOffsetAngle = scrollDirection === 'up' ? 540 : (clampedProgress * 540);
                     }
                 } else {
                     // Exiting Philosophy Section (scrollY >= philFadeOutStart) - scroll up naturally
@@ -606,7 +532,7 @@ function init3DSpiral() {
                     sectionsState.featured.targetY = windowHeight;
                     sectionsState.featured.targetScale = 1;
                     sectionsState.featured.pointerEvents = 'none';
-                    sectionsState.featured.hasEntered = false;
+                    sectionsState.featured.hasEntered = scrollDirection === 'up';
                 } else if (scrollY >= featuredFadeInStart && scrollY <= featuredFadeInEnd) {
                     // Entrance Phase
                     const progress = (scrollY - featuredFadeInStart) / (featuredFadeInEnd - featuredFadeInStart);
@@ -640,7 +566,7 @@ function init3DSpiral() {
                     sectionsState.cases.targetY = windowHeight;
                     sectionsState.cases.targetScale = 1;
                     sectionsState.cases.pointerEvents = 'none';
-                    sectionsState.cases.hasEntered = false;
+                    sectionsState.cases.hasEntered = scrollDirection === 'up';
                 } else if (scrollY >= casesFadeInStart && scrollY <= casesFadeInEnd) {
                     // Entrance Phase
                     const progress = (scrollY - casesFadeInStart) / (casesFadeInEnd - casesFadeInStart);
@@ -688,15 +614,16 @@ function init3DSpiral() {
                     sectionsState.pricing.pointerEvents = 'auto';
                     
                     // Reset zoom state to initial
-                    pricingState.title.targetZ = -600;
-                    pricingState.title.targetScale = 0.3;
-                    pricingState.title.targetOpacity = 0;
+                    const zoomVal = scrollDirection === 'up' ? 1.0 : 0.0;
+                    pricingState.title.targetZ = -600 + 600 * zoomVal;
+                    pricingState.title.targetScale = 0.3 + 0.7 * zoomVal;
+                    pricingState.title.targetOpacity = zoomVal;
                     pricingState.cards.forEach(c => {
-                        c.targetZ = -600;
-                        c.targetScale = 0.3;
-                        c.targetOpacity = 0;
-                        c.targetRotateX = 15;
-                        c.targetY = 50;
+                        c.targetZ = -600 + 600 * zoomVal;
+                        c.targetScale = 0.3 + 0.7 * zoomVal;
+                        c.targetOpacity = zoomVal;
+                        c.targetRotateX = 15 * (1 - zoomVal);
+                        c.targetY = 50 * (1 - zoomVal);
                     });
                     if (pricingState.counterTimeout) {
                         clearTimeout(pricingState.counterTimeout);
@@ -713,13 +640,13 @@ function init3DSpiral() {
                     const clampedZoom = Math.max(0, Math.min(1, zoomProgress));
 
                     // Title: 0.0 -> 0.4
-                    const titleProg = Math.max(0, Math.min(1, clampedZoom / 0.4));
+                    const titleProg = scrollDirection === 'up' ? 1.0 : Math.max(0, Math.min(1, clampedZoom / 0.4));
                     pricingState.title.targetZ = -600 + 600 * titleProg;
                     pricingState.title.targetScale = 0.3 + 0.7 * titleProg;
                     pricingState.title.targetOpacity = titleProg;
 
                     // Cards: All together 0.2 -> 0.8
-                    const cardsProg = Math.max(0, Math.min(1, (clampedZoom - 0.2) / 0.6));
+                    const cardsProg = scrollDirection === 'up' ? 1.0 : Math.max(0, Math.min(1, (clampedZoom - 0.2) / 0.6));
                     pricingState.cards.forEach(c => {
                         c.targetZ = -600 + 600 * cardsProg;
                         c.targetScale = 0.3 + 0.7 * cardsProg;
@@ -1475,10 +1402,9 @@ function initTestimonials() {
             container.addEventListener('wheel', (e) => {
                 if (!stackedSection.classList.contains('flow-layout')) return;
                 
-                // Handle both horizontal and vertical scrolling from mouse/trackpad
-                const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
-                
-                if (Math.abs(delta) > 0) {
+                // Only intercept horizontal wheel scrolling on trackpad / horizontal scroll wheel.
+                // Do NOT prevent default or handle vertical scrolling (e.deltaY) so the page scrolls naturally.
+                if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 0) {
                     e.preventDefault();
                     isMomentum = false; // Stop momentum on manual scroll
                     
@@ -1486,7 +1412,7 @@ function initTestimonials() {
                     const L = totalCards * S;
                     
                     // Update offset based on delta scroll
-                    autoScrollOffset = (autoScrollOffset + delta * 0.5) % L;
+                    autoScrollOffset = (autoScrollOffset + e.deltaX * 0.5) % L;
                     if (autoScrollOffset < 0) autoScrollOffset += L;
                     
                     lastInteractionTime = Date.now();
@@ -1627,6 +1553,24 @@ function initTestimonials() {
             
             // Phase 2 (Switch): After the shrink animation finishes, swap layout classes
             setTimeout(() => {
+                // Check progress to ensure the user hasn't scrolled back up during the timeout!
+                const rect = stackedSection.getBoundingClientRect();
+                const scrolled = 80 - rect.top;
+                const scrollRange = rect.height - cachedWindowHeight;
+                const progress = scrollRange > 0 ? Math.max(0, Math.min(1, scrolled / scrollRange)) : 0;
+                
+                if (progress < 0.95) {
+                    stackedSection.classList.remove('section-transition-zoom');
+                    flowLayoutActivated = false;
+                    return;
+                }
+
+                // Adjust scroll position to prevent clamping and jumping
+                const windowHeight = cachedWindowHeight;
+                const diff = rect.height - windowHeight; // 4.8 * windowHeight - 1.0 * windowHeight = 3.8 * windowHeight
+                const currentScroll = window.scrollY;
+                window.scrollTo(0, currentScroll - diff);
+
                 stackedSection.classList.remove('section-transition-zoom');
                 stackedSection.classList.add('flow-layout');
                 stackedSection.classList.add('show-corners');
@@ -1641,21 +1585,13 @@ function initTestimonials() {
                 momentumVelocity = 0;
                 isDragging = false;
                 
-                window.removeEventListener('scroll', handleScroll);
-                window.removeEventListener('resize', handleScroll);
-                
                 // Phase 3 (Zoom-in): CSS animations handle the smooth zoom & fade in
                 startFlowAnimation();
             }, 600); // 600ms matching transition duration
         };
 
         const handleScroll = () => {
-            if (stackedSection.classList.contains('flow-layout')) return;
-            
-            if (window.hasReachedBottom) {
-                setupCards();
-                return;
-            }
+            if (stackedSection.classList.contains('flow-layout') || stackedSection.classList.contains('section-transition-zoom')) return;
             
             const rect = stackedSection.getBoundingClientRect();
             const sectionHeight = rect.height;
