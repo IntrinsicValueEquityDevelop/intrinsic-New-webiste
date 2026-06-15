@@ -885,7 +885,7 @@ html {
    ========================================================================== */
 .scroll-stack {
   position: relative;
-  height: 1100vh; /* Total page scroll depth (Hero 150vh, Philosophy 220vh, Featured 150vh, Cases 260vh, Pricing 320vh) */
+  height: 840vh; /* Total page scroll depth (Hero 100vh, Philosophy 220vh, Featured 50vh, Cases 50vh, Pricing 420vh) */
   width: 100%;
 }
 
