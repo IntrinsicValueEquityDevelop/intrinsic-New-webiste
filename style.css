@@ -3794,26 +3794,26 @@ html {
 
 /* Initially expanded position for slide-in effect */
 .testimonials-frame-corner.top-left {
-    top: -45px;
-    left: -45px;
+    top: -80px;
+    left: -90px;
     border-width: 2px 0 0 2px;
 }
 
 .testimonials-frame-corner.top-right {
-    top: -45px;
-    right: -45px;
+    top: -80px;
+    right: -90px;
     border-width: 2px 2px 0 0;
 }
 
 .testimonials-frame-corner.bottom-left {
-    bottom: -45px;
-    left: -45px;
+    bottom: -80px;
+    left: -90px;
     border-width: 0 0 2px 2px;
 }
 
 .testimonials-frame-corner.bottom-right {
-    bottom: -45px;
-    right: -45px;
+    bottom: -80px;
+    right: -90px;
     border-width: 0 2px 2px 0;
 }
 
@@ -3838,23 +3838,23 @@ html {
 }
 
 .stacked-testimonials-section.flow-layout.show-corners .testimonials-frame-corner.top-left {
-    top: -20px;
-    left: -20px;
+    top: -45px;
+    left: -50px;
 }
 
 .stacked-testimonials-section.flow-layout.show-corners .testimonials-frame-corner.top-right {
-    top: -20px;
-    right: -20px;
+    top: -45px;
+    right: -50px;
 }
 
 .stacked-testimonials-section.flow-layout.show-corners .testimonials-frame-corner.bottom-left {
-    bottom: -20px;
-    left: -20px;
+    bottom: -45px;
+    left: -50px;
 }
 
 .stacked-testimonials-section.flow-layout.show-corners .testimonials-frame-corner.bottom-right {
-    bottom: -20px;
-    right: -20px;
+    bottom: -45px;
+    right: -50px;
 }
 
 /* Hide background testimonials text completely once in flow layout */
@@ -3946,38 +3946,38 @@ html {
     
     /* Mobile/tablet initial positions */
     .testimonials-frame-corner.top-left {
-        top: -30px;
-        left: -30px;
+        top: -70px;
+        left: -70px;
     }
     .testimonials-frame-corner.top-right {
-        top: -30px;
-        right: -30px;
+        top: -70px;
+        right: -70px;
     }
     .testimonials-frame-corner.bottom-left {
-        bottom: -30px;
-        left: -30px;
+        bottom: -70px;
+        left: -70px;
     }
     .testimonials-frame-corner.bottom-right {
-        bottom: -30px;
-        right: -30px;
+        bottom: -70px;
+        right: -70px;
     }
     
     /* Target positions in flow layout when show-corners is active */
     .stacked-testimonials-section.flow-layout.show-corners .testimonials-frame-corner.top-left {
-        top: -12px;
-        left: -12px;
+        top: -40px;
+        left: -40px;
     }
     .stacked-testimonials-section.flow-layout.show-corners .testimonials-frame-corner.top-right {
-        top: -12px;
-        right: -12px;
+        top: -40px;
+        right: -40px;
     }
     .stacked-testimonials-section.flow-layout.show-corners .testimonials-frame-corner.bottom-left {
-        bottom: -12px;
-        left: -12px;
+        bottom: -40px;
+        left: -40px;
     }
     .stacked-testimonials-section.flow-layout.show-corners .testimonials-frame-corner.bottom-right {
-        bottom: -12px;
-        right: -12px;
+        bottom: -40px;
+        right: -40px;
     }
 
     /* Hide background testimonials text completely once in flow layout */
@@ -4033,6 +4033,42 @@ html {
     }
     .stacked-testimonials-section.flow-layout .testimonials-main-title {
         font-size: 1.8rem !important;
+    }
+
+    /* Mobile specific initial positions */
+    .testimonials-frame-corner.top-left {
+        top: -60px;
+        left: -50px;
+    }
+    .testimonials-frame-corner.top-right {
+        top: -60px;
+        right: -50px;
+    }
+    .testimonials-frame-corner.bottom-left {
+        bottom: -60px;
+        left: -50px;
+    }
+    .testimonials-frame-corner.bottom-right {
+        bottom: -60px;
+        right: -50px;
+    }
+    
+    /* Mobile specific target positions in flow layout */
+    .stacked-testimonials-section.flow-layout.show-corners .testimonials-frame-corner.top-left {
+        top: -40px;
+        left: -30px;
+    }
+    .stacked-testimonials-section.flow-layout.show-corners .testimonials-frame-corner.top-right {
+        top: -40px;
+        right: -30px;
+    }
+    .stacked-testimonials-section.flow-layout.show-corners .testimonials-frame-corner.bottom-left {
+        bottom: -40px;
+        left: -30px;
+    }
+    .stacked-testimonials-section.flow-layout.show-corners .testimonials-frame-corner.bottom-right {
+        bottom: -40px;
+        right: -30px;
     }
 }
 
