@@ -781,25 +781,21 @@ function init3DSpiral() {
                     s.currY += (s.targetY - s.currY) * sectionLerp;
                     s.currScale += (s.targetScale - s.currScale) * sectionLerp;
                     
-                    s.el.style.opacity = s.currOpacity.toFixed(3);
-                    s.el.style.transform = `translateY(${s.currY.toFixed(2)}px) scale(${s.currScale.toFixed(3)})`;
-                    s.el.style.pointerEvents = s.pointerEvents;
-                    
-                    // Apply blur to the previous (exiting) section as it scrolls out of view
+                    // Apply subtle fade to the previous (exiting) section as it scrolls out of view
                     const isPreviousSection = (scrollDirection === 'down' && s.targetY < 0) || 
                                               (scrollDirection === 'up' && s.targetY > 0);
                     
-                    let blurValue = 0;
+                    let fadeMultiplier = 1.0;
                     if (isPreviousSection) {
                         const exitProgress = Math.min(Math.max(Math.abs(s.currY) / cachedWindowHeight, 0), 1);
-                        blurValue = exitProgress * 16; // Max 16px blur
+                        // Subtle fading: minimum opacity of 0.7 (very less fading effect)
+                        fadeMultiplier = 1.0 - (exitProgress * 0.3); 
                     }
                     
-                    if (blurValue > 0.1) {
-                        s.el.style.filter = `blur(${blurValue.toFixed(1)}px)`;
-                    } else {
-                        s.el.style.filter = '';
-                    }
+                    s.el.style.opacity = (s.currOpacity * fadeMultiplier).toFixed(3);
+                    s.el.style.transform = `translateY(${s.currY.toFixed(2)}px) scale(${s.currScale.toFixed(3)})`;
+                    s.el.style.pointerEvents = s.pointerEvents;
+                    s.el.style.filter = ''; // Reset any previous filter blur
                     
                     // Hide completely when inactive to prevent blocking clicks
                     if (s.currOpacity < 0.01 && s.targetOpacity === 0) {

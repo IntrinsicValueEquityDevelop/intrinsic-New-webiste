@@ -910,7 +910,7 @@ html {
   padding: 80px 0 0 0;
   box-sizing: border-box;
   overflow: hidden;
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
 }
 
 /* Subtle background grid (Velvet Marigold theme version) */
@@ -1608,7 +1608,7 @@ html {
     align-items: center;
     justify-content: center;
     z-index: 2;
-    will-change: transform, opacity, filter;
+    will-change: transform, opacity;
 }
 
 /* Grid Coordinates overlay background style */
@@ -2214,7 +2214,7 @@ html {
     background: transparent;
     overflow: hidden;
     perspective: 1200px;
-    will-change: transform, opacity, filter;
+    will-change: transform, opacity;
 }
 
 .iv-featured-container {
@@ -2473,7 +2473,7 @@ html {
     background: transparent;
     overflow: hidden;
     perspective: 1200px;
-    will-change: transform, opacity, filter;
+    will-change: transform, opacity;
 }
 
 .iv-cases-container {
@@ -2984,7 +2984,7 @@ html {
     background: transparent;
     overflow: hidden;
     perspective: 1200px;
-    will-change: transform, opacity, filter;
+    will-change: transform, opacity;
 }
 
 /* Pricing Grid Coordinates overlay background style */
