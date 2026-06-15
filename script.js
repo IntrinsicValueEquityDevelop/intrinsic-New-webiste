@@ -772,9 +772,15 @@ function init3DSpiral() {
                     s.el.style.transform = `translateY(${s.currY.toFixed(2)}px) scale(${s.currScale.toFixed(3)})`;
                     s.el.style.pointerEvents = s.pointerEvents;
                     
-                    // Apply blur to sections as they scroll out of view (depth of field scroll effect)
-                    const exitProgress = Math.min(Math.max(Math.abs(s.currY) / cachedWindowHeight, 0), 1);
-                    const blurValue = exitProgress * 16; // Max 16px blur
+                    // Apply blur to the previous (exiting) section as it scrolls out of view
+                    const isPreviousSection = (scrollDirection === 'down' && s.targetY < 0) || 
+                                              (scrollDirection === 'up' && s.targetY > 0);
+                    
+                    let blurValue = 0;
+                    if (isPreviousSection) {
+                        const exitProgress = Math.min(Math.max(Math.abs(s.currY) / cachedWindowHeight, 0), 1);
+                        blurValue = exitProgress * 16; // Max 16px blur
+                    }
                     
                     if (blurValue > 0.1) {
                         s.el.style.filter = `blur(${blurValue.toFixed(1)}px)`;
