@@ -1368,6 +1368,14 @@ function initTestimonials() {
         let autoScrollOffset = 0;
         let flowAnimationId = null;
         let flowLayoutActivated = false;
+
+        // Discrete slideshow variables
+        let targetCardIndex = 0;
+        let targetScrollOffset = 0;
+        let slideTimer = Date.now();
+        let isTransitioning = false;
+        let transitionStartTime = 0;
+        let startScrollOffset = 0;
         
         // Track hover state for pausing auto-scroll
         stackedCards.forEach(card => {
@@ -1488,10 +1496,58 @@ function initTestimonials() {
                 const L = totalCards * S;
                 const midPoint = S / 2;
                 
-                if (!isHovered && !isDragging) {
-                    autoScrollOffset += 0.8; // slow horizontal flow
-                    if (autoScrollOffset >= L) {
-                        autoScrollOffset -= L;
+                if (isHovered || isDragging) {
+                    // Manual interactions reset play timers and snap targets
+                    slideTimer = Date.now();
+                    isTransitioning = false;
+                    stackedSection.classList.add('show-corners');
+                    
+                    targetCardIndex = Math.round(autoScrollOffset / S) % totalCards;
+                    if (targetCardIndex < 0) targetCardIndex += totalCards;
+                    targetScrollOffset = targetCardIndex * S;
+                } else {
+                    const now = Date.now();
+                    const elapsed = now - slideTimer;
+                    
+                    if (!isTransitioning) {
+                        // Display the active card centered with corners visible
+                        if (elapsed >= 3500) { // Stay for 3.5 seconds
+                            // Fade out corners first before starting the slide animation
+                            stackedSection.classList.remove('show-corners');
+                            isTransitioning = true;
+                            transitionStartTime = now + 400; // 400ms delay for corner brackets fade-out
+                            startScrollOffset = autoScrollOffset;
+                            
+                            targetCardIndex = (targetCardIndex + 1) % totalCards;
+                            targetScrollOffset = targetCardIndex * S;
+                        }
+                    } else {
+                        // Interpolate the slide motion
+                        if (now >= transitionStartTime) {
+                            const transElapsed = now - transitionStartTime;
+                            const duration = 800; // slide transition time
+                            
+                            if (transElapsed >= duration) {
+                                autoScrollOffset = targetScrollOffset;
+                                isTransitioning = false;
+                                slideTimer = now;
+                                
+                                // Show corner brackets around new centered card
+                                stackedSection.classList.add('show-corners');
+                            } else {
+                                const t = transElapsed / duration;
+                                // Cubic ease-in-out curve
+                                const ease = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+                                
+                                // Shortest path interpolation for circular marquee loop
+                                let diff = targetScrollOffset - startScrollOffset;
+                                if (diff > L / 2) diff -= L;
+                                if (diff < -L / 2) diff += L;
+                                
+                                autoScrollOffset = (startScrollOffset + diff * ease) % L;
+                                if (autoScrollOffset < 0) autoScrollOffset += L;
+                            }
+                        }
                     }
                 }
                 
@@ -1504,8 +1560,10 @@ function initTestimonials() {
                     let glow = 0;
                     if (d < midPoint) {
                         const progress = 1 - d / midPoint;
-                        scale = 1.0 + 0.08 * progress;
-                        glow = progress;
+                        // Snappy cubic ease-out curve for active pop-up
+                        const easeProgress = 1 - Math.pow(1 - progress, 3);
+                        scale = 1.0 + 0.16 * easeProgress; // Scale up to 1.16
+                        glow = easeProgress;
                     }
                     
                     card.style.transform = `translate3d(${wrappedPosition.toFixed(1)}px, 0, 0) scale(${scale.toFixed(3)})`;
@@ -1514,10 +1572,10 @@ function initTestimonials() {
                     card.style.zIndex = d < midPoint ? '10' : '5';
                     
                     card.style.boxShadow = glow > 0.01 
-                        ? `0 25px 50px rgba(0, 0, 0, 0.6), 0 0 30px rgba(255, 140, 0, ${(0.45 * glow).toFixed(2)})` 
+                        ? `0 25px 50px rgba(0, 0, 0, 0.6), 0 0 35px rgba(255, 140, 0, ${(0.5 * glow).toFixed(2)})` 
                         : '';
                     card.style.borderColor = glow > 0.01 
-                        ? `rgba(255, 140, 0, ${(0.08 + 0.5 * glow).toFixed(2)})` 
+                        ? `rgba(255, 140, 0, ${(0.08 + 0.55 * glow).toFixed(2)})` 
                         : '';
                 });
                 
@@ -1539,6 +1597,14 @@ function initTestimonials() {
             const diff = oldHeight - newHeight;
             
             stackedSection.classList.add('flow-layout');
+            stackedSection.classList.add('show-corners'); // Show corners initially for Card 0
+            
+            // Initialize slide machine values
+            targetCardIndex = 0;
+            targetScrollOffset = 0;
+            autoScrollOffset = 0;
+            slideTimer = Date.now();
+            isTransitioning = false;
             
             window.removeEventListener('scroll', handleScroll);
             window.removeEventListener('resize', handleScroll);
