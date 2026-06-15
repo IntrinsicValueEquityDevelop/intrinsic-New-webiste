@@ -473,8 +473,8 @@ function init3DSpiral() {
 
             if (window.hasReachedBottom) {
                 // Map sections linearly as if they were in a normal long page
-                const scaleFactor = 0.4;
-                const referenceScroll = Math.min(scrollY, 7.4 * windowHeight);
+                const scaleFactor = 0.5;
+                const referenceScroll = Math.min(scrollY, 10.0 * windowHeight);
                 
                 // Hero (0)
                 sectionsState.hero.targetOpacity = 1;
