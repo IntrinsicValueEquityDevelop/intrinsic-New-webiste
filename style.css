@@ -3784,7 +3784,7 @@ html {
     pointer-events: none;
     opacity: 0;
     visibility: hidden;
-    box-shadow: 0 0 10px rgba(255, 140, 0, 0.4);
+    filter: drop-shadow(0 0 5px rgba(255, 140, 0, 0.6));
     transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
                 visibility 0.8s ease, 
                 top 0.8s cubic-bezier(0.16, 1, 0.3, 1), 
