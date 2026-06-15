@@ -556,7 +556,7 @@ function init3DSpiral() {
                     sectionsState.philosophy.targetOpacity = progress;
                     sectionsState.philosophy.targetY = windowHeight * (1 - progress);
                     sectionsState.philosophy.targetScale = 1;
-                    sectionsState.philosophy.pointerEvents = progress > 0.5 ? 'auto' : 'none';
+                    sectionsState.philosophy.pointerEvents = 'auto';
                     if (window.innerWidth > 768) {
                         targetScrollOffsetAngle = 0;
                     }
@@ -578,7 +578,7 @@ function init3DSpiral() {
                     sectionsState.philosophy.targetOpacity = 1;
                     sectionsState.philosophy.targetY = -progress * windowHeight;
                     sectionsState.philosophy.targetScale = 1;
-                    sectionsState.philosophy.pointerEvents = 'none';
+                    sectionsState.philosophy.pointerEvents = progress < 1 ? 'auto' : 'none';
                     if (window.innerWidth > 768) {
                         targetScrollOffsetAngle = 540;
                     }
@@ -599,7 +599,7 @@ function init3DSpiral() {
                     sectionsState.featured.targetOpacity = progress;
                     sectionsState.featured.targetY = windowHeight * (1 - progress);
                     sectionsState.featured.targetScale = 1;
-                    sectionsState.featured.pointerEvents = progress > 0.5 ? 'auto' : 'none';
+                    sectionsState.featured.pointerEvents = 'auto';
                     sectionsState.featured.hasEntered = true;
                 } else if (scrollY > featuredFadeInEnd && scrollY < featuredFadeOutStart) {
                     // Active Phase
@@ -614,7 +614,7 @@ function init3DSpiral() {
                     sectionsState.featured.targetOpacity = 1;
                     sectionsState.featured.targetY = -progress * windowHeight;
                     sectionsState.featured.targetScale = 1;
-                    sectionsState.featured.pointerEvents = 'none';
+                    sectionsState.featured.pointerEvents = progress < 1 ? 'auto' : 'none';
                     sectionsState.featured.hasEntered = true;
                 }
             }
@@ -633,7 +633,7 @@ function init3DSpiral() {
                     sectionsState.cases.targetOpacity = progress;
                     sectionsState.cases.targetY = windowHeight * (1 - progress);
                     sectionsState.cases.targetScale = 1;
-                    sectionsState.cases.pointerEvents = progress > 0.5 ? 'auto' : 'none';
+                    sectionsState.cases.pointerEvents = 'auto';
                     sectionsState.cases.hasEntered = true;
                 } else if (scrollY > casesFadeInEnd && scrollY < casesFadeOutStart) {
                     // Active Phase
@@ -648,7 +648,7 @@ function init3DSpiral() {
                     sectionsState.cases.targetOpacity = 1;
                     sectionsState.cases.targetY = -progress * windowHeight;
                     sectionsState.cases.targetScale = 1;
-                    sectionsState.cases.pointerEvents = 'none';
+                    sectionsState.cases.pointerEvents = progress < 1 ? 'auto' : 'none';
                     sectionsState.cases.hasEntered = true;
                 }
             }
@@ -671,7 +671,7 @@ function init3DSpiral() {
                     sectionsState.pricing.targetOpacity = progress;
                     sectionsState.pricing.targetY = windowHeight * (1 - progress);
                     sectionsState.pricing.targetScale = 1;
-                    sectionsState.pricing.pointerEvents = progress > 0.5 ? 'auto' : 'none';
+                    sectionsState.pricing.pointerEvents = 'auto';
                     
                     // Reset zoom state to initial
                     pricingState.title.targetZ = -600;
@@ -735,7 +735,7 @@ function init3DSpiral() {
                     sectionsState.pricing.targetOpacity = 1;
                     sectionsState.pricing.targetY = -progress * windowHeight;
                     sectionsState.pricing.targetScale = 1;
-                    sectionsState.pricing.pointerEvents = 'none';
+                    sectionsState.pricing.pointerEvents = progress < 1 ? 'auto' : 'none';
 
                     // Title & Cards remain zoomed forward
                     pricingState.title.targetZ = 0;
