@@ -1610,6 +1610,17 @@ function initTestimonials() {
             // Phase 1 (Shrink): Add class to shrink & fade out the container
             stackedSection.classList.add('section-transition-zoom');
             
+            // Pin the sticky container to the viewport so the user cannot see any other sections (FAQ/footer) during the transition
+            const stickyContainer = stackedSection.querySelector('.stacked-testimonials-sticky');
+            if (stickyContainer) {
+                stickyContainer.style.position = 'fixed';
+                stickyContainer.style.top = '0';
+                stickyContainer.style.left = '0';
+                stickyContainer.style.width = '100%';
+                stickyContainer.style.height = '100vh';
+                stickyContainer.style.zIndex = '9999';
+            }
+            
             // Phase 2 (Switch): After the shrink animation finishes, swap layouts and adjust scroll position
             setTimeout(() => {
                 const windowHeight = cachedWindowHeight;
@@ -1642,8 +1653,21 @@ function initTestimonials() {
                 window.removeEventListener('scroll', handleScroll);
                 window.removeEventListener('resize', handleScroll);
                 
-                // Phase 3 (Zoom-in): CSS animations handle the smooth zoom & fade in
-                startFlowAnimation();
+                // Wait a tiny bit for the browser layout to register the new scroll and page height
+                setTimeout(() => {
+                    // Unpin the sticky container so it returns to the relative flow
+                    if (stickyContainer) {
+                        stickyContainer.style.position = '';
+                        stickyContainer.style.top = '';
+                        stickyContainer.style.left = '';
+                        stickyContainer.style.width = '';
+                        stickyContainer.style.height = '';
+                        stickyContainer.style.zIndex = '';
+                    }
+                    
+                    // Phase 3 (Zoom-in): CSS animations handle the smooth zoom & fade in
+                    startFlowAnimation();
+                }, 50);
             }, 600); // 600ms matching transition duration
         };
 
