@@ -3818,24 +3818,7 @@ html {
     border-width: 0 2px 2px 0;
 }
 
-/* Testimonials Flow Layout overrides */
-.stacked-testimonials-section.flow-layout {
-    height: 100vh !important;
-    padding: 0 !important;
-}
 
-.stacked-testimonials-section.flow-layout .stacked-testimonials-sticky {
-    position: relative !important;
-    top: 0 !important;
-    height: 100vh !important;
-    overflow: visible !important;
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    padding: 0 !important;
-    padding-top: 100px !important;
-}
 
 /* Show viewfinder and slide them to target position only in flow layout and when show-corners is active */
 .stacked-testimonials-section.flow-layout.show-corners .testimonials-frame-corner {
@@ -4014,9 +3997,7 @@ html {
         display: none !important;
     }
 
-    .stacked-testimonials-section.flow-layout .stacked-testimonials-sticky {
-        padding-top: 80px !important;
-    }
+
 
     .stacked-testimonials-section.flow-layout .testimonials-header-block {
         margin-bottom: 2.8cm !important;
@@ -4065,9 +4046,7 @@ html {
     .stacked-testimonials-section.flow-layout .testimonials-bg-text {
         display: none !important;
     }
-    .stacked-testimonials-section.flow-layout .stacked-testimonials-sticky {
-        padding-top: 60px !important;
-    }
+
 
     .stacked-testimonials-section.flow-layout .testimonials-header-block {
         margin-bottom: 2.2cm !important;
