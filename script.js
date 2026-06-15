@@ -1276,6 +1276,7 @@ function initComparisonModal() {
                 comparisonModal.style.display = 'flex';
                 void comparisonModal.offsetWidth; // Force layout repaint
                 comparisonModal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Lock background scroll
             });
         });
         
@@ -1284,6 +1285,7 @@ function initComparisonModal() {
                 e.preventDefault();
                 e.stopPropagation();
                 comparisonModal.classList.remove('active');
+                document.body.style.overflow = ''; // Restore background scroll
                 setTimeout(() => {
                     comparisonModal.style.display = 'none';
                 }, 400);
@@ -1293,6 +1295,7 @@ function initComparisonModal() {
         comparisonModal.addEventListener('click', (e) => {
             if (e.target === comparisonModal) {
                 comparisonModal.classList.remove('active');
+                document.body.style.overflow = ''; // Restore background scroll
                 setTimeout(() => {
                     comparisonModal.style.display = 'none';
                 }, 400);

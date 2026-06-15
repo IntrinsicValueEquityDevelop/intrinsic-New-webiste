@@ -3195,6 +3195,7 @@ html {
     justify-content: center;
     opacity: 0;
     transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    overscroll-behavior: contain;
 }
 
 .comparison-modal.active {
@@ -3262,6 +3263,7 @@ html {
     flex-grow: 1;
     margin-bottom: 15px;
     padding-right: 10px;
+    overscroll-behavior: contain;
 }
 
 /* Custom Scrollbar inside modal */
