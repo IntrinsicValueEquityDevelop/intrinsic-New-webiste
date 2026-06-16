@@ -70,6 +70,34 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('scroll', checkScroll);
     checkScroll(); // Run on load in case page is refreshed while scrolled down
 
+    // Handle header visibility during inner scrolling of the pricing/team section
+    const pricingSection = document.getElementById('pricing-scroll-section');
+    if (pricingSection) {
+        let lastSectionScrollY = 0;
+        pricingSection.addEventListener('scroll', () => {
+            const currentSectionScrollY = pricingSection.scrollTop;
+            const menuTrigger = document.querySelector('.menu-trigger');
+            const isMenuOpen = menuTrigger && menuTrigger.classList.contains('open');
+
+            if (currentSectionScrollY > 20) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+
+            if (currentSectionScrollY <= 80 || isMenuOpen) {
+                header.classList.remove('header-hidden');
+            } else if (currentSectionScrollY > lastSectionScrollY) {
+                // Scrolling down -> Hide header
+                header.classList.add('header-hidden');
+            } else {
+                // Scrolling up -> Reveal header
+                header.classList.remove('header-hidden');
+            }
+            lastSectionScrollY = currentSectionScrollY;
+        });
+    }
+
     // ==========================================================================
     // 2. MOBILE MENU DRAWER CONTROLLER
     // ==========================================================================
@@ -142,6 +170,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Regulatory Disclosures Accordion
     initDisclosures();
+
+    // Initialize Homepage Team Dropdown
+    initTeamDropdown();
 });
 
 
@@ -1802,6 +1833,51 @@ function initDisclosures() {
         }, observerOptions);
         
         revealObserver.observe(disclosuresSection);
+    }
+}
+
+function initTeamDropdown() {
+    const trigger = document.querySelector('.team-dropdown-heading');
+    const content = document.querySelector('.team-dropdown-content');
+    
+    if (trigger && content) {
+        trigger.addEventListener('click', () => {
+            const expanded = trigger.getAttribute('aria-expanded') === 'true';
+            trigger.setAttribute('aria-expanded', !expanded);
+            trigger.classList.toggle('active');
+            content.classList.toggle('active');
+            
+            // Toggle scrollability class and smoothly scroll the parent section container
+            const section = document.getElementById('pricing-scroll-section');
+            if (section) {
+                const isOpened = content.classList.contains('active');
+                if (isOpened) {
+                    section.classList.add('allow-scroll');
+                    
+                    // Smoothly scroll the container to align the 'Meet Our Team' heading at the top
+                    setTimeout(() => {
+                        const headerOffset = trigger.getBoundingClientRect().top - section.getBoundingClientRect().top + section.scrollTop;
+                        section.scrollTo({
+                            top: headerOffset - 20, // 20px padding from top
+                            behavior: 'smooth'
+                        });
+                    }, 100); // slight delay to allow rendering and transition
+                } else {
+                    // Reset scroll to top smoothly before removing scroll class
+                    section.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Wait for smooth scroll up animation to finish before removing allow-scroll class
+                    setTimeout(() => {
+                        if (!content.classList.contains('active')) {
+                            section.classList.remove('allow-scroll');
+                        }
+                    }, 350);
+                }
+            }
+        });
     }
 }
 

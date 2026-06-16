@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing | Intrinsic Value Equity Advisors</title>
+    <meta name="description" content="View the pricing plans and advisory tiers for Intrinsic Value Equity Advisors. Select HNI Premium, Inner Circle, or Invest Biz.">
+    <!-- Link Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .pricing-page-section {
+            padding: 4rem 0 6rem 0;
+            background-color: var(--bg-primary);
+        }
+        .pricing-page-grid-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 5rem;
+        }
+        .comparison-section {
+            padding-top: 2rem;
+        }
+        .comparison-table-wrapper {
+            background: rgba(18, 18, 18, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            overflow-x: auto;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        }
+        .comparison-title-area {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .comparison-main-title {
+            font-size: clamp(24px, 3.5vw, 30px);
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        .comparison-subtitle {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin: 0;
+        }
+        .btn-pricing-scroll {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            background: var(--accent);
+            color: var(--text-dark);
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        }
+        .btn-pricing-scroll:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+        .btn-pricing-scroll:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================================================
+         SHARED NAVIGATION HEADER
+         ========================================================================== -->
+    <header class="main-header">
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="logo.png" alt="Intrinsic Value Logo" class="logo-img">
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="pricing.html" class="nav-link" target="_blank" rel="noopener noreferrer">Service</a></li>
+                    <li><a href="about.html" class="nav-link">About Us</a></li>
+                    <li><a href="blogs.html" class="nav-link">Blogs</a></li>
+                    <li><a href="https://intrinsicvalue.smallcase.com/?showSubscription=false" class="nav-link" target="_blank" rel="noopener noreferrer">Smallcase</a></li>
+                    <li class="nav-actions-mobile">
+                        <a href="https://premium.exlyapp.com/?init_contact=true" class="btn-contact" target="_blank" rel="noopener noreferrer">Contact Us</a>
+                        <a href="https://premium.intrinsicvalueequity.in/eud/courses" class="btn-glow" target="_blank" rel="noopener noreferrer">Client Login</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <a href="https://premium.exlyapp.com/?init_contact=true" class="btn-contact" target="_blank" rel="noopener noreferrer">Contact Us</a>
+                <a href="https://premium.intrinsicvalueequity.in/eud/courses" class="btn-glow" target="_blank" rel="noopener noreferrer">Client Login</a>
+            </div>
+            <button class="menu-trigger" aria-label="Toggle Navigation Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ==========================================================================
+         MAIN CONTENT - PRICING DETAILS PAGE
+         ========================================================================== -->
+    <main style="padding-top: calc(var(--header-height) + 2rem); min-height: calc(100vh - 200px);">
+        <div class="pricing-page-section">
+            <div class="container">
+                
+                <!-- Page Header -->
+                <div style="text-align: center; margin-bottom: 4rem;">
+                    <h1 style="font-size: clamp(32px, 5vw, 44px); font-weight: 800; color: var(--text-primary); margin: 0 0 12px 0; letter-spacing: -0.5px;">Intrinsic Value Pricing</h1>
+                    <div style="width: 60px; height: 4px; background-color: var(--accent); margin: 0 auto 20px auto; border-radius: 2px;"></div>
+                    <p style="color: var(--text-muted); font-size: 16px; max-width: 600px; margin: 0 auto; line-height: 1.6;">Select the perfect advisory tier aligned with your capital size and research requirement.</p>
+                </div>
+                
+                <!-- Pricing Cards Grid -->
+                <div class="pricing-page-grid-container">
+                    <div class="pricing-cards-grid">
+                        <!-- Plan 1: HNI Premium -->
+                        <div class="pricing-card-3d" data-index="0" style="opacity: 1; transform: none;">
+                            <div class="pricing-card-glow"></div>
+                            <div class="pricing-card-header">
+                                <h3 class="pricing-plan-name">HNI Premium</h3>
+
+                                <div class="pricing-meta-item">
+                                    <span class="pricing-meta-label">MINIMUM CAPITAL</span>
+                                    <span class="pricing-meta-value">10 - 15 Lakhs</span>
+                                </div>
+
+                                <div class="pricing-card-divider"></div>
+
+                                <div class="pricing-price-box">
+                                    <span class="pricing-price">₹<span class="pricing-discount-counter">45,000</span> + GST / year</span>
+                                </div>
+
+                                <div class="pricing-duration">1 Year Subscription</div>
+
+                                <div class="pricing-card-divider"></div>
+                            </div>
+                            <div class="pricing-card-footer">
+                                <button class="btn-pricing-scroll" onclick="document.getElementById('comparison-section').scrollIntoView({ behavior: 'smooth' })">READ MORE</button>
+                            </div>
+                        </div>
+
+                        <!-- Plan 2: Inner Circle -->
+                        <div class="pricing-card-3d" data-index="1" style="opacity: 1; transform: none;">
+                            <div class="pricing-card-glow"></div>
+                            <div class="pricing-card-header">
+                                <h3 class="pricing-plan-name">Inner Circle</h3>
+
+                                <div class="pricing-meta-item">
+                                    <span class="pricing-meta-label">MINIMUM CAPITAL</span>
+                                    <span class="pricing-meta-value">2 Crore+</span>
+                                </div>
+
+                                <div class="pricing-card-divider"></div>
+
+                                <div class="pricing-price-box">
+                                    <span class="pricing-price">₹1.51 Lacs + GST / year</span>
+                                </div>
+
+                                <div class="pricing-duration">1 Year Subscription</div>
+
+                                <div class="pricing-card-divider"></div>
+                            </div>
+                            <div class="pricing-card-footer">
+                                <button class="btn-pricing-scroll" onclick="document.getElementById('comparison-section').scrollIntoView({ behavior: 'smooth' })">READ MORE</button>
+                            </div>
+                        </div>
+
+                        <!-- Plan 3: Invest Biz -->
+                        <div class="pricing-card-3d" data-index="2" style="opacity: 1; transform: none;">
+                            <div class="pricing-card-glow"></div>
+                            <div class="pricing-card-header">
+                                <h3 class="pricing-plan-name">Invest Biz</h3>
+
+                                <div class="pricing-meta-item">
+                                    <span class="pricing-meta-label">MINIMUM CAPITAL</span>
+                                    <span class="pricing-meta-value">5 Cr+ (Business money only)</span>
+                                </div>
+
+                                <div class="pricing-card-divider"></div>
+
+                                <div class="pricing-price-box">
+                                    <span class="pricing-price">Custom Pricing</span>
+                                </div>
+
+                                <div class="pricing-duration">Quarterly Billing</div>
+
+                                <div class="pricing-card-divider"></div>
+                            </div>
+                            <div class="pricing-card-footer">
+                                <button class="btn-pricing-scroll" onclick="document.getElementById('comparison-section').scrollIntoView({ behavior: 'smooth' })">READ MORE</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Comparison Table Section -->
+                <div id="comparison-section" class="comparison-section">
+                    <div class="comparison-title-area">
+                        <h2 class="comparison-main-title">Advisory Tiers <em>Comparison</em></h2>
+                        <div style="width: 50px; height: 3px; background-color: var(--accent); margin: 10px auto 15px auto; border-radius: 1.5px;"></div>
+                        <p class="comparison-subtitle">Compare the exact features, query resolutions, and platforms for each tier.</p>
+                    </div>
+
+                    <div class="comparison-table-wrapper">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Parameters</th>
+                                    <th>HNI Premium</th>
+                                    <th class="highlight-col">Inner Circle</th>
+                                    <th>Invest Biz</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="param-name">Bill Tenure</td>
+                                    <td>Annual</td>
+                                    <td class="highlight-col">Annual</td>
+                                    <td>Quarterly</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Minimum Capital</td>
+                                    <td>10–15 Lakhs</td>
+                                    <td class="highlight-col">2 Crore+</td>
+                                    <td>5 Cr+ (Business money only)</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Asset Class</td>
+                                    <td>Equity only</td>
+                                    <td class="highlight-col">Equity only</td>
+                                    <td>ETFs only</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Volatility / Risk</td>
+                                    <td>Mid/High</td>
+                                    <td class="highlight-col">Mid/High</td>
+                                    <td>Low</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Market cap</td>
+                                    <td>Small/&#8203;Microcap</td>
+                                    <td class="highlight-col">Small/&#8203;Microcap</td>
+                                    <td>—</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Alternate assets</td>
+                                    <td>Only at Extremes</td>
+                                    <td class="highlight-col">Only at Extremes</td>
+                                    <td>Always</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Holding</td>
+                                    <td>2–5 years</td>
+                                    <td class="highlight-col">2–5 years</td>
+                                    <td>9–12 months</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Face to Face</td>
+                                    <td>Once/&#8203;Quarter</td>
+                                    <td class="highlight-col">As needed</td>
+                                    <td>Active all time</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Target returns</td>
+                                    <td>Index +6-9%</td>
+                                    <td class="highlight-col">Index +6-9%</td>
+                                    <td>FD +6-9%</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Possible Drawdown</td>
+                                    <td>&gt;15%</td>
+                                    <td class="highlight-col">&gt;15%</td>
+                                    <td>&lt;8%</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Portfolio</td>
+                                    <td>&gt;20 stocks</td>
+                                    <td class="highlight-col">&gt;20 stocks</td>
+                                    <td>&gt;3 ETFs</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">SME Stocks</td>
+                                    <td>No</td>
+                                    <td class="highlight-col">Opportunity based</td>
+                                    <td>No</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Query resolution</td>
+                                    <td>3 days</td>
+                                    <td class="highlight-col">24 hours</td>
+                                    <td>24 hours</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Access</td>
+                                    <td>Single</td>
+                                    <td class="highlight-col">2 people</td>
+                                    <td>Multi</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Platform</td>
+                                    <td>App</td>
+                                    <td class="highlight-col">WhatsApp plus App</td>
+                                    <td>Personalized WA Group</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Model portfolio</td>
+                                    <td>Equity research</td>
+                                    <td class="highlight-col">Focused Model Portfolio</td>
+                                    <td>Business worthy</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Who should join</td>
+                                    <td>Retail investors</td>
+                                    <td class="highlight-col">Entrepreneurs/&#8203;Professionals</td>
+                                    <td>Companies with Business Cash</td>
+                                </tr>
+                                <tr>
+                                    <td class="param-name">Fee/&#8203;Year</td>
+                                    <td>39,871+GST</td>
+                                    <td class="highlight-col">1.51 Lacs +GST</td>
+                                    <td>Custom</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 3.5rem;">
+                        <a href="https://premium.exlyapp.com/?init_contact=true" target="_blank" rel="noopener noreferrer" class="btn-glow" style="padding: 16px 36px; text-decoration: none; display: inline-block; font-size: 16px; font-weight: 700;">Get Started Today</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ==========================================================================
+         SHARED FOOTER & DISCLAIMER
+         ========================================================================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-main-grid">
+                <div class="footer-col-brand">
+                    <a href="index.html" class="logo footer-logo">
+                        <img src="logo.png" alt="Intrinsic Value Logo" class="logo-img">
+                    </a>
+                    <p class="footer-desc">
+                        SEBI-registered value investing research and advisory service dedicated to sustainable wealth creation.
+                    </p>
+                    <div class="app-download-buttons">
+                        <a href="https://play.google.com/store/apps/details?id=com.exly.intrinsicvalueequity&pli=1" target="_blank" rel="noopener noreferrer" class="app-store-btn" aria-label="Get it on Google Play">
+                            <svg class="store-icon" viewBox="0 0 512 512">
+                                <path fill="#34A853" d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1z"/>
+                                <path fill="#4285F4" d="M47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0z"/>
+                                <path fill="#EA4335" d="M425.2 225.6l-58 33.3 60.1 60.1L479 321.8c13-7.5 21.7-20.7 21.7-36.2s-8.7-28.7-21.7-36.2l-6.8-4z"/>
+                                <path fill="#FBBC05" d="M325.3 277.7l60.1 60.1L104.6 499l220.7-221.3z"/>
+                            </svg>
+                            <div class="btn-label">
+                                <span class="btn-subtext">GET IT ON</span>
+                                <span class="btn-maintext">Google Play</span>
+                            </div>
+                        </a>
+                        <a href="https://apps.apple.com/in/app/intrinsic-value-equity/id6755237343" target="_blank" rel="noopener noreferrer" class="app-store-btn" aria-label="Download on the App Store">
+                            <svg class="store-icon" viewBox="0 0 384 512">
+                                <defs>
+                                    <linearGradient id="apple-store-blue-pricing" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stop-color="#00c6ff" />
+                                        <stop offset="100%" stop-color="#007aff" />
+                                    </linearGradient>
+                                </defs>
+                                <path fill="url(#apple-store-blue-pricing)" d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 51 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 47.5-24.4 76.5 26.9 2.4 51.2-16 68.3-38.9z"/>
+                            </svg>
+                            <div class="btn-label">
+                                <span class="btn-subtext">Download on the</span>
+                                <span class="btn-maintext">App Store</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col-links">
+                    <h3 class="footer-heading">Quick Links</h3>
+                    <ul class="footer-links-list">
+                        <li><a href="pricing.html" target="_blank" rel="noopener noreferrer">Service</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="blogs.html">Blogs</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col-links">
+                    <h3 class="footer-heading">Legal &amp; Compliance</h3>
+                    <ul class="footer-links-list">
+                        <li><a href="https://intrinsicvalueequity.in/terms-and-conditions/" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</a></li>
+                        <li><a href="https://intrinsicvalueequity.in/privacy-policy-2/" target="_blank" rel="noopener noreferrer">Privacy Policy</a></li>
+                        <li><a href="https://intrinsicvalueequity.in/disclaimer/" target="_blank" rel="noopener noreferrer">Disclaimer</a></li>
+                        <li><a href="https://intrinsicvalueequity.in/investor-charter/" target="_blank" rel="noopener noreferrer">Investor Charter</a></li>
+                        <li><a href="https://smartodr.in/login" target="_blank" rel="noopener noreferrer">Smart ODR</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col-reg">
+                    <h3 class="footer-heading">Registration Details</h3>
+                    <p class="footer-reg-details">
+                        <span class="reg-label">Name:</span> Intrinsic Value Equity Advisors<br>
+                        <span class="reg-label">SEBI Registration No:</span> INH000009047<br>
+                        <span class="reg-label">Validity:</span> Jan 31, 2027
+                    </p>
+                </div>
+            </div>
+            
+            <div class="footer-contact-bar">
+                <div class="contact-item">
+                    <div class="contact-icon-wrapper">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                    </div>
+                    <div class="contact-text">
+                        <a href="tel:+917354259486" class="contact-link">+91 73542 59486</a>
+                        <a href="tel:+919806471956" class="contact-link">+91 98064 71956</a>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon-wrapper">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </div>
+                    <div class="contact-text">
+                        <a href="mailto:info@intrinsicvalueequity.in" class="contact-link">info@intrinsicvalueequity.in</a>
+                    </div>
+                </div>
+                <div class="contact-item contact-item-address">
+                    <div class="contact-icon-wrapper">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                            <circle cx="12" cy="10" r="3"></circle>
+                        </svg>
+                    </div>
+                    <div class="contact-text">
+                        <span>Floor No : 3, Flat No :106, Mont vert Spectra Opp. Hotel Wadeshwar, Baner, Pune, Maharashtra PIN Code: 411045</span>
+                    </div>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon-wrapper">
+                        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                    </div>
+                    <div class="contact-text">
+                        <span>Sat–Thursday: 8:00 AM–8:00 PM</span>
+                        <span>Friday: Closed</span>
+                        <span>Sat-Sun:- Open</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="footer-disclaimers">
+                    <p class="disclaimer-text">
+                        Investment in securities market are subjected to market risks, Read all the related documents carefully before investing.
+                    </p>
+                    <p class="disclaimer-text">
+                        Disclaimer: Registration granted by SEBI and certification from NISM in no way guarantee performance of the Research Analyst or provide any assurance of returns to investor.
+                    </p>
+                </div>
+                <div class="footer-copyright">
+                    <p>&copy; 2026 Intrinsic Value Equity Advisors. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Link Logic Script -->
+    <script src="script.js"></script>
+</body>
+</html>

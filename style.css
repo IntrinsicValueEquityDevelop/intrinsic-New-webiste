@@ -2982,9 +2982,24 @@ html {
     justify-content: center;
     padding: 0;
     background: transparent;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: hidden;
     perspective: 1200px;
     will-change: transform, opacity;
+}
+
+.pricing-scroll-section.allow-scroll {
+    overflow-y: auto;
+    align-items: flex-start;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.pricing-scroll-section.allow-scroll::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
 }
 
 /* Pricing Grid Coordinates overlay background style */
@@ -5009,29 +5024,47 @@ html {
 }
 
 .team-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 30px;
+    justify-content: center;
+    justify-items: center;
+    max-width: 960px;
+    margin: 0 auto;
 }
 
 .team-card {
-    flex: 1 1 300px;
-    max-width: 320px;
+    width: 100%;
+    max-width: 290px;
     background: rgba(18, 18, 18, 0.6);
     backdrop-filter: blur(12px) saturate(180%);
     -webkit-backdrop-filter: blur(12px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 20px;
-    padding: 35px 25px;
+    border-radius: 16px;
+    padding: 30px 20px;
     text-align: center;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
     transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
                 border-color 0.3s ease, 
                 box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+/* Responsive media queries for team grid to wrap nicely on smaller devices */
+@media (max-width: 992px) {
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 610px;
+    }
+}
+
+@media (max-width: 650px) {
+    .team-grid {
+        grid-template-columns: 1fr;
+        max-width: 290px;
+    }
 }
 
 .team-card:hover {
@@ -5041,12 +5074,12 @@ html {
 }
 
 .team-avatar-wrapper {
-    width: 160px;
-    height: 160px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     border: 3px solid rgba(255, 255, 255, 0.08);
-    padding: 4px;
-    margin-bottom: 24px;
+    padding: 3px;
+    margin-bottom: 20px;
     transition: border-color 0.3s ease;
 }
 
@@ -5090,7 +5123,7 @@ html {
 }
 
 .team-name {
-    font-size: 19px;
+    font-size: 18px;
     font-weight: 700;
     color: var(--text-primary);
     margin: 0;
@@ -5118,6 +5151,126 @@ html {
 .pricing-title-link:hover .pricing-main-title {
     color: var(--accent);
     text-shadow: 0 0 15px var(--accent-glow);
+}
+
+/* Homepage Team Dropdown Styling */
+.homepage-team-dropdown {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 1100px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.pricing-section-header-title {
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+    font-family: var(--font-heading);
+}
+
+/* Vibrating pill outline button */
+.btn-vibrate-outline {
+    background: transparent;
+    border: 2px solid var(--accent);
+    color: var(--text-primary);
+    padding: 14px 40px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 50px;
+    text-decoration: none;
+    display: inline-block;
+    letter-spacing: 0.5px;
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    animation: vibrate-subtle 3s infinite ease-in-out;
+}
+
+.btn-vibrate-outline:hover {
+    box-shadow: 0 0 20px rgba(255, 140, 0, 0.25);
+    color: var(--accent);
+    animation-play-state: paused;
+}
+
+@keyframes vibrate-subtle {
+    0%, 100% { transform: translate(0, 0); }
+    5% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+    10% { transform: translate(1px, -1px) rotate(0.5deg); }
+    15% { transform: translate(-1px, -1px) rotate(-0.5deg); }
+    20% { transform: translate(1px, 1px) rotate(0.5deg); }
+    25% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+    30% { transform: translate(1px, -1px) rotate(0.5deg); }
+    35% { transform: translate(-1px, -1px) rotate(-0.5deg); }
+    40% { transform: translate(1px, 1px) rotate(0.5deg); }
+    45% { transform: translate(0, 0) rotate(0); }
+}
+
+/* Meet Our Team Dropdown Header */
+.team-dropdown-header-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.team-dropdown-heading {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 32px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: var(--font-heading);
+    margin: 0;
+    padding: 10px 24px;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    user-select: none;
+}
+
+.team-dropdown-heading .text-white {
+    color: var(--text-primary);
+}
+
+.team-dropdown-heading .text-orange {
+    color: var(--accent);
+}
+
+.team-dropdown-heading .chevron-icon {
+    width: 24px;
+    height: 24px;
+    stroke: var(--accent);
+    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.team-dropdown-heading:hover .chevron-icon {
+    transform: translateY(2px);
+}
+
+.team-dropdown-heading.active {
+    transform: translateY(-20px);
+}
+
+.team-dropdown-heading.active .chevron-icon {
+    transform: rotate(180deg);
+}
+
+.team-dropdown-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    width: 100%;
+}
+
+.team-dropdown-content.active {
+    max-height: 1200px; /* Expand fully inline without scrollbars */
+    padding: 0;
+    margin-top: 25px;
+    background: transparent;
+    border: none;
+    overflow: visible;
 }
 
 
