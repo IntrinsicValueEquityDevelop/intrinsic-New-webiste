@@ -1228,10 +1228,10 @@
                 </div>
 
                 <div class="disclosures-accordion-list">
-                    <!-- Disclosure Item 1: Complaint Status -->
+                    <!-- Disclosure Item 1: Grievance Status -->
                     <div class="disclosure-item">
                         <div class="disclosure-header">
-                            <h3 class="disclosure-title">Complaint Status</h3>
+                            <h3 class="disclosure-title">Grievance Status</h3>
                             <div class="disclosure-icon">
                                 <span class="line horizontal"></span>
                                 <span class="line vertical"></span>
@@ -1240,103 +1240,86 @@
                         <div class="disclosure-accent-bar"></div>
                         <div class="disclosure-panel">
                             <div class="disclosure-panel-inner">
-                                <!-- Nested Collapsible Dropdown for Research Analyst -->
-                                <div class="sub-disclosure-item active">
-                                    <div class="sub-disclosure-header">
-                                        <h4 class="sub-disclosure-title">Research Analyst</h4>
-                                        <div class="sub-disclosure-chevron">
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                stroke-linejoin="round">
-                                                <polyline points="6 9 12 15 18 9"></polyline>
-                                            </svg>
-                                        </div>
+                                <!-- Month Selector -->
+                                <div class="month-selector-wrapper">
+                                    <span class="month-select-label">Data for the month ending -</span>
+                                    <div class="custom-select-wrapper">
+                                        <select id="month-select" class="month-select-input"
+                                            aria-label="Select month for complaints data">
+                                            <option value="may-2026" selected>May 2026</option>
+                                        </select>
                                     </div>
-                                    <div class="sub-disclosure-panel">
-                                        <div class="sub-disclosure-panel-inner">
-                                            <!-- Month Selector -->
-                                            <div class="month-selector-wrapper">
-                                                <span class="month-select-label">Data for the month ending -</span>
-                                                <div class="custom-select-wrapper">
-                                                    <select id="month-select" class="month-select-input"
-                                                        aria-label="Select month for complaints data">
-                                                        <option value="may-2026" selected>May 2026</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                </div>
 
-                                            <!-- Table wrapper for horizontal scroll -->
-                                            <div class="table-responsive-wrapper">
-                                                <table class="disclosure-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Sr. No.</th>
-                                                            <th>Received from</th>
-                                                            <th>Pending at the end of last month</th>
-                                                            <th>Received</th>
-                                                            <th>Resolved *</th>
-                                                            <th>Total Pending #</th>
-                                                            <th>Pending complaints &gt; 3 months</th>
-                                                            <th>Average Resolution time^ (in days)</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>1</td>
-                                                            <td>Directly from Investors</td>
-                                                            <td>0</td>
-                                                            <td>0</td>
-                                                            <td>0</td>
-                                                            <td>0</td>
-                                                            <td>0</td>
-                                                            <td>0</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>2</td>
-                                                            <td>SEBI (scores)</td>
-                                                            <td>0</td>
-                                                            <td>0</td>
-                                                            <td>0</td>
-                                                            <td>0</td>
-                                                            <td>0</td>
-                                                            <td>0</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>3</td>
-                                                            <td>Other Sources (if any)</td>
-                                                            <td>0</td>
-                                                            <td>0</td>
-                                                            <td>0</td>
-                                                            <td>0</td>
-                                                            <td>0</td>
-                                                            <td>0</td>
-                                                        </tr>
-                                                        <tr class="grand-total-row">
-                                                            <td></td>
-                                                            <td><strong>Grand Total</strong></td>
-                                                            <td><strong>0</strong></td>
-                                                            <td><strong>0</strong></td>
-                                                            <td><strong>0</strong></td>
-                                                            <td><strong>0</strong></td>
-                                                            <td><strong>0</strong></td>
-                                                            <td><strong>0</strong></td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                <!-- Table wrapper for horizontal scroll -->
+                                <div class="table-responsive-wrapper">
+                                    <table class="disclosure-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Sr. No.</th>
+                                                <th>Received from</th>
+                                                <th>Pending at the end of last month</th>
+                                                <th>Received</th>
+                                                <th>Resolved *</th>
+                                                <th>Total Pending #</th>
+                                                <th>Pending complaints &gt; 3 months</th>
+                                                <th>Average Resolution time^ (in days)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Directly from Investors</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>SEBI (scores)</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>Other Sources (if any)</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                                <td>0</td>
+                                            </tr>
+                                            <tr class="grand-total-row">
+                                                <td></td>
+                                                <td><strong>Grand Total</strong></td>
+                                                <td><strong>0</strong></td>
+                                                <td><strong>0</strong></td>
+                                                <td><strong>0</strong></td>
+                                                <td><strong>0</strong></td>
+                                                <td><strong>0</strong></td>
+                                                <td><strong>0</strong></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-                                            <!-- Footnotes -->
-                                            <div class="disclosure-footnotes">
-                                                <p>* Inclusive of complaints of previous months resolved in the current
-                                                    month.</p>
-                                                <p># Inclusive of complaints pending as on the last day of the month.
-                                                </p>
-                                                <p>^ Average Resolution time is the sum total of time taken to resolve
-                                                    each complaint in days, in the current month divided by total number
-                                                    of complaints resolved in the current month.</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <!-- Footnotes -->
+                                <div class="disclosure-footnotes">
+                                    <p>* Inclusive of complaints of previous months resolved in the current
+                                        month.</p>
+                                    <p># Inclusive of complaints pending as on the last day of the month.
+                                    </p>
+                                    <p>^ Average Resolution time is the sum total of time taken to resolve
+                                        each complaint in days, in the current month divided by total number
+                                        of complaints resolved in the current month.</p>
                                 </div>
                             </div>
                         </div>
