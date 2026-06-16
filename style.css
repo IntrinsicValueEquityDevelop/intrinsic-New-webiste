@@ -885,7 +885,7 @@ html {
    ========================================================================== */
 .scroll-stack {
   position: relative;
-  height: 840vh; /* Total page scroll depth (Hero 100vh, Philosophy 220vh, Featured 50vh, Cases 50vh, Pricing 420vh) */
+  height: 1040vh; /* Total page scroll depth (Hero 100vh, Philosophy 220vh, Featured 200vh, Cases 200vh, Pricing 420vh) */
   width: 100%;
 }
 
@@ -3510,7 +3510,7 @@ html {
    ========================================================================== */
 .stacked-testimonials-section {
     position: relative;
-    height: 480vh; /* Scroll track length for 9 cards */
+    height: 100vh; /* Flow layout height */
     background-color: var(--bg-primary);
     width: 100%;
     overflow: visible;

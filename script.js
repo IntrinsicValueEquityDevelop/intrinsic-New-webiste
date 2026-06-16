@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Lock scroll stack height on load to prevent jumping when mobile address bar hides/shows
     const scrollStack = document.querySelector('.scroll-stack');
     if (scrollStack) {
-        scrollStack.style.height = `${8.4 * cachedWindowHeight}px`;
+        scrollStack.style.height = `${10.4 * cachedWindowHeight}px`;
     }
 
     // Update dimensions on resize, ignoring minor height shifts (like mobile browser URL bar collapsing)
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cachedWindowHeight = newHeight;
             cachedWindowWidth = newWidth;
             if (scrollStack) {
-                scrollStack.style.height = `${8.4 * cachedWindowHeight}px`;
+                scrollStack.style.height = `${10.4 * cachedWindowHeight}px`;
             }
         }
     });
@@ -338,14 +338,15 @@ function init3DSpiral() {
             const windowHeight = cachedWindowHeight;
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
-            const endOffset = isFlow ? 8.4 * windowHeight : 12.2 * windowHeight;
+            const endOffset = isFlow ? 10.4 * windowHeight : 14.2 * windowHeight;
             return [
                 0,
                 1.0 * windowHeight,
                 3.2 * windowHeight,
-                3.7 * windowHeight,
-                4.2 * windowHeight,
-                8.4 * windowHeight,
+                3.8 * windowHeight,
+                5.8 * windowHeight,
+                7.2 * windowHeight,
+                10.4 * windowHeight,
                 endOffset
             ];
         };
@@ -367,7 +368,7 @@ function init3DSpiral() {
             // Hide indicator when reaching FAQ/Footer bottom
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
-            const hideThreshold = isFlow ? 8.4 * windowHeight : 12.2 * windowHeight;
+            const hideThreshold = isFlow ? 10.4 * windowHeight : 14.2 * windowHeight;
             if (scrollY >= hideThreshold) {
                 scrollIndicator.classList.remove('visible');
                 return;
@@ -459,18 +460,18 @@ function init3DSpiral() {
             const philFadeOutStart = 3.2 * windowHeight;
 
             const featuredFadeInStart = 3.2 * windowHeight;
-            const featuredFadeInEnd = 3.7 * windowHeight;
-            const featuredFadeOutStart = 3.7 * windowHeight;
+            const featuredFadeInEnd = 3.8 * windowHeight;
+            const featuredFadeOutStart = 4.6 * windowHeight;
 
-            const casesFadeInStart = 3.7 * windowHeight;
-            const casesFadeInEnd = 4.2 * windowHeight;
-            const casesFadeOutStart = 4.2 * windowHeight;
+            const casesFadeInStart = 4.6 * windowHeight;
+            const casesFadeInEnd = 5.2 * windowHeight;
+            const casesFadeOutStart = 6.0 * windowHeight;
 
-            const pricingFadeInStart = 4.2 * windowHeight;
-            const pricingFadeInEnd = 4.7 * windowHeight;
-            const pricingZoomStart = 4.7 * windowHeight;
-            const pricingZoomEnd = 6.7 * windowHeight;
-            const pricingFadeOutStart = 6.7 * windowHeight;
+            const pricingFadeInStart = 6.0 * windowHeight;
+            const pricingFadeInEnd = 6.6 * windowHeight;
+            const pricingZoomStart = 6.6 * windowHeight;
+            const pricingZoomEnd = 8.6 * windowHeight;
+            const pricingFadeOutStart = 8.6 * windowHeight;
 
             // 1. Hero Section Fade & Translate (outward)
             if (heroSec) {
@@ -672,7 +673,7 @@ function init3DSpiral() {
                     }
                 } else {
                     // Exiting Pricing Section (scrollY >= pricingFadeOutStart) - scroll up naturally
-                    const progress = Math.max(0, Math.min(1, (scrollY - pricingFadeOutStart) / (8.4 * windowHeight - pricingFadeOutStart)));
+                    const progress = Math.max(0, Math.min(1, (scrollY - pricingFadeOutStart) / (10.4 * windowHeight - pricingFadeOutStart)));
                     sectionsState.pricing.targetOpacity = 1;
                     sectionsState.pricing.targetY = -progress * windowHeight;
                     sectionsState.pricing.targetScale = 1;
@@ -1304,7 +1305,6 @@ function initTestimonials() {
         let lastSlideTime = Date.now();
         let autoPlayTargetIndex = 0;
         let flowAnimationId = null;
-        let flowLayoutActivated = false;
         
         // Get card spacing based on viewport width (Card width + Gap)
         const getCardSpacing = () => {
@@ -1430,21 +1430,6 @@ function initTestimonials() {
             }, { passive: false });
         }
         
-        // Initialize cards stack layout
-        const setupCards = () => {
-            stackedCards.forEach((card, idx) => {
-                card.style.zIndex = totalCards - idx;
-                const rot = (idx % 2 === 0 ? 1 : -1) * (idx * 0.8 + 0.5);
-                const transY = idx * 4;
-                const transZ = -idx * 8;
-                card.style.transform = `translate3d(0, ${transY}px, ${transZ}px) rotate(${rot}deg)`;
-                card.style.opacity = '1';
-                card.style.visibility = 'visible';
-                card.style.boxShadow = '';
-                card.style.borderColor = '';
-            });
-        };
-        
         const startFlowAnimation = () => {
             if (flowAnimationId) return;
             
@@ -1542,114 +1527,21 @@ function initTestimonials() {
             
             flowAnimationId = requestAnimationFrame(animateFlow);
         };
+
+        // Initialize state on page load directly in flow layout
+        stackedSection.classList.add('flow-layout');
+        stackedSection.classList.add('show-corners');
         
-        const transitionToFlowLayout = () => {
-            if (stackedSection.classList.contains('flow-layout') || stackedSection.classList.contains('section-transition-zoom')) return;
-            
-            flowLayoutActivated = true;
-            
-            // Phase 1 (Shrink): Add class to shrink & fade out the container
-            stackedSection.classList.add('section-transition-zoom');
-            
-            // Phase 2 (Switch): After the shrink animation finishes, swap layout classes
-            setTimeout(() => {
-                // Check progress to ensure the user hasn't scrolled back up during the timeout!
-                const rect = stackedSection.getBoundingClientRect();
-                const scrolled = 80 - rect.top;
-                const scrollRange = rect.height - cachedWindowHeight;
-                const progress = scrollRange > 0 ? Math.max(0, Math.min(1, scrolled / scrollRange)) : 0;
-                
-                if (progress < 0.95) {
-                    stackedSection.classList.remove('section-transition-zoom');
-                    flowLayoutActivated = false;
-                    return;
-                }
-
-                // Adjust scroll position to prevent clamping and jumping
-                const windowHeight = cachedWindowHeight;
-                const diff = rect.height - windowHeight; // 4.8 * windowHeight - 1.0 * windowHeight = 3.8 * windowHeight
-                const currentScroll = window.scrollY;
-                window.scrollTo(0, currentScroll - diff);
-
-                stackedSection.classList.remove('section-transition-zoom');
-                stackedSection.classList.add('flow-layout');
-                stackedSection.classList.add('show-corners');
-                
-                // Initialize slide machine values
-                autoScrollOffset = 0;
-                renderOffset = 0;
-                lastInteractionTime = Date.now() - 1500; // Trigger first slide in 1.0 second
-                lastSlideTime = Date.now() - 1500;
-                autoPlayTargetIndex = 0;
-                isMomentum = false;
-                momentumVelocity = 0;
-                isDragging = false;
-                
-                // Phase 3 (Zoom-in): CSS animations handle the smooth zoom & fade in
-                startFlowAnimation();
-            }, 600); // 600ms matching transition duration
-        };
-
-        const handleScroll = () => {
-            if (stackedSection.classList.contains('flow-layout') || stackedSection.classList.contains('section-transition-zoom')) return;
-            
-            const rect = stackedSection.getBoundingClientRect();
-            const sectionHeight = rect.height;
-            const windowHeight = cachedWindowHeight;
-            
-            const scrolled = 80 - rect.top;
-            const scrollRange = sectionHeight - windowHeight;
-            
-            if (scrollRange <= 0) return;
-            
-            let progress = scrolled / scrollRange;
-            progress = Math.max(0, Math.min(1, progress));
-            
-            if (progress >= 0.98) {
-                transitionToFlowLayout();
-                return;
-            }
-            
-            const segmentCount = totalCards;
-            
-            stackedCards.forEach((card, idx) => {
-                const startThresh = idx / segmentCount;
-                const endThresh = (idx + 1) / segmentCount;
-                
-                if (progress <= startThresh) {
-                    const rot = (idx % 2 === 0 ? 1 : -1) * (idx * 0.8 + 0.5);
-                    const transY = idx * 4;
-                    const transZ = -idx * 8;
-                    card.style.transform = `translate3d(0, ${transY}px, ${transZ}px) rotate(${rot}deg)`;
-                    card.style.opacity = '1';
-                    card.style.visibility = 'visible';
-                } else if (progress > startThresh && progress < endThresh) {
-                    const subProgress = (progress - startThresh) / (endThresh - startThresh);
-                    
-                    let dirX = 1;
-                    if (idx % 3 === 0) dirX = -1.2;
-                    else if (idx % 3 === 1) dirX = 1.2;
-                    else dirX = -0.3;
-                    
-                    const flyX = dirX * subProgress * 1100;
-                    const flyY = -subProgress * 550;
-                    const flyRot = ((idx % 2 === 0 ? 1 : -1) * 12) + (subProgress * dirX * 45);
-                    
-                    card.style.transform = `translate3d(${flyX}px, ${flyY}px, 0) rotate(${flyRot}deg)`;
-                    card.style.opacity = (1 - subProgress).toString();
-                    card.style.visibility = 'visible';
-                } else {
-                    card.style.opacity = '0';
-                    card.style.visibility = 'hidden';
-                }
-            });
-        };
-
-        // Initialize state on page load (always starts stacked layout fresh on page load/reload)
-        setupCards();
-        window.addEventListener('scroll', handleScroll);
-        handleScroll();
-        window.addEventListener('resize', handleScroll);
+        autoScrollOffset = 0;
+        renderOffset = 0;
+        lastInteractionTime = Date.now() - 1500; // Trigger first slide in 1.0 second
+        lastSlideTime = Date.now() - 1500;
+        autoPlayTargetIndex = 0;
+        isMomentum = false;
+        momentumVelocity = 0;
+        isDragging = false;
+        
+        startFlowAnimation();
     }
 }
 
