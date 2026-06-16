@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Lock scroll stack height on load to prevent jumping when mobile address bar hides/shows
     const scrollStack = document.querySelector('.scroll-stack');
     if (scrollStack) {
-        scrollStack.style.height = `${10.4 * cachedWindowHeight}px`;
+        scrollStack.style.height = `${8.5 * cachedWindowHeight}px`;
     }
 
     // Update dimensions on resize, ignoring minor height shifts (like mobile browser URL bar collapsing)
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cachedWindowHeight = newHeight;
             cachedWindowWidth = newWidth;
             if (scrollStack) {
-                scrollStack.style.height = `${10.4 * cachedWindowHeight}px`;
+                scrollStack.style.height = `${8.5 * cachedWindowHeight}px`;
             }
         }
     });
@@ -338,15 +338,14 @@ function init3DSpiral() {
             const windowHeight = cachedWindowHeight;
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
-            const endOffset = isFlow ? 10.4 * windowHeight : 14.2 * windowHeight;
+            const endOffset = isFlow ? 8.5 * windowHeight : 12.3 * windowHeight;
             return [
                 0,
                 1.0 * windowHeight,
-                3.2 * windowHeight,
-                3.8 * windowHeight,
-                5.8 * windowHeight,
-                7.2 * windowHeight,
-                10.4 * windowHeight,
+                3.6 * windowHeight,
+                4.2 * windowHeight,
+                4.8 * windowHeight,
+                8.5 * windowHeight,
                 endOffset
             ];
         };
@@ -368,7 +367,7 @@ function init3DSpiral() {
             // Hide indicator when reaching FAQ/Footer bottom
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
-            const hideThreshold = isFlow ? 10.4 * windowHeight : 14.2 * windowHeight;
+            const hideThreshold = isFlow ? 8.5 * windowHeight : 12.3 * windowHeight;
             if (scrollY >= hideThreshold) {
                 scrollIndicator.classList.remove('visible');
                 return;
@@ -460,18 +459,18 @@ function init3DSpiral() {
             const philFadeOutStart = 3.2 * windowHeight;
 
             const featuredFadeInStart = 3.2 * windowHeight;
-            const featuredFadeInEnd = 3.8 * windowHeight;
-            const featuredFadeOutStart = 4.6 * windowHeight;
+            const featuredFadeInEnd = 3.6 * windowHeight;
+            const featuredFadeOutStart = 3.8 * windowHeight;
 
-            const casesFadeInStart = 4.6 * windowHeight;
-            const casesFadeInEnd = 5.2 * windowHeight;
-            const casesFadeOutStart = 6.0 * windowHeight;
+            const casesFadeInStart = 3.8 * windowHeight;
+            const casesFadeInEnd = 4.2 * windowHeight;
+            const casesFadeOutStart = 4.4 * windowHeight;
 
-            const pricingFadeInStart = 6.0 * windowHeight;
-            const pricingFadeInEnd = 6.6 * windowHeight;
-            const pricingZoomStart = 6.6 * windowHeight;
-            const pricingZoomEnd = 8.6 * windowHeight;
-            const pricingFadeOutStart = 8.6 * windowHeight;
+            const pricingFadeInStart = 4.4 * windowHeight;
+            const pricingFadeInEnd = 4.8 * windowHeight;
+            const pricingZoomStart = 4.8 * windowHeight;
+            const pricingZoomEnd = 6.8 * windowHeight;
+            const pricingFadeOutStart = 6.8 * windowHeight;
 
             // 1. Hero Section Fade & Translate (outward)
             if (heroSec) {
@@ -538,7 +537,7 @@ function init3DSpiral() {
                     // Entrance Phase
                     const progress = (scrollY - featuredFadeInStart) / (featuredFadeInEnd - featuredFadeInStart);
                     sectionsState.featured.targetOpacity = progress;
-                    sectionsState.featured.targetY = windowHeight * (1 - progress);
+                    sectionsState.featured.targetY = 0.45 * windowHeight * (1 - progress);
                     sectionsState.featured.targetScale = 1;
                     sectionsState.featured.pointerEvents = 'auto';
                     sectionsState.featured.hasEntered = true;
@@ -572,7 +571,7 @@ function init3DSpiral() {
                     // Entrance Phase
                     const progress = (scrollY - casesFadeInStart) / (casesFadeInEnd - casesFadeInStart);
                     sectionsState.cases.targetOpacity = progress;
-                    sectionsState.cases.targetY = windowHeight * (1 - progress);
+                    sectionsState.cases.targetY = 0.45 * windowHeight * (1 - progress);
                     sectionsState.cases.targetScale = 1;
                     sectionsState.cases.pointerEvents = 'auto';
                     sectionsState.cases.hasEntered = true;
@@ -610,7 +609,7 @@ function init3DSpiral() {
                     // Entrance Phase
                     const progress = (scrollY - pricingFadeInStart) / (pricingFadeInEnd - pricingFadeInStart);
                     sectionsState.pricing.targetOpacity = progress;
-                    sectionsState.pricing.targetY = windowHeight * (1 - progress);
+                    sectionsState.pricing.targetY = 0.45 * windowHeight * (1 - progress);
                     sectionsState.pricing.targetScale = 1;
                     sectionsState.pricing.pointerEvents = 'auto';
                     
@@ -673,7 +672,7 @@ function init3DSpiral() {
                     }
                 } else {
                     // Exiting Pricing Section (scrollY >= pricingFadeOutStart) - scroll up naturally
-                    const progress = Math.max(0, Math.min(1, (scrollY - pricingFadeOutStart) / (10.4 * windowHeight - pricingFadeOutStart)));
+                    const progress = Math.max(0, Math.min(1, (scrollY - pricingFadeOutStart) / (8.5 * windowHeight - pricingFadeOutStart)));
                     sectionsState.pricing.targetOpacity = 1;
                     sectionsState.pricing.targetY = -progress * windowHeight;
                     sectionsState.pricing.targetScale = 1;
@@ -719,7 +718,7 @@ function init3DSpiral() {
             const ySpacingFactor = getSpiralYSpacingFactor();
             
             // A. Smoothly update and apply section transitions (buttery smooth scroll transitions)
-            const sectionLerp = 0.08;
+            const sectionLerp = 0.16;
             for (const key in sectionsState) {
                 const s = sectionsState[key];
                 if (s.el) {
