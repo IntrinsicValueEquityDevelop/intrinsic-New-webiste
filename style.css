@@ -5105,5 +5105,20 @@ html {
     line-height: 1.4;
 }
 
+/* Pricing Title Link Styling */
+.pricing-title-link {
+    text-decoration: none;
+    display: inline-block;
+}
+
+.pricing-title-link .pricing-main-title {
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.pricing-title-link:hover .pricing-main-title {
+    color: var(--accent);
+    text-shadow: 0 0 15px var(--accent-glow);
+}
+
 
 
