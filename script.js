@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Lock scroll stack height on load to prevent jumping when mobile address bar hides/shows
     const scrollStack = document.querySelector('.scroll-stack');
     if (scrollStack) {
-        scrollStack.style.height = `${8.5 * cachedWindowHeight}px`;
+        scrollStack.style.height = `${7.5 * cachedWindowHeight}px`;
     }
 
     // Update dimensions on resize, ignoring minor height shifts (like mobile browser URL bar collapsing)
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cachedWindowHeight = newHeight;
             cachedWindowWidth = newWidth;
             if (scrollStack) {
-                scrollStack.style.height = `${8.5 * cachedWindowHeight}px`;
+                scrollStack.style.height = `${7.5 * cachedWindowHeight}px`;
             }
         }
     });
@@ -338,14 +338,14 @@ function init3DSpiral() {
             const windowHeight = cachedWindowHeight;
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
-            const endOffset = isFlow ? 8.5 * windowHeight : 12.3 * windowHeight;
+            const endOffset = isFlow ? 8.5 * windowHeight : 12.3 * windowHeight; // Wait, let's keep the testimonials endOffset math correct
             return [
                 0,
                 1.0 * windowHeight,
                 3.6 * windowHeight,
                 4.2 * windowHeight,
                 4.8 * windowHeight,
-                8.5 * windowHeight,
+                7.5 * windowHeight,
                 endOffset
             ];
         };
@@ -367,7 +367,7 @@ function init3DSpiral() {
             // Hide indicator when reaching FAQ/Footer bottom
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
-            const hideThreshold = isFlow ? 8.5 * windowHeight : 12.3 * windowHeight;
+            const hideThreshold = isFlow ? 7.5 * windowHeight : 11.3 * windowHeight;
             if (scrollY >= hideThreshold) {
                 scrollIndicator.classList.remove('visible');
                 return;
@@ -469,8 +469,8 @@ function init3DSpiral() {
             const pricingFadeInStart = 4.4 * windowHeight;
             const pricingFadeInEnd = 4.8 * windowHeight;
             const pricingZoomStart = 4.8 * windowHeight;
-            const pricingZoomEnd = 6.8 * windowHeight;
-            const pricingFadeOutStart = 6.8 * windowHeight;
+            const pricingZoomEnd = 5.8 * windowHeight;
+            const pricingFadeOutStart = 5.8 * windowHeight;
 
             // 1. Hero Section Fade & Translate (outward)
             if (heroSec) {
@@ -601,78 +601,76 @@ function init3DSpiral() {
                     sectionsState.pricing.targetY = windowHeight;
                     sectionsState.pricing.targetScale = 1;
                     sectionsState.pricing.pointerEvents = 'none';
+                    
+                    // Reset zoom state to background when section is hidden
+                    pricingState.title.targetZ = -600;
+                    pricingState.title.targetScale = 0.3;
+                    pricingState.title.targetOpacity = 0;
+                    pricingState.cards.forEach(c => {
+                        c.targetZ = -600;
+                        c.targetScale = 0.3;
+                        c.targetOpacity = 0;
+                        c.targetRotateX = 15;
+                        c.targetY = 50;
+                    });
+                    
+                    pricingState.hasAnimatedCounter = false;
                     if (pricingState.counterTimeout) {
                         clearTimeout(pricingState.counterTimeout);
                         pricingState.counterTimeout = null;
                     }
                 } else if (scrollY >= pricingFadeInStart && scrollY <= pricingFadeInEnd) {
-                    // Entrance Phase
+                    // Entrance Phase - Start zoom animation automatically immediately on reach
                     const progress = (scrollY - pricingFadeInStart) / (pricingFadeInEnd - pricingFadeInStart);
                     sectionsState.pricing.targetOpacity = progress;
                     sectionsState.pricing.targetY = 0.45 * windowHeight * (1 - progress);
                     sectionsState.pricing.targetScale = 1;
                     sectionsState.pricing.pointerEvents = 'auto';
                     
-                    // Reset zoom state to initial
-                    const zoomVal = scrollDirection === 'up' ? 1.0 : 0.0;
-                    pricingState.title.targetZ = -600 + 600 * zoomVal;
-                    pricingState.title.targetScale = 0.3 + 0.7 * zoomVal;
-                    pricingState.title.targetOpacity = zoomVal;
+                    pricingState.title.targetZ = 0;
+                    pricingState.title.targetScale = 1.0;
+                    pricingState.title.targetOpacity = 1.0;
                     pricingState.cards.forEach(c => {
-                        c.targetZ = -600 + 600 * zoomVal;
-                        c.targetScale = 0.3 + 0.7 * zoomVal;
-                        c.targetOpacity = zoomVal;
-                        c.targetRotateX = 15 * (1 - zoomVal);
-                        c.targetY = 50 * (1 - zoomVal);
+                        c.targetZ = 0;
+                        c.targetScale = 1.0;
+                        c.targetOpacity = 1.0;
+                        c.targetRotateX = 0;
+                        c.targetY = 0;
                     });
                     if (pricingState.counterTimeout) {
                         clearTimeout(pricingState.counterTimeout);
                         pricingState.counterTimeout = null;
                     }
                 } else if (scrollY > pricingFadeInEnd && scrollY < pricingFadeOutStart) {
-                    // Active Phase (Zoom entrance triggers based on scroll progress)
+                    // Active Phase - Keep cards and title zoomed forward
                     sectionsState.pricing.targetOpacity = 1;
                     sectionsState.pricing.targetY = 0;
                     sectionsState.pricing.targetScale = 1;
                     sectionsState.pricing.pointerEvents = 'auto';
 
-                    const zoomProgress = (scrollY - pricingZoomStart) / (pricingZoomEnd - pricingZoomStart);
-                    const clampedZoom = Math.max(0, Math.min(1, zoomProgress));
+                    pricingState.title.targetZ = 0;
+                    pricingState.title.targetScale = 1.0;
+                    pricingState.title.targetOpacity = 1.0;
 
-                    // Title: 0.0 -> 0.4
-                    const titleProg = scrollDirection === 'up' ? 1.0 : Math.max(0, Math.min(1, clampedZoom / 0.4));
-                    pricingState.title.targetZ = -600 + 600 * titleProg;
-                    pricingState.title.targetScale = 0.3 + 0.7 * titleProg;
-                    pricingState.title.targetOpacity = titleProg;
-
-                    // Cards: All together 0.2 -> 0.8
-                    const cardsProg = scrollDirection === 'up' ? 1.0 : Math.max(0, Math.min(1, (clampedZoom - 0.2) / 0.6));
                     pricingState.cards.forEach(c => {
-                        c.targetZ = -600 + 600 * cardsProg;
-                        c.targetScale = 0.3 + 0.7 * cardsProg;
-                        c.targetOpacity = cardsProg;
-                        c.targetRotateX = 15 * (1 - cardsProg);
-                        c.targetY = 50 * (1 - cardsProg);
+                        c.targetZ = 0;
+                        c.targetScale = 1.0;
+                        c.targetOpacity = 1.0;
+                        c.targetRotateX = 0;
+                        c.targetY = 0;
                     });
 
-                    // Trigger dynamic count-down when cards zoom entrance is 90% complete (visible properly)
-                    if (cardsProg >= 0.9) {
-                        if (!pricingState.hasAnimatedCounter && !pricingState.counterTimeout) {
-                            pricingState.counterTimeout = setTimeout(() => {
-                                animatePriceCounter();
-                                pricingState.hasAnimatedCounter = true;
-                                pricingState.counterTimeout = null;
-                            }, 500);
-                        }
-                    } else {
-                        if (pricingState.counterTimeout) {
-                            clearTimeout(pricingState.counterTimeout);
+                    // Trigger dynamic count-down when cards zoom entrance is complete (visible properly)
+                    if (!pricingState.hasAnimatedCounter && !pricingState.counterTimeout) {
+                        pricingState.counterTimeout = setTimeout(() => {
+                            animatePriceCounter();
+                            pricingState.hasAnimatedCounter = true;
                             pricingState.counterTimeout = null;
-                        }
+                        }, 500);
                     }
                 } else {
                     // Exiting Pricing Section (scrollY >= pricingFadeOutStart) - scroll up naturally
-                    const progress = Math.max(0, Math.min(1, (scrollY - pricingFadeOutStart) / (8.5 * windowHeight - pricingFadeOutStart)));
+                    const progress = Math.max(0, Math.min(1, (scrollY - pricingFadeOutStart) / (7.5 * windowHeight - pricingFadeOutStart)));
                     sectionsState.pricing.targetOpacity = 1;
                     sectionsState.pricing.targetY = -progress * windowHeight;
                     sectionsState.pricing.targetScale = 1;
