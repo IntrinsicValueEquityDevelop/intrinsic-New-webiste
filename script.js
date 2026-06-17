@@ -171,8 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Regulatory Disclosures Accordion
     initDisclosures();
 
-    // Initialize Homepage Team Dropdown
-    initTeamDropdown();
+    // Initialize Homepage Team Marquee
+    initTeamMarquee();
 });
 
 
@@ -511,16 +511,16 @@ function init3DSpiral() {
 
             const casesFadeInStart = 2.8 * windowHeight;
             const casesFadeInEnd = 3.0 * windowHeight;
-            const casesFadeOutStart = 3.2 * windowHeight;
+            const casesFadeOutStart = 3.4 * windowHeight;
 
-            const pricingFadeInStart = 3.2 * windowHeight;
-            const pricingFadeInEnd = 3.4 * windowHeight;
-            const pricingZoomStart = 3.4 * windowHeight;
-            const pricingZoomEnd = 3.6 * windowHeight;
-            const pricingFadeOutStart = 3.6 * windowHeight;
+            const pricingFadeInStart = 3.4 * windowHeight;
+            const pricingFadeInEnd = 3.6 * windowHeight;
+            const pricingZoomStart = 3.6 * windowHeight;
+            const pricingZoomEnd = 4.0 * windowHeight;
+            const pricingFadeOutStart = 4.0 * windowHeight;
 
-            const testimonialsFadeInStart = 3.6 * windowHeight;
-            const testimonialsFadeInEnd = 3.8 * windowHeight;
+            const testimonialsFadeInStart = 4.0 * windowHeight;
+            const testimonialsFadeInEnd = 4.2 * windowHeight;
             const testimonialsFadeOutStart = 5.0 * windowHeight;
 
             // 1. Hero Section Fade & Translate (outward)
@@ -760,11 +760,10 @@ function init3DSpiral() {
                     sectionsState.testimonials.pointerEvents = 'auto';
                 } else {
                     // Exiting Testimonials Section (scrollY >= testimonialsFadeOutStart) - scroll up naturally
-                    const progress = Math.max(0, Math.min(1, (scrollY - testimonialsFadeOutStart) / (5.4 * windowHeight - testimonialsFadeOutStart)));
                     sectionsState.testimonials.targetOpacity = 1;
-                    sectionsState.testimonials.targetY = -progress * windowHeight;
+                    sectionsState.testimonials.targetY = 0;
                     sectionsState.testimonials.targetScale = 1;
-                    sectionsState.testimonials.pointerEvents = progress < 1 ? 'auto' : 'none';
+                    sectionsState.testimonials.pointerEvents = 'auto';
                 }
             }
         };
@@ -1831,48 +1830,90 @@ function initDisclosures() {
     }
 }
 
-function initTeamDropdown() {
-    const trigger = document.querySelector('.team-dropdown-heading');
-    const content = document.querySelector('.team-dropdown-content');
+function initTeamMarquee() {
+    const cardsRow = document.querySelector('.team-cards-row');
+    if (!cardsRow) return;
     
-    if (trigger && content) {
-        trigger.addEventListener('click', () => {
-            const expanded = trigger.getAttribute('aria-expanded') === 'true';
-            trigger.setAttribute('aria-expanded', !expanded);
-            trigger.classList.toggle('active');
-            content.classList.toggle('active');
-            
-            // Toggle scrollability class and smoothly scroll the parent section container
-            const section = document.getElementById('pricing-scroll-section');
-            if (section) {
-                const isOpened = content.classList.contains('active');
-                if (isOpened) {
-                    section.classList.add('allow-scroll');
-                    
-                    // Smoothly scroll the container to align the 'Meet Our Team' heading at the top
-                    setTimeout(() => {
-                        const headerOffset = trigger.getBoundingClientRect().top - section.getBoundingClientRect().top + section.scrollTop;
-                        section.scrollTo({
-                            top: headerOffset - 20, // 20px padding from top
-                            behavior: 'smooth'
-                        });
-                    }, 100); // slight delay to allow rendering and transition
-                } else {
-                    // Reset scroll to top smoothly before removing scroll class
-                    section.scrollTo({
-                        top: 0,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Wait for smooth scroll up animation to finish before removing allow-scroll class
-                    setTimeout(() => {
-                        if (!content.classList.contains('active')) {
-                            section.classList.remove('allow-scroll');
-                        }
-                    }, 350);
-                }
-            }
-        });
+    // 1. Clone cards for infinite loop marquee scroll
+    const originalCardsList = Array.from(cardsRow.children);
+    const totalOriginalCards = originalCardsList.length;
+    originalCardsList.forEach(card => {
+        const clone = card.cloneNode(true);
+        cardsRow.appendChild(clone);
+    });
+    
+    // Query ALL cards including the newly cloned ones
+    const cards = cardsRow.querySelectorAll('.team-card');
+    if (cards.length === 0) return;
+    
+    let isPaused = false;
+    let scrollSpeed = 0.6; // Speed of auto scroll in pixels per frame
+    let halfScrollWidth = 0;
+    let animationFrameId = null;
+    
+    // Calculate the wrap-around scroll width once layout is ready
+    function initScrollMetrics() {
+        if (cards.length > totalOriginalCards) {
+            // offset of start of cloned set minus 1st card
+            halfScrollWidth = cards[totalOriginalCards].offsetLeft - cards[0].offsetLeft;
+        }
     }
+    
+    // Recalculate metrics once window is fully loaded to ensure styles/fonts are ready
+    if (document.readyState === 'complete') {
+        setTimeout(initScrollMetrics, 100);
+    } else {
+        window.addEventListener('load', initScrollMetrics);
+    }
+    
+    // Recalculate when any image finishes loading (to handle layout shifts/cache)
+    cardsRow.querySelectorAll('img').forEach(img => {
+        img.addEventListener('load', initScrollMetrics);
+    });
+    
+    // Run metrics recalculation on window resize
+    window.addEventListener('resize', initScrollMetrics);
+    
+    // Auto Scroll Loop (marquee animation)
+    function tickScroll() {
+        if (halfScrollWidth === 0) {
+            initScrollMetrics();
+        }
+        if (!isPaused && halfScrollWidth > 0) {
+            cardsRow.scrollLeft += scrollSpeed;
+            
+            // Loop around seamlessly
+            if (cardsRow.scrollLeft >= halfScrollWidth) {
+                cardsRow.scrollLeft -= halfScrollWidth;
+            }
+        }
+        animationFrameId = requestAnimationFrame(tickScroll);
+    }
+    
+    // Pause auto scroll when hovering anywhere inside the cards row
+    cardsRow.addEventListener('mouseenter', () => {
+        isPaused = true;
+    });
+    
+    // Resume scroll on mouse leave
+    cardsRow.addEventListener('mouseleave', () => {
+        isPaused = false;
+    });
+    
+    // Support touchscreen touch drag pausing
+    cardsRow.addEventListener('touchstart', () => {
+        isPaused = true;
+    });
+    cardsRow.addEventListener('touchend', () => {
+        setTimeout(() => {
+            isPaused = false;
+        }, 1500); // Resume scroll shortly after swipe ends
+    });
+    
+    // Initialize & Run
+    initScrollMetrics();
+    
+    // Start animation loop
+    animationFrameId = requestAnimationFrame(tickScroll);
 }
 

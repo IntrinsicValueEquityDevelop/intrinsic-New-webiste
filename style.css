@@ -5317,124 +5317,106 @@ html {
     text-shadow: 0 0 15px var(--accent-glow);
 }
 
-/* Homepage Team Dropdown Styling */
-.homepage-team-dropdown {
+/* Homepage Team Marquee Section Styling */
+.homepage-team-section {
     margin-top: 40px;
     width: 100%;
-    max-width: 1100px;
+    max-width: 100%;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
 }
 
-.pricing-section-header-title {
-    font-size: 42px;
+.team-section-heading {
+    font-size: clamp(28px, 4vw, 36px);
     font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 20px;
-    letter-spacing: -0.5px;
-    font-family: var(--font-heading);
-}
-
-/* Vibrating pill outline button */
-.btn-vibrate-outline {
-    background: transparent;
-    border: 2px solid var(--accent);
-    color: var(--text-primary);
-    padding: 14px 40px;
-    font-size: 18px;
-    font-weight: 700;
-    border-radius: 50px;
-    text-decoration: none;
-    display: inline-block;
-    letter-spacing: 0.5px;
-    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-    animation: vibrate-subtle 3s infinite ease-in-out;
-}
-
-.btn-vibrate-outline:hover {
-    box-shadow: 0 0 20px rgba(255, 140, 0, 0.25);
-    color: var(--accent);
-    animation-play-state: paused;
-}
-
-@keyframes vibrate-subtle {
-    0%, 100% { transform: translate(0, 0); }
-    5% { transform: translate(-1px, 1px) rotate(-0.5deg); }
-    10% { transform: translate(1px, -1px) rotate(0.5deg); }
-    15% { transform: translate(-1px, -1px) rotate(-0.5deg); }
-    20% { transform: translate(1px, 1px) rotate(0.5deg); }
-    25% { transform: translate(-1px, 1px) rotate(-0.5deg); }
-    30% { transform: translate(1px, -1px) rotate(0.5deg); }
-    35% { transform: translate(-1px, -1px) rotate(-0.5deg); }
-    40% { transform: translate(1px, 1px) rotate(0.5deg); }
-    45% { transform: translate(0, 0) rotate(0); }
-}
-
-/* Meet Our Team Dropdown Header */
-.team-dropdown-header-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 15px;
-}
-
-.team-dropdown-heading {
-    display: inline-flex;
-    align-items: center;
-    gap: 16px;
-    font-size: 32px;
-    font-weight: 700;
-    cursor: pointer;
-    font-family: var(--font-heading);
     margin: 0;
-    padding: 10px 24px;
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    user-select: none;
+    font-family: var(--font-heading);
+    letter-spacing: -0.5px;
 }
 
-.team-dropdown-heading .text-white {
-    color: var(--text-primary);
-}
-
-.team-dropdown-heading .text-orange {
-    color: var(--accent);
-}
-
-.team-dropdown-heading .chevron-icon {
-    width: 24px;
-    height: 24px;
-    stroke: var(--accent);
-    transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-.team-dropdown-heading:hover .chevron-icon {
-    transform: translateY(2px);
-}
-
-.team-dropdown-heading.active {
-    transform: translateY(-20px);
-}
-
-.team-dropdown-heading.active .chevron-icon {
-    transform: rotate(180deg);
-}
-
-.team-dropdown-content {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+.team-cards-container {
+    position: relative;
     width: 100%;
+    overflow: hidden;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-.team-dropdown-content.active {
-    max-height: 1200px; /* Expand fully inline without scrollbars */
-    padding: 0;
-    margin-top: 25px;
-    background: transparent;
-    border: none;
-    overflow: visible;
+/* Linear scroll row container */
+.team-cards-row {
+    display: flex;
+    gap: 24px;
+    overflow-x: auto;
+    width: 100%;
+    padding: 20px 20px 30px 20px;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+}
+
+.team-cards-row::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+/* override the general .team-card behavior inside the marquee row */
+.team-cards-row .team-card {
+    flex: 0 0 260px;
+    max-width: 260px;
+    width: 260px;
+    box-sizing: border-box;
+    transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
+                border-color 0.3s ease, 
+                box-shadow 0.3s ease;
+}
+
+/* Edge fading effect for premium look */
+.team-cards-container::before,
+.team-cards-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100px;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+}
+.team-cards-container::before {
+    left: 0;
+    background: linear-gradient(to right, #0b0c10, transparent);
+}
+.team-cards-container::after {
+    right: 0;
+    background: linear-gradient(to left, #0b0c10, transparent);
+}
+
+/* Mobile Media Queries for Team Marquee */
+@media (max-width: 480px) {
+    .team-cards-container::before,
+    .team-cards-container::after {
+        width: 40px;
+    }
+    .team-cards-row {
+        gap: 16px;
+        padding: 15px 15px 25px 15px;
+    }
+    .team-cards-row .team-card {
+        flex: 0 0 200px;
+        max-width: 200px;
+        width: 200px;
+        padding: 20px 15px;
+    }
+    .team-cards-row .team-avatar-wrapper {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 12px;
+    }
+    .team-cards-row .team-name {
+        font-size: 14px;
+    }
+    .team-cards-row .team-role {
+        font-size: 11px;
+    }
 }
 
 
