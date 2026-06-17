@@ -3180,8 +3180,8 @@ html {
 .pricing-scroll-section.allow-scroll {
     overflow-y: auto;
     align-items: flex-start;
-    padding-top: 60px;
-    padding-bottom: 60px;
+    padding-top: 110px;
+    padding-bottom: 120px;
     -webkit-overflow-scrolling: touch;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
@@ -5735,6 +5735,199 @@ button-expand-panel-element,
 /* Hide body scrollbar while preloader is active */
 body.preloader-active {
     overflow: hidden !important;
+}
+
+/* ==========================================================================
+   OUR PORTFOLIO SECTION STYLES
+   ========================================================================== */
+.homepage-portfolio-section {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.portfolio-card {
+    position: relative;
+    background: rgba(26, 18, 10, 0.25);
+    border: 1px solid rgba(255, 140, 0, 0.15);
+    border-radius: 20px;
+    padding: 24px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+                border-color 0.4s ease,
+                background-color 0.4s ease,
+                box-shadow 0.4s ease;
+    overflow: hidden;
+    height: 100%;
+}
+
+.portfolio-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent);
+    background: rgba(26, 18, 10, 0.55);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 140, 0, 0.15);
+}
+
+.portfolio-card-glow {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 140, 0, 0.03) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.portfolio-card-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.portfolio-tag {
+    align-self: flex-start;
+    font-size: 9px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    background: rgba(255, 140, 0, 0.1);
+    padding: 4px 10px;
+    border-radius: 50px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(255, 140, 0, 0.25);
+}
+
+.portfolio-title {
+    font-family: var(--font-heading);
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #ffffff;
+    margin: 0 0 16px 0;
+    text-align: left;
+    min-height: 48px; /* ensures alignment when titles have different lengths */
+}
+
+.portfolio-graph-container {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    background: rgba(10, 10, 10, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.portfolio-blurred-graph {
+    width: 100%;
+    height: 100%;
+    filter: blur(5px);
+    opacity: 0.5;
+    transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
+.portfolio-card:hover .portfolio-blurred-graph {
+    filter: blur(3px);
+    opacity: 0.7;
+}
+
+.portfolio-graph-lock-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    pointer-events: none;
+    background: rgba(5, 5, 5, 0.2);
+}
+
+.portfolio-graph-lock-overlay i {
+    font-size: 16px;
+    color: var(--accent);
+    text-shadow: 0 0 10px var(--accent-glow);
+    animation: lockPulse 2s ease-in-out infinite;
+}
+
+.portfolio-graph-lock-overlay span {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.75);
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    text-align: center;
+    padding: 0 12px;
+}
+
+@keyframes lockPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.15);
+        opacity: 0.8;
+    }
+}
+
+.portfolio-subscribe-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+    border: none;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 140, 0, 0.25);
+    box-sizing: border-box;
+}
+
+.portfolio-subscribe-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(255, 140, 0, 0.45);
+    background: linear-gradient(135deg, var(--accent-hover), var(--accent));
+}
+
+.portfolio-subscribe-btn i {
+    font-size: 11px;
+    transition: transform 0.3s ease;
+}
+
+.portfolio-subscribe-btn:hover i {
+    transform: translateX(3px);
 }
 
 
