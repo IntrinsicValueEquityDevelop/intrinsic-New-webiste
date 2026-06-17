@@ -377,15 +377,15 @@ function init3DSpiral() {
             const windowHeight = cachedWindowHeight;
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
-            const endOffset = isFlow ? 4.5 * windowHeight : 8.5 * windowHeight; 
+            const endOffset = isFlow ? 3.9 * windowHeight : 7.9 * windowHeight; 
             return [
                 0,
-                1.2 * windowHeight,
+                1.0 * windowHeight,
+                1.8 * windowHeight,
                 2.2 * windowHeight,
-                2.7 * windowHeight,
-                3.2 * windowHeight,
-                3.8 * windowHeight,
-                4.3 * windowHeight,
+                2.6 * windowHeight,
+                3.1 * windowHeight,
+                3.6 * windowHeight,
                 endOffset
             ];
         };
@@ -407,7 +407,7 @@ function init3DSpiral() {
             // Hide indicator when reaching FAQ/Footer bottom
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
-            const hideThreshold = isFlow ? 4.3 * windowHeight : 8.1 * windowHeight;
+            const hideThreshold = isFlow ? 3.7 * windowHeight : 7.5 * windowHeight;
             if (scrollY >= hideThreshold) {
                 scrollIndicator.classList.remove('visible');
                 return;
@@ -495,33 +495,33 @@ function init3DSpiral() {
             // Featured logos: 2.4 to 3.0
             // Case studies: 3.0 to 3.6
             // Pricing: 3.6 to 4.2
-            // Testimonials: 3.8 to 4.3
+            // Testimonials: 3.6 to 4.1
             
-            const heroFadeEnd = 1.2 * windowHeight;
+            const heroFadeEnd = 1.0 * windowHeight;
 
-            const philFadeInStart = 0.6 * windowHeight;
-            const philFadeInEnd = 1.2 * windowHeight;
-            const philSpinStart = 1.2 * windowHeight;
-            const philSpinEnd = 2.2 * windowHeight;
-            const philFadeOutStart = 2.2 * windowHeight;
+            const philFadeInStart = 0.5 * windowHeight;
+            const philFadeInEnd = 1.0 * windowHeight;
+            const philSpinStart = 1.0 * windowHeight;
+            const philSpinEnd = 1.8 * windowHeight;
+            const philFadeOutStart = 1.8 * windowHeight;
 
-            const featuredFadeInStart = 2.2 * windowHeight;
-            const featuredFadeInEnd = 2.4 * windowHeight;
-            const featuredFadeOutStart = 2.5 * windowHeight;
+            const featuredFadeInStart = 1.8 * windowHeight;
+            const featuredFadeInEnd = 2.0 * windowHeight;
+            const featuredFadeOutStart = 2.1 * windowHeight;
 
-            const casesFadeInStart = 2.5 * windowHeight;
-            const casesFadeInEnd = 2.7 * windowHeight;
-            const casesFadeOutStart = 3.0 * windowHeight;
+            const casesFadeInStart = 2.1 * windowHeight;
+            const casesFadeInEnd = 2.3 * windowHeight;
+            const casesFadeOutStart = 2.5 * windowHeight;
 
-            const pricingFadeInStart = 3.0 * windowHeight;
-            const pricingFadeInEnd = 3.2 * windowHeight;
-            const pricingZoomStart = 3.2 * windowHeight;
-            const pricingZoomEnd = 3.6 * windowHeight;
-            const pricingFadeOutStart = 3.6 * windowHeight;
+            const pricingFadeInStart = 2.5 * windowHeight;
+            const pricingFadeInEnd = 2.7 * windowHeight;
+            const pricingZoomStart = 2.7 * windowHeight;
+            const pricingZoomEnd = 3.1 * windowHeight;
+            const pricingFadeOutStart = 3.1 * windowHeight;
 
-            const testimonialsFadeInStart = 3.6 * windowHeight;
-            const testimonialsFadeInEnd = 3.8 * windowHeight;
-            const testimonialsFadeOutStart = 4.1 * windowHeight;
+            const testimonialsFadeInStart = 3.1 * windowHeight;
+            const testimonialsFadeInEnd = 3.3 * windowHeight;
+            const testimonialsFadeOutStart = 3.6 * windowHeight;
 
             // 1. Hero Section Fade & Translate (outward)
             if (heroSec) {
@@ -1382,7 +1382,7 @@ function initTestimonials() {
         // Get card spacing based on viewport width (Card width + Gap)
         const getCardSpacing = () => {
             const windowWidth = window.innerWidth;
-            if (windowWidth <= 480) return 230; // 210px width + 20px gap (centered card with peek layout)
+            if (windowWidth <= 480) return 250; // 210px width + 40px gap (centered card with peek layout)
             if (windowWidth <= 768) return 380; // 300px width + 80px gap
             return 480; // 360px width + 120px gap
         };
