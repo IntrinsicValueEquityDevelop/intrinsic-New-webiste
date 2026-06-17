@@ -1969,6 +1969,7 @@ function initPortfolioCarousel() {
     
     let currentIndex = 0;
     const totalCards = cards.length;
+    let autoplayTimer = null;
     
     function updateCarousel() {
         cards.forEach((card, index) => {
@@ -1986,14 +1987,34 @@ function initPortfolioCarousel() {
         });
     }
     
+    function startAutoplay() {
+        stopAutoplay();
+        autoplayTimer = setInterval(() => {
+            nextSlide();
+        }, 7000);
+    }
+    
+    function stopAutoplay() {
+        if (autoplayTimer) {
+            clearInterval(autoplayTimer);
+            autoplayTimer = null;
+        }
+    }
+    
+    function resetAutoplay() {
+        startAutoplay();
+    }
+    
     function nextSlide() {
         currentIndex = (currentIndex + 1) % totalCards;
         updateCarousel();
+        resetAutoplay();
     }
     
     function prevSlide() {
         currentIndex = (currentIndex - 1 + totalCards) % totalCards;
         updateCarousel();
+        resetAutoplay();
     }
     
     if (nextBtn) {
@@ -2026,26 +2047,58 @@ function initPortfolioCarousel() {
     // Swipe gestures support
     let touchStartX = 0;
     let touchEndX = 0;
+    let touchStartY = 0;
+    let touchEndY = 0;
     
     container.addEventListener('touchstart', (e) => {
         touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
     }, { passive: true });
     
     container.addEventListener('touchend', (e) => {
         touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
         handleSwipe();
     }, { passive: true });
     
     function handleSwipe() {
-        const threshold = 50; // minimum swipe distance in pixels
-        if (touchEndX < touchStartX - threshold) {
-            nextSlide(); // Swipe left
-        } else if (touchEndX > touchStartX + threshold) {
-            prevSlide(); // Swipe right
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+        
+        // Only trigger horizontal swipe if deltaX is larger than deltaY (horizontal intent)
+        if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
+            if (deltaX < 0) {
+                nextSlide(); // Swipe left
+            } else {
+                prevSlide(); // Swipe right
+            }
         }
     }
     
-    // Initialize the view
+    // Horizontal wheel/trackpad scrolling support
+    let lastWheelTime = 0;
+    container.addEventListener('wheel', (e) => {
+        // Primary horizontal scroll check
+        if (Math.abs(e.deltaX) > Math.abs(e.deltaY) && Math.abs(e.deltaX) > 10) {
+            e.preventDefault(); // Lock vertical page scrolling and default actions
+            const now = Date.now();
+            if (now - lastWheelTime > 800) { // Cooldown between transitions
+                if (e.deltaX > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+                lastWheelTime = now;
+            }
+        }
+    }, { passive: false });
+    
+    // Hover pause behavior for autoplay
+    container.addEventListener('mouseenter', stopAutoplay);
+    container.addEventListener('mouseleave', startAutoplay);
+    
+    // Initialize the view and autoplay
     updateCarousel();
+    startAutoplay();
 }
 
