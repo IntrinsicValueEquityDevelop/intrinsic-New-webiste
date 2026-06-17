@@ -3688,12 +3688,15 @@ html {
    STACKED TESTIMONIALS SECTION (Velvet Marigold Dark Theme)
    ========================================================================== */
 .stacked-testimonials-section {
-    position: relative;
-    height: 100vh; /* Flow layout height */
-    background-color: var(--bg-primary);
+    position: absolute;
+    inset: 0;
+    height: 100%;
     width: 100%;
+    z-index: 6;
+    background-color: var(--bg-primary);
     overflow: visible;
     box-sizing: border-box;
+    will-change: transform, opacity;
 }
 
 .stacked-testimonials-sticky {
