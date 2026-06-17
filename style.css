@@ -2763,26 +2763,26 @@ html {
     color: #ffffff;
 }
 
-/* Custom Brand Glow RGB values */
-.brand-bs { --brand-glow-rgb: 255, 255, 255; }
-.brand-josh { --brand-glow-rgb: 255, 140, 0; }
-.brand-et { --brand-glow-rgb: 216, 35, 42; }
-.brand-iitm { --brand-glow-rgb: 197, 160, 89; }
-.brand-bt { --brand-glow-rgb: 237, 28, 36; }
-.brand-upsurge { --brand-glow-rgb: 0, 210, 196; }
-.brand-smallcase { --brand-glow-rgb: 27, 131, 255; }
-.brand-stocktwits { --brand-glow-rgb: 38, 166, 154; }
-.brand-msn { --brand-glow-rgb: 0, 164, 239; }
-.brand-investing { --brand-glow-rgb: 255, 140, 0; }
-.brand-x { --brand-glow-rgb: 255, 255, 255; }
-.brand-youtube { --brand-glow-rgb: 255, 0, 0; }
-.brand-money9 { --brand-glow-rgb: 255, 165, 0; }
-.brand-stockgro { --brand-glow-rgb: 0, 200, 115; }
-.brand-samco { --brand-glow-rgb: 0, 115, 230; }
-.brand-rediff { --brand-glow-rgb: 220, 30, 30; }
-.brand-ssrn { --brand-glow-rgb: 15, 76, 129; }
-.brand-inshorts { --brand-glow-rgb: 255, 90, 95; }
-.brand-elm { --brand-glow-rgb: 197, 160, 89; }
+/* Brand Glow — all unified to site orange accent */
+.brand-bs,
+.brand-josh,
+.brand-et,
+.brand-iitm,
+.brand-bt,
+.brand-upsurge,
+.brand-smallcase,
+.brand-stocktwits,
+.brand-msn,
+.brand-investing,
+.brand-x,
+.brand-youtube,
+.brand-money9,
+.brand-stockgro,
+.brand-samco,
+.brand-rediff,
+.brand-ssrn,
+.brand-inshorts,
+.brand-elm,
 .brand-vishal { --brand-glow-rgb: 255, 140, 0; }
 
 
@@ -3225,9 +3225,10 @@ html {
         flex-direction: row;
         justify-content: center;
         gap: 10px;
-        align-items: center;
+        align-items: stretch;
         width: 100%;
-        height: 320px; /* Consistent height for mobile horizontal accordion */
+        min-height: 320px; /* Minimum height; grows when a card is expanded */
+        height: auto;
         padding: 10px 0;
     }
     
@@ -3258,6 +3259,8 @@ html {
     .company-card-wrapper.expanded {
         flex: 12 !important;
         flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
         border-color: var(--accent);
         background: rgba(24, 18, 12, 0.85);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
@@ -3363,10 +3366,13 @@ html {
         visibility: visible;
         pointer-events: auto;
         transform: translateX(0);
-        max-height: none;
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
         padding: 12px 8px;
         width: 100%;
-        height: calc(100% - 48px) !important;
+        flex-wrap: wrap;
+        justify-content: center;
     }
     
     .btn-report-item {
@@ -4836,14 +4842,16 @@ html {
         display: block !important;
     }
 
+    /* Allow inner sticky to show stacked cards fully — outer section clips */
     .stacked-testimonials-section.flow-layout .stacked-testimonials-sticky {
         height: auto !important;
-        overflow: hidden !important;
+        overflow: visible !important;
         padding: 40px 16px !important;
     }
 
+    /* Carousel container — visible so offset stacked cards show */
     .testimonials-carousel-container {
-        overflow: hidden !important;
+        overflow: visible !important;
         max-width: 100% !important;
     }
 
