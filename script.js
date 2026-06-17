@@ -7,6 +7,29 @@
 let cachedWindowHeight = window.innerHeight;
 let cachedWindowWidth = window.innerWidth;
 
+// Immediately lock scrolling while preloader is active
+document.body.classList.add('preloader-active');
+
+const dismissPreloader = () => {
+    const preloader = document.getElementById('iv-preloader');
+    if (preloader && !preloader.classList.contains('dismissed')) {
+        preloader.classList.add('dismissed');
+        setTimeout(() => {
+            preloader.style.opacity = '0';
+            preloader.style.visibility = 'hidden';
+            document.body.classList.remove('preloader-active');
+        }, 1300); // wait for 1.2s animation completion
+    }
+};
+
+if (document.readyState === 'complete') {
+    dismissPreloader();
+} else {
+    window.addEventListener('load', dismissPreloader);
+    // Safety fallback (e.g. slow connections or stuck assets)
+    setTimeout(dismissPreloader, 3500);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     // Force scroll restoration to manual and scroll to top on reload/load to reset layout states
     if ('scrollRestoration' in history) {

@@ -5636,5 +5636,79 @@ button-expand-panel-element,
     }
 }
 
+/* ==========================================================================
+   PRELOADER SCREEN STYLES
+   ========================================================================== */
+.iv-preloader {
+    position: fixed;
+    inset: 0;
+    background: #0b0b0b;
+    z-index: 999999; /* Float above everything including headers/widgets */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s ease;
+}
+
+.preloader-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 90%;
+    max-width: 280px;
+}
+
+.preloader-logo {
+    width: 160px;
+    height: auto;
+    filter: drop-shadow(0 0 15px rgba(255, 140, 0, 0.15));
+    opacity: 0;
+    transform: translateY(10px);
+    animation: preloader-fade-in 0.8s cubic-bezier(0.25, 1, 0.5, 1) forwards 0.1s;
+}
+
+@keyframes preloader-fade-in {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.preloader-progress-track {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.preloader-progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, #ff8c00, #ffb700);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 140, 0, 0.7);
+    animation: preloader-fill 1.2s cubic-bezier(0.2, 0.85, 0.25, 1) forwards 0.2s;
+}
+
+@keyframes preloader-fill {
+    to {
+        width: 100%;
+    }
+}
+
+/* Hide body scrollbar while preloader is active */
+body.preloader-active {
+    overflow: hidden !important;
+}
+
 
 
