@@ -885,7 +885,7 @@ html {
    ========================================================================== */
 .scroll-stack {
   position: relative;
-  height: 660vh; /* Total page scroll depth (compressed timeline: Hero, Philosophy, Featured, Cases, Pricing, Testimonials) */
+  height: 540vh; /* Total page scroll depth (compressed timeline: Hero, Philosophy, Featured, Cases, Pricing, Testimonials) */
   width: 100%;
 }
 
@@ -2985,6 +2985,7 @@ html {
     
     .company-card-wrapper.expanded {
         flex: 12 !important;
+        flex-direction: column !important;
         border-color: var(--accent);
         background: rgba(24, 18, 12, 0.85);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
@@ -3021,14 +3022,26 @@ html {
     }
     
     .company-card-wrapper.expanded .btn-company-trigger {
-        width: 45px !important;
-        height: 100% !important;
+        width: 100% !important;
+        height: 48px !important;
         flex-shrink: 0;
         background: rgba(255, 140, 0, 0.05);
-        border-right: 1px solid rgba(255, 140, 0, 0.2);
-        border-bottom: none;
+        border-right: none !important;
+        border-bottom: 1.5px solid rgba(255, 140, 0, 0.25) !important;
         color: #ffffff;
         box-shadow: none;
+        writing-mode: horizontal-tb !important;
+        transform: none !important;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0 16px;
+        gap: 8px;
+    }
+    
+    .company-card-wrapper.expanded .btn-company-trigger:hover {
+        transform: none !important;
     }
     
     .company-btn-num {
@@ -3070,7 +3083,9 @@ html {
         pointer-events: auto;
         transform: translateX(0);
         max-height: none;
-        padding: 8px;
+        padding: 12px 8px;
+        width: 100%;
+        height: calc(100% - 48px) !important;
     }
     
     .btn-report-item {
