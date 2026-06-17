@@ -759,11 +759,13 @@ function init3DSpiral() {
                     sectionsState.testimonials.targetScale = 1;
                     sectionsState.testimonials.pointerEvents = 'auto';
                 } else {
-                    // Exiting Testimonials Section (scrollY >= testimonialsFadeOutStart) - scroll up naturally
-                    sectionsState.testimonials.targetOpacity = 1;
-                    sectionsState.testimonials.targetY = 0;
-                    sectionsState.testimonials.targetScale = 1;
-                    sectionsState.testimonials.pointerEvents = 'auto';
+                    // Exiting Testimonials Section (scrollY >= testimonialsFadeOutStart) - translate up and fade out to let FAQ enter
+                    const endOfScroll = getOffsets()[7];
+                    const progress = Math.max(0, Math.min(1, (scrollY - testimonialsFadeOutStart) / (endOfScroll - testimonialsFadeOutStart)));
+                    sectionsState.testimonials.targetOpacity = 1 - progress;
+                    sectionsState.testimonials.targetY = -0.5 * windowHeight * progress;
+                    sectionsState.testimonials.targetScale = 1 - 0.05 * progress;
+                    sectionsState.testimonials.pointerEvents = progress < 1 ? 'auto' : 'none';
                 }
             }
         };
