@@ -885,7 +885,7 @@ html {
    ========================================================================== */
 .scroll-stack {
   position: relative;
-  height: 350vh; /* Total page scroll depth (compressed timeline: Hero, Philosophy, Featured, Cases, Pricing, Testimonials) */
+  height: 430vh; /* Total page scroll depth (compressed timeline: Hero, Philosophy, Featured, Cases, Pricing, Testimonials) */
   width: 100%;
 }
 

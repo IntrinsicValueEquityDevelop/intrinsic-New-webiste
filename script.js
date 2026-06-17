@@ -377,7 +377,7 @@ function init3DSpiral() {
             const windowHeight = cachedWindowHeight;
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
-            const endOffset = isFlow ? 3.5 * windowHeight : 7.5 * windowHeight; 
+            const endOffset = isFlow ? 4.3 * windowHeight : 8.3 * windowHeight; 
             return [
                 0,
                 1.0 * windowHeight,
@@ -385,7 +385,7 @@ function init3DSpiral() {
                 2.1 * windowHeight,
                 2.5 * windowHeight,
                 3.0 * windowHeight,
-                3.5 * windowHeight,
+                3.3 * windowHeight,
                 endOffset
             ];
         };
@@ -759,13 +759,11 @@ function init3DSpiral() {
                     sectionsState.testimonials.targetScale = 1;
                     sectionsState.testimonials.pointerEvents = 'auto';
                 } else {
-                    // Exiting Testimonials Section (scrollY >= testimonialsFadeOutStart) - translate up and fade out to let FAQ enter
-                    const endOfScroll = getOffsets()[7];
-                    const progress = Math.max(0, Math.min(1, (scrollY - testimonialsFadeOutStart) / (endOfScroll - testimonialsFadeOutStart)));
-                    sectionsState.testimonials.targetOpacity = 1 - progress;
-                    sectionsState.testimonials.targetY = -0.5 * windowHeight * progress;
-                    sectionsState.testimonials.targetScale = 1 - 0.05 * progress;
-                    sectionsState.testimonials.pointerEvents = progress < 1 ? 'auto' : 'none';
+                    // Exiting Testimonials Section (scrollY >= testimonialsFadeOutStart) - scroll up naturally
+                    sectionsState.testimonials.targetOpacity = 1;
+                    sectionsState.testimonials.targetY = 0;
+                    sectionsState.testimonials.targetScale = 1;
+                    sectionsState.testimonials.pointerEvents = 'auto';
                 }
             }
         };
