@@ -4133,6 +4133,7 @@ html {
     width: 100% !important;
     max-width: 90% !important;
     margin-bottom: 40px !important;
+    padding-bottom: 4rem;
 }
 
 /* Shrink and fade out state during transition */
@@ -5617,8 +5618,8 @@ button-expand-panel-element,
     }
 
     .whatsapp-float-btn {
-        bottom: 20px;
-        right: 20px;
+        bottom: 100px;
+        right: 22px;
     }
     
     .whatsapp-icon-wrapper {
