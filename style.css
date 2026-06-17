@@ -2742,19 +2742,19 @@ html {
     transition-delay: 0.1s;
 }
 
-/* Tata Investment (mid-left): Travels from left */
+/* Hero MotoCorp (mid-left): Travels from left */
 .company-card-wrapper[data-case="1"] {
     transform: translate3d(-120px, 40px, -100px) scale(0.8);
     transition-delay: 0.2s;
 }
 
-/* Maharashtra Scooters (mid-right): Travels from right */
+/* Ircon International (mid-right): Travels from right */
 .company-card-wrapper[data-case="2"] {
     transform: translate3d(120px, -40px, -100px) scale(0.8);
     transition-delay: 0.3s;
 }
 
-/* Kalyani Investment (rightmost): Travels from far left */
+/* Texmaco (rightmost): Travels from far left */
 .company-card-wrapper[data-case="3"] {
     transform: translate3d(-200px, 20px, -100px) scale(0.8);
     transition-delay: 0.4s;
@@ -2908,6 +2908,32 @@ html {
 
 .btn-report-item:hover i {
     transform: scale(1.15);
+}
+
+/* Disabled/Coming Soon report button styles */
+.btn-report-item.disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    border-color: rgba(255, 255, 255, 0.08);
+    background: rgba(20, 20, 20, 0.3);
+    box-shadow: none;
+    pointer-events: auto; /* ensure cursor shows up */
+}
+
+.btn-report-item.disabled:hover {
+    transform: none !important;
+    background: rgba(20, 20, 20, 0.3) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+.btn-report-item.disabled:hover i {
+    transform: none !important;
+}
+
+.company-card-wrapper.expanded .btn-report-item.disabled {
+    animation: none;
 }
 
 /* Float & Wiggle Keyframe Animations */
