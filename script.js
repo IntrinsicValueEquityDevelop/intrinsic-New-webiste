@@ -16,9 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Lock scroll stack height on load to prevent jumping when mobile address bar hides/shows
+    const getScrollStackHeight = () => {
+        const stackedSection = document.querySelector('.stacked-testimonials-section');
+        // If the testimonials section is present, check if it has flow-layout, or if it will be initialized to it
+        const isFlow = stackedSection ? (stackedSection.classList.contains('flow-layout') || true) : true;
+        return isFlow ? 4.3 * cachedWindowHeight : 8.3 * cachedWindowHeight;
+    };
+
     const scrollStack = document.querySelector('.scroll-stack');
     if (scrollStack) {
-        scrollStack.style.height = `${7.5 * cachedWindowHeight}px`;
+        scrollStack.style.height = `${getScrollStackHeight()}px`;
     }
 
     // Update dimensions on resize, ignoring minor height shifts (like mobile browser URL bar collapsing)
@@ -30,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
             cachedWindowHeight = newHeight;
             cachedWindowWidth = newWidth;
             if (scrollStack) {
-                scrollStack.style.height = `${7.5 * cachedWindowHeight}px`;
+                scrollStack.style.height = `${getScrollStackHeight()}px`;
             }
         }
     });
@@ -760,15 +767,19 @@ function init3DSpiral() {
                     sectionsState.testimonials.pointerEvents = 'auto';
                 } else {
                     // Exiting Testimonials Section (scrollY >= testimonialsFadeOutStart) - scroll up naturally
-                    sectionsState.testimonials.targetOpacity = 1;
-                    sectionsState.testimonials.targetY = 0;
-                    sectionsState.testimonials.targetScale = 1;
-                    sectionsState.testimonials.pointerEvents = 'auto';
+                    const offsets = getOffsets();
+                    const endOffset = offsets[offsets.length - 1];
+                    const progress = Math.max(0, Math.min(1, (scrollY - testimonialsFadeOutStart) / (endOffset - testimonialsFadeOutStart)));
+                    sectionsState.testimonials.targetOpacity = 1 - progress;
+                    sectionsState.testimonials.targetY = -progress * windowHeight;
+                    sectionsState.testimonials.targetScale = 1 - progress * 0.05;
+                    sectionsState.testimonials.pointerEvents = progress < 1 ? 'auto' : 'none';
                 }
             }
         };
 
         window.addEventListener('scroll', handleScrollTransitions);
+        window.addEventListener('resize', handleScrollTransitions);
         handleScrollTransitions(); // Run initially
         
         // Continuous Animation Loop
