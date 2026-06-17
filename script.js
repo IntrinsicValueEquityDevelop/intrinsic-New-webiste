@@ -377,15 +377,15 @@ function init3DSpiral() {
             const windowHeight = cachedWindowHeight;
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
-            const endOffset = isFlow ? 3.9 * windowHeight : 7.9 * windowHeight; 
+            const endOffset = isFlow ? 3.5 * windowHeight : 7.5 * windowHeight; 
             return [
                 0,
                 1.0 * windowHeight,
                 1.8 * windowHeight,
-                2.2 * windowHeight,
-                2.6 * windowHeight,
-                3.1 * windowHeight,
-                3.6 * windowHeight,
+                2.1 * windowHeight,
+                2.5 * windowHeight,
+                3.0 * windowHeight,
+                3.5 * windowHeight,
                 endOffset
             ];
         };
@@ -407,7 +407,7 @@ function init3DSpiral() {
             // Hide indicator when reaching FAQ/Footer bottom
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
-            const hideThreshold = isFlow ? 3.7 * windowHeight : 7.5 * windowHeight;
+            const hideThreshold = isFlow ? 3.4 * windowHeight : 7.2 * windowHeight;
             if (scrollY >= hideThreshold) {
                 scrollIndicator.classList.remove('visible');
                 return;
@@ -495,7 +495,7 @@ function init3DSpiral() {
             // Featured logos: 2.4 to 3.0
             // Case studies: 3.0 to 3.6
             // Pricing: 3.6 to 4.2
-            // Testimonials: 3.6 to 4.1
+            // Testimonials: 3.0 to 3.5
             
             const heroFadeEnd = 1.0 * windowHeight;
 
@@ -516,12 +516,12 @@ function init3DSpiral() {
             const pricingFadeInStart = 2.5 * windowHeight;
             const pricingFadeInEnd = 2.7 * windowHeight;
             const pricingZoomStart = 2.7 * windowHeight;
-            const pricingZoomEnd = 3.1 * windowHeight;
-            const pricingFadeOutStart = 3.1 * windowHeight;
+            const pricingZoomEnd = 3.0 * windowHeight;
+            const pricingFadeOutStart = 3.0 * windowHeight;
 
-            const testimonialsFadeInStart = 3.1 * windowHeight;
-            const testimonialsFadeInEnd = 3.3 * windowHeight;
-            const testimonialsFadeOutStart = 3.6 * windowHeight;
+            const testimonialsFadeInStart = 3.0 * windowHeight;
+            const testimonialsFadeInEnd = 3.2 * windowHeight;
+            const testimonialsFadeOutStart = 3.3 * windowHeight;
 
             // 1. Hero Section Fade & Translate (outward)
             if (heroSec) {
@@ -1384,7 +1384,7 @@ function initTestimonials() {
         // Get card spacing based on viewport width (Card width + Gap)
         const getCardSpacing = () => {
             const windowWidth = window.innerWidth;
-            if (windowWidth <= 480) return 250; // 210px width + 40px gap (centered card with peek layout)
+            if (windowWidth <= 480) return 230; // 190px width + 40px gap (centered card with peek layout)
             if (windowWidth <= 768) return 380; // 300px width + 80px gap
             return 480; // 360px width + 120px gap
         };

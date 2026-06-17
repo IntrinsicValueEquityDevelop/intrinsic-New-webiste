@@ -885,7 +885,7 @@ html {
    ========================================================================== */
 .scroll-stack {
   position: relative;
-  height: 380vh; /* Total page scroll depth (compressed timeline: Hero, Philosophy, Featured, Cases, Pricing, Testimonials) */
+  height: 350vh; /* Total page scroll depth (compressed timeline: Hero, Philosophy, Featured, Cases, Pricing, Testimonials) */
   width: 100%;
 }
 
@@ -4301,11 +4301,11 @@ html {
 
 @media screen and (max-width: 480px) {
     .stacked-testimonials-section.flow-layout .testimonials-stack {
-        width: 210px !important;
+        width: 190px !important;
         height: 260px !important;
     }
     .stacked-testimonials-section.flow-layout .testimonial-card {
-        width: 210px !important;
+        width: 190px !important;
         height: 260px !important;
         padding: 12px !important;
         overflow: hidden;
