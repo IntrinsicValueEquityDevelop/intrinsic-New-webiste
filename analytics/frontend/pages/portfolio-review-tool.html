@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portfolio Review Tool - Quality & Management Stock Evaluation</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/pages/portfolio-review-tool.css?v=9">
+  <link rel="stylesheet" href="../css/theme-toggle.css">
+  <script>
+    (function(){
+      var t=localStorage.getItem('iv-theme');
+      if(t===null)t='dark';
+      if(t)document.documentElement.setAttribute('data-theme',t);
+    })();
+  </script>
+</head>
+<body>
+  <main class="iv-page-shell iv-portfolio-page">
+    <div class="iv-section-title">
+      <div class="iv-kicker">Portfolio Analysis</div>
+      <h2>Portfolio Review Tool</h2>
+    </div>
+
+    <!-- Search Input & Autocomplete -->
+    <div class="iv-card">
+      <h3>Search and Add Stocks</h3>
+      <div class="iv-portfolio-search-box">
+        <div class="iv-field">
+          <label for="ivPortfolioSearchInput">Stock Name, NSE Code or BSE Code</label>
+          <div class="iv-search-input-group">
+            <div class="iv-search-input-wrapper">
+              <input id="ivPortfolioSearchInput" type="text" autocomplete="off" placeholder="Type stock name or code, e.g. Reliance, TCS, 500325...">
+              <div class="iv-autocomplete-dropdown" id="ivPortfolioAutocomplete" style="display: none;">
+                <!-- Suggestions will be injected here -->
+              </div>
+            </div>
+            <button class="iv-primary-btn" id="ivPortfolioAddBtn" type="button">Add Stock</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- CSV Upload Area -->
+      <div class="iv-portfolio-upload-box">
+        <label class="iv-upload-label">Or Import Portfolio from CSV</label>
+        <div class="iv-file-dropzone" id="ivFileDropzone">
+          <svg class="iv-upload-icon" viewBox="0 0 24 24">
+            <path fill="currentColor" d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,21H18A2,2 0 0,0 20,19V8L14,2M13.5,16V19H10.5V16H8L12,12L16,16H13.5M13,9V3.5L18.5,9H13Z"/>
+          </svg>
+          <span class="dropzone-text">
+            Drag & drop your CSV file here or <span class="browse-link">browse</span>
+          </span>
+          <input type="file" id="ivPortfolioFileInput" accept=".csv" style="display: none;">
+        </div>
+        
+        <!-- Status indicator -->
+        <div id="ivUploadStatus" class="iv-upload-status" style="display: none;">
+          <div class="iv-upload-status-info">
+            <span id="ivUploadProgressLabel">Processing...</span>
+            <span id="ivUploadProgressPct">0%</span>
+          </div>
+          <div class="iv-upload-progress-bar-wrap">
+            <div id="ivUploadProgressBar"></div>
+          </div>
+        </div>
+
+        <!-- Import report logs -->
+        <div id="ivUploadLogs" class="iv-upload-logs" style="display: none;">
+          <!-- Log rows will be inserted here dynamically -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Evaluation Table -->
+    <div class="iv-card">
+      <div class="iv-card-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; gap: 10px;">
+        <h3 style="margin: 0;">Stock Evaluation Table</h3>
+        <button class="iv-secondary-btn" id="ivClearPortfolio" type="button" style="padding: 6px 12px; font-size: 12px;">Clear Portfolio</button>
+      </div>
+      <div class="iv-table-wrap iv-portfolio-table-wrap">
+        <table>
+          <thead>
+            <tr>  
+              <th>Company<br>Name</th>
+              <th>Fundamental <br>Score</th>
+              <th>Management <br>Score</th>
+              <th>Quality <br>Score</th>
+              <th>Valuation <br>Score</th>
+              <th>Total <br>Score</th>
+              <th>Final <br>Rating</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="ivPortfolioTableBody">
+            <tr class="empty-row">
+              <td colspan="8" style="text-align: center; color: #AAB6CC; padding: 30px;">
+                No stocks added yet. Search for a stock above to add it to your portfolio review list.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Slide-out Drawer for Parameter Breakdown -->
+    <div class="iv-portfolio-drawer" id="ivPortfolioDrawer" style="display: none;">
+      <div class="iv-drawer-overlay" id="ivDrawerOverlay"></div>
+      <div class="iv-drawer-content">
+        <div class="iv-drawer-header">
+          <h3 id="ivDrawerTitle">Parameter Breakdown</h3>
+          <button class="iv-drawer-close" id="ivDrawerClose" type="button">&times;</button>
+        </div>
+        <div class="iv-drawer-body">
+          <div class="iv-drawer-stock-info">
+            <h4 id="ivDrawerStockName">Reliance Industries</h4>
+            <div class="iv-drawer-stock-codes">
+              <span id="ivDrawerNseCode">NSE: RELIANCE</span>
+              <span id="ivDrawerBseCode">BSE: 500325</span>
+            </div>
+          </div>
+          
+          <div class="iv-drawer-score-card">
+            <div class="iv-drawer-score-label" id="ivDrawerScoreLabel">Quality Parameter</div>
+            <div class="iv-drawer-score-value" id="ivDrawerScoreValue">5/6</div>
+          </div>
+          
+          <div class="iv-drawer-section">
+            <h4 id="ivDrawerSectionTitle">Detailed Checks Checklist</h4>
+            <div class="iv-drawer-params-list" id="ivDrawerParamsList">
+              <!-- Parameter lines will be injected here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Confirmation Modal -->
+    <div class="iv-modal" id="ivConfirmModal" style="display: none;">
+      <div class="iv-modal-overlay" id="ivConfirmOverlay"></div>
+      <div class="iv-modal-content">
+        <div class="iv-modal-header">
+          <h3>Clear Portfolio</h3>
+        </div>
+        <div class="iv-modal-body">
+          <p>Are you sure you want to clear your portfolio list?</p>
+        </div>
+        <div class="iv-modal-footer">
+          <button class="iv-modal-btn cancel" id="ivConfirmCancel" type="button">Cancel</button>
+          <button class="iv-modal-btn confirm" id="ivConfirmOk" type="button">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Custom Alert Modal -->
+    <div class="iv-modal" id="ivAlertModal" style="display: none;">
+      <div class="iv-modal-overlay" id="ivAlertOverlay"></div>
+      <div class="iv-modal-content">
+        <div class="iv-modal-header">
+          <h3 id="ivAlertTitle">Alert</h3>
+        </div>
+        <div class="iv-modal-body">
+          <p id="ivAlertMessage">Message</p>
+        </div>
+        <div class="iv-modal-footer">
+          <button class="iv-modal-btn alert-ok" id="ivAlertOk" type="button">OK</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/navigation.js?v=2"></script>
+  <script src="../js/modules/portfolio-review-tool.js?v=9"></script>
+</body>
+</html>

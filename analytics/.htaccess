@@ -1,0 +1,22 @@
+RewriteEngine On
+
+# Redirect root / to dashboard.html
+DirectoryIndex index.html frontend/pages/dashboard.html
+
+# Route clean URLs to their corresponding HTML files in frontend/pages/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^dashboard$ frontend/pages/dashboard.html [L]
+RewriteRule ^ranking-tool$ frontend/pages/ranking-tool.html [L]
+RewriteRule ^monthly-market-analysis$ frontend/pages/monthly-market-analysis.html [L]
+RewriteRule ^market-valuation-index$ frontend/pages/market-valuation-index.html [L]
+RewriteRule ^headwind-tailwind-indicator$ frontend/pages/headwind-tailwind-indicator.html [L]
+RewriteRule ^portfolio-review-tool$ frontend/pages/portfolio-review-tool.html [L]
+RewriteRule ^intrinsic-theme$ frontend/pages/intrinsic-theme.html [L]
+RewriteRule ^sip$ frontend/pages/sip.html [L]
+RewriteRule ^swp$ frontend/pages/swp.html [L]
+RewriteRule ^lumpsum$ frontend/pages/lumpsum.html [L]
+RewriteRule ^xirr$ frontend/pages/xirr.html [L]
+RewriteRule ^gawp$ frontend/pages/gawp.html [L]
+RewriteRule ^tools$ frontend/pages/tools.html [L]
+RewriteRule ^admin$ frontend/pages/admin.html [L]
