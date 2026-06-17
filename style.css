@@ -885,7 +885,7 @@ html {
    ========================================================================== */
 .scroll-stack {
   position: relative;
-  height: 540vh; /* Total page scroll depth (compressed timeline: Hero, Philosophy, Featured, Cases, Pricing, Testimonials) */
+  height: 450vh; /* Total page scroll depth (compressed timeline: Hero, Philosophy, Featured, Cases, Pricing, Testimonials) */
   width: 100%;
 }
 
@@ -2858,7 +2858,6 @@ html {
     pointer-events: auto;
     transform: translateX(0);
 }
-}
 
 /* Reduced size report link boxes */
 .btn-report-item {
@@ -3178,6 +3177,66 @@ html {
     background-position: center;
     pointer-events: none;
     z-index: 0;
+}
+
+.pricing-section-header-title {
+    font-size: 40px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.25;
+    margin-bottom: 24px;
+    font-family: var(--font-heading);
+}
+
+.pricing-section-header-title em {
+    color: var(--accent);
+    font-style: italic;
+}
+
+.btn-vibrate-outline {
+    background: rgba(255, 140, 0, 0.08);
+    border: 2px solid var(--accent);
+    color: #ffffff;
+    padding: 14px 42px;
+    font-size: 18px;
+    font-weight: 700;
+    border-radius: 50px;
+    text-decoration: none;
+    display: inline-block;
+    letter-spacing: 0.5px;
+    box-shadow: 0 0 20px var(--accent-glow), inset 0 0 10px rgba(255, 140, 0, 0.2);
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+    animation: vibrate-subtle 3s infinite ease-in-out, pulse-glow 2s infinite ease-in-out;
+}
+
+.btn-vibrate-outline:hover {
+    background: var(--accent);
+    color: #000000;
+    box-shadow: 0 0 30px rgba(255, 140, 0, 0.8), inset 0 0 15px rgba(255, 140, 0, 0.4);
+    border-color: var(--accent);
+    animation-play-state: paused;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(255, 140, 0, 0.4), inset 0 0 10px rgba(255, 140, 0, 0.15);
+    }
+    50% {
+        box-shadow: 0 0 28px rgba(255, 140, 0, 0.75), inset 0 0 15px rgba(255, 140, 0, 0.35);
+    }
+}
+
+@keyframes vibrate-subtle {
+    0%, 100% { transform: translate(0, 0); }
+    5% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+    10% { transform: translate(1px, -1px) rotate(0.5deg); }
+    15% { transform: translate(-1px, -1px) rotate(-0.5deg); }
+    20% { transform: translate(1px, 1px) rotate(0.5deg); }
+    25% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+    30% { transform: translate(1px, -1px) rotate(0.5deg); }
+    35% { transform: translate(-1px, -1px) rotate(-0.5deg); }
+    40% { transform: translate(1px, 1px) rotate(0.5deg); }
+    45% { transform: translate(0, 0) rotate(0); }
 }
 
 .pricing-container {
@@ -4242,29 +4301,48 @@ html {
 
 @media screen and (max-width: 480px) {
     .stacked-testimonials-section.flow-layout .testimonials-stack {
-        width: 260px !important;
-        height: 330px !important;
+        width: 210px !important;
+        height: 260px !important;
     }
     .stacked-testimonials-section.flow-layout .testimonial-card {
-        width: 260px !important;
-        height: 330px !important;
-        padding: 14px !important;
+        width: 210px !important;
+        height: 260px !important;
+        padding: 12px !important;
+        overflow: hidden;
+    }
+    .stacked-testimonials-section.flow-layout .testimonial-avatar {
+        width: 32px !important;
+        height: 32px !important;
     }
     .stacked-testimonials-section.flow-layout .testimonial-quote {
-        font-size: 0.74rem !important;
-        line-height: 1.35 !important;
-        margin-bottom: 4px !important;
+        font-size: 0.68rem !important;
+        line-height: 1.25 !important;
+        margin-bottom: 6px !important;
+        max-height: 110px !important;
+        overflow-y: auto !important;
+        scrollbar-width: none !important;
+    }
+    .stacked-testimonials-section.flow-layout .testimonial-quote::-webkit-scrollbar {
+        display: none !important;
+    }
+    .stacked-testimonials-section.flow-layout .testimonial-author h6 {
+        font-size: 0.78rem !important;
+        margin-bottom: 1px !important;
+    }
+    .stacked-testimonials-section.flow-layout .testimonial-author .position {
+        font-size: 0.62rem !important;
+        line-height: 1.2 !important;
     }
     .stacked-testimonials-section.flow-layout .testimonials-bg-text {
         display: none !important;
     }
 
     .stacked-testimonials-section.flow-layout .stacked-testimonials-sticky {
-        padding-top: 60px !important;
+        padding-top: 25px !important;
     }
 
     .stacked-testimonials-section.flow-layout .testimonials-header-block {
-        margin-bottom: 2.2cm !important;
+        margin-bottom: 3.2rem !important;
         position: relative !important;
         top: auto !important;
         left: auto !important;
@@ -5336,6 +5414,14 @@ html {
     margin: 0;
     font-family: var(--font-heading);
     letter-spacing: -0.5px;
+}
+
+.team-section-heading .text-orange {
+    color: var(--accent) !important;
+}
+
+.text-orange {
+    color: var(--accent) !important;
 }
 
 .team-cards-container {
