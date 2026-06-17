@@ -2896,6 +2896,7 @@ html {
     font-size: 10.5px;
     font-weight: 700;
     line-height: 1.2;
+    white-space: nowrap;
 }
 
 .btn-report-item:hover {
@@ -3079,7 +3080,7 @@ html {
         justify-content: flex-start;
         gap: 8px;
         width: 100% !important;
-        max-width: 145px;
+        max-width: 175px;
         height: 42px !important;
         padding: 8px 12px;
         border-radius: 8px;
