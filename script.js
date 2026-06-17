@@ -203,6 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize Homepage Team Marquee
     initTeamMarquee();
+
+    // Initialize Portfolio 3D Carousel
+    initPortfolioCarousel();
 });
 
 
@@ -1949,5 +1952,100 @@ function initTeamMarquee() {
     
     // Start animation loop
     animationFrameId = requestAnimationFrame(tickScroll);
+}
+
+// ==========================================================================
+// PORTFOLIO 3D CAROUSEL (KamayaKya Style Slider)
+// ==========================================================================
+function initPortfolioCarousel() {
+    const container = document.querySelector('.portfolio-carousel-container');
+    if (!container) return;
+    
+    const cards = container.querySelectorAll('.portfolio-card');
+    const prevBtn = container.querySelector('.portfolio-arrow.prev');
+    const nextBtn = container.querySelector('.portfolio-arrow.next');
+    
+    if (cards.length === 0) return;
+    
+    let currentIndex = 0;
+    const totalCards = cards.length;
+    
+    function updateCarousel() {
+        cards.forEach((card, index) => {
+            card.classList.remove('active', 'prev', 'next', 'hidden');
+            
+            if (index === currentIndex) {
+                card.classList.add('active');
+            } else if (index === (currentIndex - 1 + totalCards) % totalCards) {
+                card.classList.add('prev');
+            } else if (index === (currentIndex + 1) % totalCards) {
+                card.classList.add('next');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+    }
+    
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % totalCards;
+        updateCarousel();
+    }
+    
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + totalCards) % totalCards;
+        updateCarousel();
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            nextSlide();
+        });
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            prevSlide();
+        });
+    }
+    
+    // Click on side cards to slide them to center
+    cards.forEach((card, index) => {
+        card.addEventListener('click', (e) => {
+            if (card.classList.contains('prev')) {
+                e.preventDefault();
+                prevSlide();
+            } else if (card.classList.contains('next')) {
+                e.preventDefault();
+                nextSlide();
+            }
+        });
+    });
+    
+    // Swipe gestures support
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    container.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    
+    container.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    }, { passive: true });
+    
+    function handleSwipe() {
+        const threshold = 50; // minimum swipe distance in pixels
+        if (touchEndX < touchStartX - threshold) {
+            nextSlide(); // Swipe left
+        } else if (touchEndX > touchStartX + threshold) {
+            prevSlide(); // Swipe right
+        }
+    }
+    
+    // Initialize the view
+    updateCarousel();
 }
 
