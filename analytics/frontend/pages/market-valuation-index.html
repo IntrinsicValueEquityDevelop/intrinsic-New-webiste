@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Market Valuation Tracker</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/pages/market-valuation-index.css">
+  <link rel="stylesheet" href="../css/theme-toggle.css">
+  <script>
+    (function(){
+      var t=localStorage.getItem('iv-theme');
+      if(t===null)t='dark';
+      if(t)document.documentElement.setAttribute('data-theme',t);
+    })();
+  </script>
+</head>
+<body>
+  <main class="iv-page-shell iv-market-valuation-index-page">
+    <div class="iv-view active" id="view-valuation">
+          <div class="iv-section-title">
+            <div class="iv-kicker">Market Valuation Tracker</div>
+            <h2>Intrinsic Value Valuation Index.</h2>
+            <p>Compare sector valuations and see overvaluation/undervaluation status based on historical valuation trends.</p>
+          </div>
+
+          <!-- Sector Valuation Analytics Tool -->
+          <div class="iv-card iv-sector-card" style="margin-top: 12px;">
+            <div class="iv-section-title" style="margin-bottom: 20px;">
+              <div class="iv-kicker">Sector Valuations</div>
+              <h3>Sector Valuation Index & Analytics</h3>
+              <p>Compare valuation status across 35 NSE/BSE indices and commodities. Select a sector or commodity button to plot it intrinsic value - valuation index.</p>
+            </div>
+            
+            <div class="iv-sector-selector-section" style="margin-bottom: 24px;">
+              <div class="iv-sector-buttons-grid" id="ivSectorButtonsGrid">
+                <div style="grid-column: 1 / -1; text-align: center; padding: 20px; color: var(--iv-text-muted);">
+                  Loading sector list...
+                </div>
+              </div>
+            </div>
+            
+            <div class="iv-sector-chart-section iv-blur-value" id="ivSectorChartSection" style="display: none; border-top: 1px solid var(--iv-border-subtle); padding-top: 20px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                    <h4 id="ivSelectedSectorTitle" style="margin: 0; font-size: 18px; color: var(--iv-accent-light); display: inline-block;">Nifty 50</h4>
+                    <span id="ivSelectedSectorIndexValue" style="color: var(--iv-text); font-weight: 650; font-size: 18px;">—</span>
+                    <span id="ivSectorValuationBadge" class="iv-status" style="font-weight: 600; font-size: 11px; padding: 4px 10px; border-radius: 99px;">—</span>
+                  </div>
+                </div>
+              </div>
+
+              
+              <div style="position: relative; margin-top: 15px;">
+                <canvas id="ivSectorValuationCanvas" style="width: 100%; height: 260px; display: block; border-radius: 14px; background: rgba(0, 0, 0, 0.15); border: 1px solid var(--iv-border-subtle);"></canvas>
+                <div id="ivSectorValuationTooltip" style="position: fixed; display: none; pointer-events: none; z-index: 100; padding: 9px 12px; border-radius: 12px; background: rgba(10, 10, 12, 0.95); border: 1px solid var(--iv-accent); color: #fff; font-size: 11px; line-height: 1.5; box-shadow: 0 8px 32px rgba(0,0,0,0.5);"></div>
+              </div>
+            </div>
+          </div>
+    </div>
+  </main>
+  <script src="../js/navigation.js?v=2"></script>
+  <script src="../js/modules/market-valuation-index.js"></script>
+</body>
+</html>

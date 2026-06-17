@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Market Pulse</title>
+  <link rel="stylesheet" href="../css/main.css">
+  <link rel="stylesheet" href="../css/pages/monthly-analysis.css">
+  <link rel="stylesheet" href="../css/theme-toggle.css">
+  <script>
+    (function(){
+      var t=localStorage.getItem('iv-theme');
+      if(t===null)t='dark';
+      if(t)document.documentElement.setAttribute('data-theme',t);
+    })();
+  </script>
+</head>
+<body>
+  <main class="iv-page-shell iv-monthly-analysis-page">
+    <div class="iv-section-title">
+            <div class="iv-kicker">Market Research Tool</div>
+            <h2>Market Pulse</h2>
+            <p>Valuation breadth, sector valuation and market-cap segments.</p>
+          </div>
+
+          <div class="iv-card iv-blur-value" id="ivMonthlyStatusCard">
+            <h3>Market Valuation Commentary</h3>
+            <div class="iv-market-status-grid">
+              <div class="iv-market-mini"><span>Market Valuation Ratio</span><strong
+                  id="ivMonthlyValuationRatio">—</strong>
+              </div>
+              <div class="iv-market-mini"><span>Market Status</span><strong id="ivMonthlyMarketStatus">—</strong></div>
+            </div>
+            <div class="iv-market-clock">
+              <div>
+                <div class="iv-market-clock-face">
+                  <div class="iv-market-needle" id="ivMonthlyClockNeedle"></div>
+                </div>
+                <div class="iv-market-clock-labels">
+                  <span style="color: #33cc33; font-weight: 500;">Extremely<br>Undervalued</span>
+                  <span style="color: #99ff33;">Undervalued</span>
+                  <span style="color: var(--iv-text-muted);">Fair</span>
+                  <span style="color: #ff9933;">Overvalued</span>
+                  <span style="color: #ff4d4d; font-weight: 500;">Extremely<br>Overvalued</span>
+                </div>
+            </div>
+          </div>
+          <div id="ivMonthlyCommentary" style="margin-top: 18px; line-height: 1.6; font-size: 13.5px; border-top: 1px solid var(--iv-border-subtle); padding-top: 16px; color: var(--iv-text-light);">Loading commentary...</div>
+          </div>
+
+          <!-- Collapsible Graphs Section -->
+          <div class="iv-card iv-collapse-card" id="ivMonthlyChartsCard" style="margin-top: 14px;">
+            <div class="iv-collapse-header" id="ivMonthlyChartsHeader">
+              <h3 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                Valuation & Trend Graphs <span class="iv-collapse-arrow">▼</span>
+              </h3>
+              <span style="font-size: 11px; color: var(--iv-text-muted);">Click to toggle graphs</span>
+            </div>
+            
+            <div class="iv-collapse-content iv-blur-value" id="ivMonthlyChartsContent">
+              <div class="iv-grid" style="margin-top: 14px;">
+                <div class="iv-card">
+                  <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+                    <h3 style="margin: 0;">Valuation Distribution</h3>
+                    <span style="font-size: 11.5px; font-weight: 500; color: var(--iv-text-muted); background: rgba(var(--iv-accent-rgb), 0.1); padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(var(--iv-accent-rgb), 0.15);">
+                      Companies Analyzed: <strong id="ivMonthlyRowsLoaded" style="color: var(--iv-text-light);">—</strong>
+                    </span>
+                  </div>
+                  <div class="iv-market-chart" id="ivMonthlyDistributionChart"></div>
+                </div>
+              </div>
+
+              <div class="iv-grid two">
+                <div class="iv-card">
+                  <h3>Segment Undervaluation %</h3>
+                  <div class="iv-market-chart" id="ivMonthlySegmentUnderChart"></div>
+                </div>
+                <div class="iv-card">
+                  <h3>Segment Overvaluation %</h3>
+                  <div class="iv-market-chart" id="ivMonthlySegmentOverChart"></div>
+                </div>
+              </div>
+
+              <div class="iv-grid two">
+                <div class="iv-card">
+                  <h3>Top 15 Undervalued Sectors by %</h3>
+                  <div class="iv-market-chart" id="ivMonthlySectorUnderChart"></div>
+                </div>
+                <div class="iv-card">
+                  <h3>Top 15 Overvalued Sectors by %</h3>
+                  <div class="iv-market-chart" id="ivMonthlySectorOverChart"></div>
+                </div>
+              </div>
+
+              <div class="iv-grid two">
+                <div class="iv-card">
+                  <h3>Turnaround Sectors</h3>
+                  <div class="iv-market-chart" id="ivMonthlyTurnaroundChart"></div>
+                </div>
+                <div class="iv-card">
+                  <h3>Negative Turnaround Sectors</h3>
+                  <div class="iv-market-chart" id="ivMonthlyNegativeTurnaroundChart"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Collapsible Table Section -->
+          <div class="iv-card iv-collapse-card" id="ivMonthlyTableCard" style="margin-top: 14px; margin-bottom: 24px;">
+            <div class="iv-collapse-header" id="ivMonthlyTableHeader">
+              <h3 style="margin: 0; display: flex; align-items: center; gap: 8px;">
+                Top Companies in Top Turnaround Sectors <span class="iv-collapse-arrow">▼</span>
+              </h3>
+              <span style="font-size: 11px; color: var(--iv-text-muted);">Click to toggle table</span>
+            </div>
+            
+            <div class="iv-collapse-content" id="ivMonthlyTableContent">
+              <div class="iv-table-wrap" style="margin-top: 14px;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Sector</th>
+                      <th>Company Name</th>
+                      <th>NSE Code</th>
+                      <th>BSE Code</th>
+                      <th>Change in Promoter Holding</th>
+                      <th>P/C Ratio</th>
+                      <th>Market Capitalization</th>
+                      <th>Current Price</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ivMonthlyTopCompaniesBody">
+                    <tr>
+                      <td colspan="8">Master data is loading. Please try again in a moment.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+  </main>
+  <script src="../js/navigation.js?v=2"></script>
+  <script src="../js/modules/monthly-analysis.js"></script>
+</body>
+</html>

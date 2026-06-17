@@ -1,0 +1,180 @@
+ .iv-headwind-page .iv-hw-badge {
+              display: inline-flex;
+              align-items: center;
+              gap: 6px;
+              padding: 5px 14px;
+              border-radius: 999px;
+              font-size: 11px;
+              font-weight: 700;
+              letter-spacing: 0.06em;
+              text-transform: uppercase;
+              transition: all 0.3s ease;
+            }
+
+             .iv-headwind-page .iv-hw-badge.tailwind {
+              background: rgba(52, 211, 153, 0.13);
+              border: 1px solid rgba(52, 211, 153, 0.35);
+              color: var(--iv-success);
+            }
+
+             .iv-headwind-page .iv-hw-badge.headwind {
+              background: rgba(248, 113, 113, 0.13);
+              border: 1px solid rgba(248, 113, 113, 0.35);
+              color: var(--iv-danger);
+            }
+
+             .iv-headwind-page .iv-hw-badge.neutral {
+              background: rgba(var(--iv-accent-rgb), 0.12);
+              border: 1px solid rgba(var(--iv-accent-rgb), 0.28);
+              color: var(--iv-accent-light);
+            }
+
+             .iv-headwind-page .iv-hw-sector-table {
+              width: 100%;
+              min-width: 100%;
+              border-collapse: collapse;
+            }
+
+            @media (min-width: 640px) {
+              .iv-headwind-page .iv-hw-sector-table {
+                min-width: 600px;
+              }
+            }
+
+            .iv-headwind-page .iv-hw-col-market {
+              min-width: 110px;
+            }
+            .iv-headwind-page .iv-hw-col-score {
+              min-width: 90px;
+            }
+            .iv-headwind-page .iv-hw-col-signal {
+              min-width: 80px;
+            }
+
+            @media (min-width: 640px) {
+              .iv-headwind-page .iv-hw-col-market {
+                min-width: 160px;
+              }
+              .iv-headwind-page .iv-hw-col-score {
+                min-width: 130px;
+              }
+              .iv-headwind-page .iv-hw-col-signal {
+                min-width: 110px;
+              }
+            }
+
+            @media (max-width: 639px) {
+              .iv-headwind-page .iv-hw-col-market {
+                min-width: 85px;
+              }
+              .iv-headwind-page .iv-hw-col-score {
+                min-width: 75px;
+              }
+              .iv-headwind-page .iv-hw-col-signal {
+                min-width: 70px;
+              }
+              .iv-headwind-page .iv-hw-bar-wrap {
+                min-width: 65px;
+                gap: 3px;
+              }
+              .iv-headwind-page .iv-hw-sector-table td {
+                padding: 7px 4px;
+                font-size: 11.5px;
+                white-space: normal;
+              }
+              .iv-headwind-page .iv-hw-sector-table th {
+                padding: 6px 4px;
+                font-size: 9px;
+                white-space: normal;
+              }
+              .iv-headwind-page .iv-hw-badge {
+                padding: 3px 6px;
+                font-size: 9.5px;
+                gap: 3px;
+              }
+            }
+
+             .iv-headwind-page .iv-hw-sector-table th {
+              font-size: 10px;
+              font-weight: 600;
+              letter-spacing: 0.08em;
+              text-transform: uppercase;
+              color: var(--iv-text-muted);
+              padding: 8px 10px;
+              border-bottom: 1px solid rgba(var(--iv-accent-rgb), 0.14);
+              text-align: left;
+            }
+
+             .iv-headwind-page .iv-hw-sector-table th.right,
+             .iv-headwind-page .iv-hw-sector-table td.right {
+              text-align: right;
+            }
+
+             .iv-headwind-page .iv-hw-sector-table th.center,
+             .iv-headwind-page .iv-hw-sector-table td.center {
+              text-align: center;
+            }
+
+             .iv-headwind-page .iv-hw-sector-table td {
+              font-size: 12.5px;
+              padding: 9px 10px;
+              border-bottom: 1px solid var(--iv-border-subtle);
+              color: var(--iv-text);
+              vertical-align: middle;
+              transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+             .iv-headwind-page .iv-hw-sector-table tr:last-child td {
+              border-bottom: none;
+            }
+
+             .iv-headwind-page .iv-hw-sector-table tr.market-row td {
+              background: rgba(var(--iv-accent-rgb), 0.07);
+              font-weight: 700;
+              color: var(--iv-accent-light);
+              border-bottom: 2px solid rgba(var(--iv-accent-rgb), 0.22);
+              transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+             .iv-headwind-page .iv-hw-sector-table tr.market-row:hover td {
+              background: rgba(var(--iv-accent-rgb), 0.12);
+              color: var(--iv-text);
+              transform: translateY(-2px);
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+
+             .iv-headwind-page .iv-hw-bar-wrap {
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              min-width: 80px;
+            }
+
+             .iv-headwind-page .iv-hw-bar-bg {
+              flex: 1;
+              height: 5px;
+              border-radius: 99px;
+              background: var(--iv-card);
+              overflow: hidden;
+            }
+
+             .iv-headwind-page .iv-hw-bar-fill {
+              height: 100%;
+              border-radius: 99px;
+              transition: width 0.4s ease, background-color 0.4s ease;
+            }
+
+             .iv-headwind-page .iv-hw-score-val {
+              font-size: 11px;
+              font-weight: 700;
+              min-width: 32px;
+              text-align: right;
+              transition: color 0.3s ease, transform 0.2s ease;
+            }
+
+             .iv-headwind-page .iv-hw-table-wrap {
+              overflow-x: auto;
+              max-height: 560px;
+              overflow-y: auto;
+              max-width: 100%;
+            }
