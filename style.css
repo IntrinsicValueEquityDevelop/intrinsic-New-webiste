@@ -2977,14 +2977,14 @@ html {
     }
     
     .cases-buttons-container.has-expanded .company-card-wrapper:not(.expanded) {
-        flex: 0.6 !important;
-        min-width: 45px;
+        flex: 0.05 !important;
+        min-width: 32px;
         background: rgba(10, 8, 6, 0.2);
         border-color: rgba(255, 140, 0, 0.08);
     }
     
     .company-card-wrapper.expanded {
-        flex: 3.5 !important;
+        flex: 12 !important;
         border-color: var(--accent);
         background: rgba(24, 18, 12, 0.85);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
@@ -3080,7 +3080,7 @@ html {
         justify-content: flex-start;
         gap: 8px;
         width: 100% !important;
-        max-width: 175px;
+        max-width: 195px;
         height: 42px !important;
         padding: 8px 12px;
         border-radius: 8px;
