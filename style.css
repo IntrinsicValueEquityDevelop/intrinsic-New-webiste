@@ -5749,6 +5749,7 @@ body.preloader-active {
 .portfolio-carousel-container {
     position: relative;
     width: 100%;
+    max-width: 1200px;
     height: 400px;
     margin: 20px auto 0 auto;
     display: flex;
@@ -5810,7 +5811,7 @@ body.preloader-active {
     filter: blur(2px);
     pointer-events: auto;
     cursor: pointer;
-    transform: translate(-50%, -50%) translate3d(-180px, 0, -100px) scale(0.85);
+    transform: translate(-50%, -50%) translate3d(-360px, 0, -100px) scale(0.85);
     z-index: 5;
 }
 
@@ -5819,7 +5820,7 @@ body.preloader-active {
     filter: blur(2px);
     pointer-events: auto;
     cursor: pointer;
-    transform: translate(-50%, -50%) translate3d(180px, 0, -100px) scale(0.85);
+    transform: translate(-50%, -50%) translate3d(360px, 0, -100px) scale(0.85);
     z-index: 5;
 }
 
@@ -5879,8 +5880,9 @@ body.preloader-active {
 /* Card Middle elements */
 .portfolio-card-middle {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 48px;
     width: 100%;
     margin-top: 10px;
 }
@@ -5905,8 +5907,8 @@ body.preloader-active {
 .portfolio-cagr-block {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    text-align: right;
+    align-items: flex-start;
+    text-align: left;
 }
 
 .portfolio-cagr-label {
@@ -6034,11 +6036,11 @@ body.preloader-active {
 }
 
 .portfolio-arrow.prev {
-    left: calc(50% - 310px);
+    left: 15px;
 }
 
 .portfolio-arrow.next {
-    right: calc(50% - 310px);
+    right: 15px;
 }
 
 /* Responsive adjustments */
@@ -6078,6 +6080,22 @@ body.preloader-active {
     .portfolio-arrow {
         width: 38px;
         height: 38px;
+    }
+}
+
+/* Intermediate screens layout for portfolio carousel */
+@media (min-width: 769px) and (max-width: 1200px) {
+    .portfolio-card.prev {
+        transform: translate(-50%, -50%) translate3d(-260px, 0, -100px) scale(0.85);
+    }
+    .portfolio-card.next {
+        transform: translate(-50%, -50%) translate3d(260px, 0, -100px) scale(0.85);
+    }
+    .portfolio-arrow.prev {
+        left: 10px;
+    }
+    .portfolio-arrow.next {
+        right: 10px;
     }
 }
 
