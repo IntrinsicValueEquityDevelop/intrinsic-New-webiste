@@ -222,11 +222,11 @@ function init3DSpiral() {
     if (philosophySection && carousel && spiralCards.length > 0) {
         // Dynamic adjustments for helix spacing depending on device width
         const getSpiralRadius = () => {
-            return window.innerWidth <= 480 ? 165 : (window.innerWidth <= 768 ? 190 : 380);
+            return window.innerWidth <= 480 ? 230 : (window.innerWidth <= 768 ? 265 : 380);
         };
         
         const getSpiralYSpacingFactor = () => {
-            return window.innerWidth <= 480 ? 2.5 : (window.innerWidth <= 768 ? 1.7 : 1.35);
+            return window.innerWidth <= 480 ? 3.0 : (window.innerWidth <= 768 ? 2.2 : 1.35);
         };
         
         // Bind hover listeners for scale pop
@@ -377,15 +377,15 @@ function init3DSpiral() {
             const windowHeight = cachedWindowHeight;
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
-            const endOffset = isFlow ? 8.4 * windowHeight : 12.2 * windowHeight; 
+            const endOffset = isFlow ? 7.8 * windowHeight : 11.6 * windowHeight; 
             return [
                 0,
                 1.2 * windowHeight,
                 2.4 * windowHeight,
-                3.6 * windowHeight,
-                4.8 * windowHeight,
-                6.0 * windowHeight,
-                7.2 * windowHeight,
+                3.0 * windowHeight,
+                4.2 * windowHeight,
+                5.4 * windowHeight,
+                6.6 * windowHeight,
                 endOffset
             ];
         };
@@ -407,7 +407,7 @@ function init3DSpiral() {
             // Hide indicator when reaching FAQ/Footer bottom
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
-            const hideThreshold = isFlow ? 7.2 * windowHeight : 11.0 * windowHeight;
+            const hideThreshold = isFlow ? 6.6 * windowHeight : 10.4 * windowHeight;
             if (scrollY >= hideThreshold) {
                 scrollIndicator.classList.remove('visible');
                 return;
@@ -492,10 +492,10 @@ function init3DSpiral() {
             // Define scroll transition checkpoints relative to viewport height with uniform gaps:
             // Hero: 0.0 to 1.2
             // Philosophy card spin: 1.2 to 2.4
-            // Featured logos: 2.4 to 3.6
-            // Case studies: 3.6 to 4.8
-            // Pricing: 4.8 to 6.0
-            // Testimonials: 6.0 to 7.2
+            // Featured logos: 2.4 to 3.0
+            // Case studies: 3.0 to 4.2
+            // Pricing: 4.2 to 5.4
+            // Testimonials: 5.4 to 6.6
             
             const heroFadeEnd = 1.2 * windowHeight;
 
@@ -506,22 +506,22 @@ function init3DSpiral() {
             const philFadeOutStart = 2.4 * windowHeight;
 
             const featuredFadeInStart = 2.4 * windowHeight;
-            const featuredFadeInEnd = 2.8 * windowHeight;
-            const featuredFadeOutStart = 3.6 * windowHeight;
+            const featuredFadeInEnd = 2.6 * windowHeight;
+            const featuredFadeOutStart = 2.8 * windowHeight;
 
-            const casesFadeInStart = 3.6 * windowHeight;
-            const casesFadeInEnd = 4.0 * windowHeight;
-            const casesFadeOutStart = 4.8 * windowHeight;
+            const casesFadeInStart = 2.8 * windowHeight;
+            const casesFadeInEnd = 3.0 * windowHeight;
+            const casesFadeOutStart = 4.2 * windowHeight;
 
-            const pricingFadeInStart = 4.8 * windowHeight;
-            const pricingFadeInEnd = 5.2 * windowHeight;
-            const pricingZoomStart = 5.2 * windowHeight;
-            const pricingZoomEnd = 6.0 * windowHeight;
-            const pricingFadeOutStart = 6.0 * windowHeight;
+            const pricingFadeInStart = 4.2 * windowHeight;
+            const pricingFadeInEnd = 4.6 * windowHeight;
+            const pricingZoomStart = 4.6 * windowHeight;
+            const pricingZoomEnd = 5.4 * windowHeight;
+            const pricingFadeOutStart = 5.4 * windowHeight;
 
-            const testimonialsFadeInStart = 6.0 * windowHeight;
-            const testimonialsFadeInEnd = 6.4 * windowHeight;
-            const testimonialsFadeOutStart = 7.2 * windowHeight;
+            const testimonialsFadeInStart = 5.4 * windowHeight;
+            const testimonialsFadeInEnd = 5.8 * windowHeight;
+            const testimonialsFadeOutStart = 6.6 * windowHeight;
 
             // 1. Hero Section Fade & Translate (outward)
             if (heroSec) {
@@ -535,22 +535,18 @@ function init3DSpiral() {
             if (philosophySticky) {
                 if (scrollY < philFadeInStart) {
                     sectionsState.philosophy.targetOpacity = 0;
-                    sectionsState.philosophy.targetY = windowHeight;
+                    sectionsState.philosophy.targetY = 0.45 * windowHeight;
                     sectionsState.philosophy.targetScale = 1;
                     sectionsState.philosophy.pointerEvents = 'none';
-                    if (window.innerWidth > 768) {
-                        targetScrollOffsetAngle = scrollDirection === 'up' ? 540 : 0;
-                    }
+                    targetScrollOffsetAngle = scrollDirection === 'up' ? 540 : 0;
                 } else if (scrollY >= philFadeInStart && scrollY <= philFadeInEnd) {
                     // Entrance Phase
                     const progress = (scrollY - philFadeInStart) / (philFadeInEnd - philFadeInStart);
                     sectionsState.philosophy.targetOpacity = progress;
-                    sectionsState.philosophy.targetY = windowHeight * (1 - progress);
+                    sectionsState.philosophy.targetY = 0.45 * windowHeight * (1 - progress);
                     sectionsState.philosophy.targetScale = 1;
                     sectionsState.philosophy.pointerEvents = 'auto';
-                    if (window.innerWidth > 768) {
-                        targetScrollOffsetAngle = scrollDirection === 'up' ? 540 : 0;
-                    }
+                    targetScrollOffsetAngle = scrollDirection === 'up' ? 540 : 0;
                 } else if (scrollY > philFadeInEnd && scrollY < philFadeOutStart) {
                     // Active Spin Phase
                     sectionsState.philosophy.targetOpacity = 1;
@@ -560,9 +556,7 @@ function init3DSpiral() {
 
                     const spinProgress = (scrollY - philSpinStart) / (philSpinEnd - philSpinStart);
                     const clampedProgress = Math.max(0, Math.min(1, spinProgress));
-                    if (window.innerWidth > 768) {
-                        targetScrollOffsetAngle = scrollDirection === 'up' ? 540 : (clampedProgress * 540);
-                    }
+                    targetScrollOffsetAngle = scrollDirection === 'up' ? 540 : (clampedProgress * 540);
                 } else {
                     // Exiting Philosophy Section (scrollY >= philFadeOutStart) - scroll up naturally
                     const progress = Math.max(0, Math.min(1, (scrollY - philFadeOutStart) / (featuredFadeInEnd - philFadeOutStart)));
@@ -570,9 +564,7 @@ function init3DSpiral() {
                     sectionsState.philosophy.targetY = -progress * windowHeight;
                     sectionsState.philosophy.targetScale = 1;
                     sectionsState.philosophy.pointerEvents = progress < 1 ? 'auto' : 'none';
-                    if (window.innerWidth > 768) {
-                        targetScrollOffsetAngle = 540;
-                    }
+                    targetScrollOffsetAngle = 540;
                 }
             }
 
@@ -768,7 +760,7 @@ function init3DSpiral() {
                     sectionsState.testimonials.pointerEvents = 'auto';
                 } else {
                     // Exiting Testimonials Section (scrollY >= testimonialsFadeOutStart) - scroll up naturally
-                    const progress = Math.max(0, Math.min(1, (scrollY - testimonialsFadeOutStart) / (7.2 * windowHeight - testimonialsFadeOutStart)));
+                    const progress = Math.max(0, Math.min(1, (scrollY - testimonialsFadeOutStart) / (7.0 * windowHeight - testimonialsFadeOutStart)));
                     sectionsState.testimonials.targetOpacity = 1;
                     sectionsState.testimonials.targetY = -progress * windowHeight;
                     sectionsState.testimonials.targetScale = 1;
@@ -875,7 +867,10 @@ function init3DSpiral() {
                 // Lerp scale, radius (depth), depth opacity, and blur amount
                 let currentScale = 0.62 + 0.43 * t; // scales from 0.62 (back) to 1.05 (front)
                 let currentRadius = radius * (0.55 + 0.53 * t); // tight core (0.55*R) to expanded front (1.08*R)
-                let depthOpacity = 0.08 + 0.92 * t; // fades to 0.08 in back to keep the helix populated
+                
+                // Steeper opacity curve: front card is fully opaque, neighbors and back cards are highly translucent
+                let opacityExponent = window.innerWidth <= 768 ? 6.0 : 3.5;
+                let depthOpacity = 0.03 + 0.97 * Math.pow(t, opacityExponent);
                 let finalOpacity = boundaryOpacity * depthOpacity;
                 let blurAmount = (1 - t) * 7.5; // up to 7.5px blur in back, 0px in front
                 

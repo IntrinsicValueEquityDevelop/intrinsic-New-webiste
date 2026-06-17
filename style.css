@@ -885,7 +885,7 @@ html {
    ========================================================================== */
 .scroll-stack {
   position: relative;
-  height: 720vh; /* Total page scroll depth (equal gaps of 1.2vh per section: Hero, Philosophy, Featured, Cases, Pricing, Testimonials) */
+  height: 660vh; /* Total page scroll depth (compressed timeline: Hero, Philosophy, Featured, Cases, Pricing, Testimonials) */
   width: 100%;
 }
 
@@ -1212,6 +1212,10 @@ html {
   box-sizing: border-box;
 }
 
+.iv-mobile-stats {
+  display: none !important;
+}
+
 .iv-stat-item {
   display: flex;
   flex-direction: column;
@@ -1319,20 +1323,58 @@ html {
     text-align: center !important;
     align-items: center !important;
     padding: 0 15px !important;
+    transform: translateY(-15px) !important;
+  }
+  
+  .iv-hero-tag {
+    margin-bottom: 8px !important;
   }
   
   .iv-hero-h1 {
-    font-size: 28px !important;
-    min-height: 80px !important;
+    font-size: 26px !important;
+    min-height: 70px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .iv-hero-bar {
     margin-bottom: 12px !important;
+  }
+
+  .iv-hero-desc {
+    margin-bottom: 10px !important;
+    font-size: 13.5px !important;
+    line-height: 1.5 !important;
   }
   
   .iv-hero-desc-2 {
     display: none !important;
   }
+
+  .iv-hero-cta {
+    padding: 10px 24px !important;
+    font-size: 13px !important;
+  }
+
+  .iv-sebi-badge {
+    margin-top: 12px !important;
+  }
+
+  .iv-mobile-stats {
+    display: flex !important;
+    margin: 16px auto 0 auto !important;
+    width: 100% !important;
+    max-width: 420px !important;
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
 }
 
 @media (max-width: 480px) {
+  .iv-hero-left {
+    transform: translateY(-20px) !important;
+  }
+
   .iv-hero-card {
     padding: 30px 24px 70px 24px;
   }
@@ -1344,18 +1386,39 @@ html {
   }
   
   .iv-stat-num {
-    font-size: 15px;
+    font-size: 14px;
   }
 
   .iv-stat-label {
-    font-size: 7.5px;
+    font-size: 7px;
     letter-spacing: 0.1px;
-    max-width: 70px;
+    max-width: 65px;
     margin-top: 2px;
   }
 
   .iv-stat-divider {
-    height: 30px;
+    height: 25px;
+  }
+
+  .iv-hero-cta {
+    padding: 8px 20px !important;
+    font-size: 12.5px !important;
+  }
+
+  .iv-mobile-stats {
+    margin: 12px auto 0 auto !important;
+    padding: 12px 6px !important;
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .iv-hero-tag {
+    margin-bottom: 6px !important;
+  }
+
+  .iv-hero-bar {
+    margin-bottom: 10px !important;
   }
 }
 
@@ -1847,25 +1910,57 @@ html {
 }
 
 @media screen and (max-width: 768px) {
-    
+    .spiral-card {
+        width: 250px;
+        height: 170px;
+        margin-left: -125px;
+        margin-top: -85px;
+        padding: 16px;
+    }
     .spiral-card h5 {
-        font-size: 15px;
-        margin-bottom: 6px !important;
+        font-size: 14px;
+        margin-bottom: 4px !important;
     }
     .spiral-card p {
-        font-size: 13px;
-        line-height: 1.5;
+        font-size: 11.5px;
+        line-height: 1.4;
     }
     .spiral-card-icon {
-        font-size: 20px;
-        margin-bottom: 6px;
+        font-size: 18px;
+        margin-bottom: 4px;
     }
     .spiral-card-readmore {
-        font-size: 11px;
-        margin-top: 10px;
+        font-size: 10.5px;
+        margin-top: 6px;
     }
     .spiral-philosophy-title h2 {
         font-size: 28px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .spiral-card {
+        width: 220px;
+        height: 155px;
+        margin-left: -110px;
+        margin-top: -77.5px;
+        padding: 14px;
+    }
+    .spiral-card h5 {
+        font-size: 13.5px;
+        margin-bottom: 3px !important;
+    }
+    .spiral-card p {
+        font-size: 10.5px;
+        line-height: 1.35;
+    }
+    .spiral-card-icon {
+        font-size: 16px;
+        margin-bottom: 3px;
+    }
+    .spiral-card-readmore {
+        font-size: 10px;
+        margin-top: 4px;
     }
 }
 
@@ -2409,10 +2504,11 @@ html {
 
 .featured-logo-card:hover .logo-icon-wrapper,
 .featured-logo-card.active .logo-icon-wrapper {
-    border-color: rgba(255, 140, 0, 0.4);
+    border-color: rgba(var(--brand-glow-rgb, 255, 140, 0), 0.75);
     box-shadow: 
-        inset 0 1px 1px rgba(255, 255, 255, 0.1),
-        0 12px 30px rgba(var(--brand-glow-rgb, 255, 140, 0), 0.3);
+        inset 0 1px 1px rgba(255, 255, 255, 0.15),
+        0 0 25px rgba(var(--brand-glow-rgb, 255, 140, 0), 0.65),
+        0 12px 30px rgba(var(--brand-glow-rgb, 255, 140, 0), 0.4);
 }
 
 .featured-logo-card:hover .logo-card-label,
@@ -2433,6 +2529,14 @@ html {
 .brand-investing { --brand-glow-rgb: 255, 140, 0; }
 .brand-x { --brand-glow-rgb: 255, 255, 255; }
 .brand-youtube { --brand-glow-rgb: 255, 0, 0; }
+.brand-money9 { --brand-glow-rgb: 255, 165, 0; }
+.brand-stockgro { --brand-glow-rgb: 0, 200, 115; }
+.brand-samco { --brand-glow-rgb: 0, 115, 230; }
+.brand-rediff { --brand-glow-rgb: 220, 30, 30; }
+.brand-ssrn { --brand-glow-rgb: 15, 76, 129; }
+.brand-inshorts { --brand-glow-rgb: 255, 90, 95; }
+.brand-elm { --brand-glow-rgb: 197, 160, 89; }
+.brand-vishal { --brand-glow-rgb: 255, 140, 0; }
 
 
 /* Pagination indicators */
@@ -2455,6 +2559,36 @@ html {
     border-radius: 3px;
     transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1), width 0.3s ease;
     box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+}
+
+/* Responsive mobile sizing for Press/Featured logos */
+@media (max-width: 768px) {
+    .featured-cards-row {
+        gap: 12px;
+        padding: 10px 10px 20px 10px;
+    }
+    .featured-logo-card {
+        min-width: 76px;
+        gap: 8px;
+    }
+    .logo-icon-wrapper {
+        width: 72px;
+        height: 72px;
+        border-radius: 18px;
+    }
+    .logo-card-label {
+        font-size: 10px;
+        max-width: 72px;
+    }
+    .logo-icon-img {
+        padding: 9px;
+    }
+    .featured-display {
+        margin-bottom: 25px;
+    }
+    .featured-quote-container {
+        min-height: 110px;
+    }
 }
 
 /* ==========================================================================
