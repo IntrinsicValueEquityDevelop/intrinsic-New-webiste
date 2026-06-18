@@ -36,8 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
         history.scrollRestoration = 'manual';
     }
     window.scrollTo(0, 0);
-    // Clean up URLs for production (running on http: or https:)
-    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+    // Clean up URLs for production (running on http: or https: but NOT on localhost/127.0.0.1)
+    var isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+    if ((window.location.protocol === 'http:' || window.location.protocol === 'https:') && !isLocalhost) {
         document.querySelectorAll('a[href]').forEach(link => {
             const href = link.getAttribute('href');
             if (href && href.endsWith('.html') && !href.startsWith('http') && !href.startsWith('//')) {

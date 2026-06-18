@@ -1,0 +1,86 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "routes": [
+    {
+      "src": "/analytics/static/(.*)",
+      "dest": "/analytics/frontend/assets/$1"
+    },
+    {
+      "src": "/analytics/css/(.*)",
+      "dest": "/analytics/frontend/css/$1"
+    },
+    {
+      "src": "/analytics/js/(.*)",
+      "dest": "/analytics/frontend/js/$1"
+    },
+    {
+      "src": "/analytics/assets/(.*)",
+      "dest": "/analytics/frontend/assets/$1"
+    },
+    {
+      "src": "/analytics/frontend/(.*)",
+      "dest": "/analytics/frontend/$1"
+    },
+    {
+      "src": "/analytics/dashboard",
+      "dest": "/analytics/frontend/pages/dashboard.html"
+    },
+    {
+      "src": "/analytics/ranking-tool",
+      "dest": "/analytics/frontend/pages/ranking-tool.html"
+    },
+    {
+      "src": "/analytics/monthly-market-analysis",
+      "dest": "/analytics/frontend/pages/monthly-market-analysis.html"
+    },
+    {
+      "src": "/analytics/market-valuation-index",
+      "dest": "/analytics/frontend/pages/market-valuation-index.html"
+    },
+    {
+      "src": "/analytics/headwind-tailwind-indicator",
+      "dest": "/analytics/frontend/pages/headwind-tailwind-indicator.html"
+    },
+    {
+      "src": "/analytics/portfolio-review-tool",
+      "dest": "/analytics/frontend/pages/portfolio-review-tool.html"
+    },
+    {
+      "src": "/analytics/intrinsic-theme",
+      "dest": "/analytics/frontend/pages/intrinsic-theme.html"
+    },
+    {
+      "src": "/analytics/sip",
+      "dest": "/analytics/frontend/pages/sip.html"
+    },
+    {
+      "src": "/analytics/swp",
+      "dest": "/analytics/frontend/pages/swp.html"
+    },
+    {
+      "src": "/analytics/lumpsum",
+      "dest": "/analytics/frontend/pages/lumpsum.html"
+    },
+    {
+      "src": "/analytics/xirr",
+      "dest": "/analytics/frontend/pages/xirr.html"
+    },
+    {
+      "src": "/analytics/gawp",
+      "dest": "/analytics/frontend/pages/gawp.html"
+    },
+    {
+      "src": "/analytics/tools",
+      "dest": "/analytics/frontend/pages/tools.html"
+    },
+    {
+      "src": "/analytics/admin",
+      "dest": "/analytics/frontend/pages/admin.html"
+    },
+    {
+      "src": "/analytics/?",
+      "dest": "/analytics/frontend/pages/dashboard.html"
+    }
+  ]
+}
