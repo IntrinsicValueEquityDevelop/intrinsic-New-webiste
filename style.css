@@ -2034,6 +2034,13 @@ html {
     font-family: var(--font-heading), sans-serif;
 }
 
+.spiral-card h5 s,
+.modal-content h2 s {
+    text-decoration-color: var(--accent);
+    -webkit-text-decoration-color: var(--accent);
+}
+
+
 .spiral-card p {
     font-size: 12.5px;
     line-height: 1.5;
@@ -3805,6 +3812,7 @@ html {
     text-align: left;
     font-size: 13.5px;
     color: rgba(250,250,250,0.9);
+    table-layout: fixed;
 }
 
 .comparison-table th, 
@@ -3827,6 +3835,11 @@ html {
     color: #ffffff;
     width: 22%;
     padding-left: 10px;
+}
+
+.comparison-table th:not(:first-child),
+.comparison-table td:not(:first-child) {
+    width: 26%;
 }
 
 .comparison-table td {
@@ -3854,6 +3867,39 @@ html {
 
 .param-name {
     color: var(--text-muted);
+}
+
+.comparison-table .table-btn {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    border-radius: 6px;
+    background: var(--accent);
+    color: #050505;
+    text-decoration: none;
+    transition: var(--transition-normal);
+    box-sizing: border-box;
+    letter-spacing: 0.5px;
+}
+
+.comparison-table .table-btn:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 0 15px var(--accent-glow);
+    transform: translateY(-2px);
+}
+
+.comparison-table tr.action-row:hover {
+    background: transparent !important;
+}
+
+.comparison-table tr.action-row td {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    border-bottom: none;
 }
 
 .modal-footer-cta {
@@ -4015,10 +4061,22 @@ html {
         padding-left: 4px;
     }
     
+    .comparison-table th:not(:first-child),
+    .comparison-table td:not(:first-child) {
+        width: 25.33%;
+    }
+    
     .comparison-close {
         top: 10px;
         right: 12px;
         font-size: 28px;
+    }
+    
+    .comparison-table .table-btn {
+        padding: 8px 6px;
+        font-size: 10px;
+        letter-spacing: 0px;
+        border-radius: 4px;
     }
 }
 
