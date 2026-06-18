@@ -62,6 +62,14 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+/* Prevent horizontal scroll globally on mobile */
+@media (max-width: 768px) {
+    html, body {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+    }
+}
+
 /* Custom cursors applied only to devices with mouse/trackpad (hover capability) to prevent touch delays or glitches on mobile */
 @media (hover: hover) and (pointer: fine) {
     html {
@@ -1313,112 +1321,351 @@ html {
 }
 
 @media (max-width: 768px) {
-  .iv-hero-right {
-    display: none !important;
+  /* ===========================================================================
+     MOBILE BASE: Disable sticky scroll stack and stack sections vertically
+     =========================================================================== */
+  .scroll-stack {
+    height: auto !important;
+    position: relative !important;
+    overflow-x: hidden !important;
   }
   
+  .sticky-viewport {
+    position: relative !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* All scroll-stack sections go relative and full-width */
+  .iv-hero,
+  .spiral-philosophy-sticky,
+  .iv-featured-section,
+  .iv-cases-section,
+  .homepage-portfolio-section,
+  .pricing-scroll-section,
+  .stacked-testimonials-section {
+    position: relative !important;
+    inset: auto !important;
+    height: auto !important;
+    min-height: auto !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    opacity: 1 !important;
+    transform: none !important;
+    display: block !important;
+    pointer-events: auto !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* ===========================================================================
+     HERO SECTION: Vertical stack with compounding image visible
+     =========================================================================== */
+  /* Specific padding top for hero below sticky navigation bar */
+  .iv-hero {
+    padding-top: 90px !important;
+    padding-bottom: 40px !important;
+    align-items: flex-start !important;
+  }
+
+  /* Stack hero grid vertically */
+  .iv-hero-inner {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+    width: 100% !important;
+  }
+
+  /* Left column: left-aligned on mobile */
   .iv-hero-left {
     width: 100% !important;
     max-width: 100% !important;
-    text-align: center !important;
-    align-items: center !important;
-    padding: 0 15px !important;
-    transform: translateY(-15px) !important;
-  }
-  
-  .iv-hero-tag {
-    margin-bottom: 8px !important;
-  }
-  
-  .iv-hero-h1 {
-    font-size: 26px !important;
-    min-height: 70px !important;
-    margin-bottom: 8px !important;
+    text-align: left !important;
+    align-items: flex-start !important;
+    padding: 0 !important;
   }
 
-  .iv-hero-bar {
+  .iv-hero-tag {
+    font-size: 12px !important;
+    margin-bottom: 10px !important;
+  }
+
+  /* Bigger heading for readability */
+  .iv-hero-h1 {
+    font-size: 32px !important;
+    line-height: 1.25 !important;
+    min-height: 80px !important;
     margin-bottom: 12px !important;
   }
 
+  .iv-hero-bar {
+    margin-bottom: 14px !important;
+  }
+
+  /* Both paragraphs visible and readable */
   .iv-hero-desc {
-    margin-bottom: 10px !important;
-    font-size: 13.5px !important;
-    line-height: 1.5 !important;
+    display: block !important;
+    margin-bottom: 14px !important;
+    font-size: 15px !important;
+    line-height: 1.65 !important;
+    color: var(--text-secondary) !important;
   }
   
   .iv-hero-desc-2 {
-    display: none !important;
+    display: block !important;
+    margin-bottom: 20px !important;
+    font-size: 15px !important;
+    line-height: 1.65 !important;
+    color: var(--text-secondary) !important;
   }
 
   .iv-hero-cta {
-    padding: 10px 24px !important;
-    font-size: 13px !important;
+    padding: 12px 28px !important;
+    font-size: 14px !important;
   }
 
   .iv-sebi-badge {
-    margin-top: 12px !important;
+    margin-top: 14px !important;
+    font-size: 12px !important;
   }
 
+  /* Hide the mobile stats duplicate (we'll show the right column stats overlay) */
   .iv-mobile-stats {
-    display: flex !important;
-    margin: 16px auto 0 auto !important;
+    display: none !important;
+  }
+
+  /* RIGHT column: show the compounding image card on mobile */
+  .iv-hero-right {
+    display: block !important;
     width: 100% !important;
-    max-width: 420px !important;
+    max-width: 100% !important;
+  }
+
+  /* Hero card (compounding image) proportional on mobile */
+  .iv-hero-card {
+    padding: 28px 24px 72px 24px !important;
+    border-radius: 20px !important;
+  }
+
+  .iv-card-headline {
+    font-size: 22px !important;
+  }
+
+  .iv-card-sub {
+    font-size: 10px !important;
+    margin-top: 10px !important;
+    margin-bottom: 20px !important;
+  }
+
+  .iv-staircase {
+    height: 110px !important;
+  }
+
+  /* Stats overlay below the card */
+  .iv-hero-stats-overlay {
+    margin: -40px 12px 0 12px !important;
+    padding: 16px 10px !important;
+    border-radius: 14px !important;
+  }
+
+  .iv-stat-num {
+    font-size: 18px !important;
+  }
+
+  .iv-stat-label {
+    font-size: 9px !important;
+    max-width: 70px !important;
+  }
+
+  .iv-stat-divider {
+    height: 30px !important;
+  }
+
+  /* ===========================================================================
+     PHILOSOPHY SECTION: Fixed height 3D helix carousel
+     =========================================================================== */
+  .spiral-philosophy-sticky {
+    height: 560px !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    overflow: hidden !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .spiral-philosophy-title {
+    position: relative !important;
+    top: auto !important;
+    padding: 24px 16px 8px !important;
+    flex-shrink: 0 !important;
+    text-align: center !important;
+  }
+
+  .spiral-philosophy-title h2 {
+    font-size: 28px !important;
+  }
+
+  .spiral-scene {
+    flex: 1 !important;
+    width: 100% !important;
+    overflow: hidden !important;
+  }
+
+  /* ===========================================================================
+     CASE STUDIES: Prevent overflow and x-axis scroll
+     =========================================================================== */
+  .iv-cases-container {
+    padding: 0 16px !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .cases-main-title {
+    font-size: 28px !important;
+  }
+
+  .cases-pre-title {
+    font-size: 12px !important;
+  }
+
+  /* ===========================================================================
+     TESTIMONIALS: Prevent overlap and x-axis scroll
+     =========================================================================== */
+  .stacked-testimonials-section {
+    overflow-x: hidden !important;
+  }
+  
+  .stacked-testimonials-sticky {
+    position: relative !important;
+    top: auto !important;
+    height: auto !important;
+    overflow: hidden !important;
+    padding: 40px 0 !important;
+  }
+
+  .testimonials-carousel-container {
+    overflow-x: hidden !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+
+  /* ===========================================================================
+     FORCE DISPLAY of scroll-animated desktop elements
+     =========================================================================== */
+  .featured-display,
+  .featured-slider-container,
+  .cases-title-block,
+  .cases-buttons-container,
+  .company-card-wrapper {
     opacity: 1 !important;
     transform: none !important;
-    animation: none !important;
+    filter: none !important;
+  }
+
+  /* ===========================================================================
+     PORTFOLIO CAROUSEL: Mobile sizing
+     =========================================================================== */
+  .portfolio-card {
+    width: 300px !important;
+    height: 390px !important;
+    padding: 18px !important;
+  }
+  
+  .portfolio-card-title {
+    font-size: 15px !important;
+  }
+  
+  .portfolio-card.prev {
+    transform: translate(-50%, -50%) translate3d(-90px, 0, -80px) scale(0.8) !important;
+    opacity: 0.15 !important;
+  }
+  
+  .portfolio-card.next {
+    transform: translate(-50%, -50%) translate3d(90px, 0, -80px) scale(0.8) !important;
+    opacity: 0.15 !important;
+  }
+  
+  .portfolio-carousel-container {
+    height: 450px !important;
+    overflow: visible !important;
+  }
+  
+  .portfolio-arrow.prev {
+    left: 5px !important;
+  }
+  
+  .portfolio-arrow.next {
+    right: 5px !important;
+  }
+  
+  .portfolio-arrow {
+    width: 38px !important;
+    height: 38px !important;
   }
 }
 
 @media (max-width: 480px) {
-  .iv-hero-left {
-    transform: translateY(-20px) !important;
+  /* Even smaller screens */
+  .iv-hero-h1 {
+    font-size: 28px !important;
+    min-height: 68px !important;
+  }
+
+  .iv-hero-desc,
+  .iv-hero-desc-2 {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
   }
 
   .iv-hero-card {
-    padding: 30px 24px 70px 24px;
+    padding: 24px 20px 64px 20px !important;
   }
   
   .iv-hero-stats-overlay {
-    margin: -40px 10px 0 10px;
-    padding: 16px 8px;
-    gap: 4px;
+    margin: -36px 8px 0 8px !important;
+    padding: 14px 6px !important;
+    gap: 4px !important;
   }
   
   .iv-stat-num {
-    font-size: 14px;
+    font-size: 16px !important;
   }
 
   .iv-stat-label {
-    font-size: 7px;
-    letter-spacing: 0.1px;
-    max-width: 65px;
-    margin-top: 2px;
+    font-size: 8px !important;
+    letter-spacing: 0.1px !important;
+    max-width: 60px !important;
+    margin-top: 2px !important;
   }
 
   .iv-stat-divider {
-    height: 25px;
+    height: 28px !important;
   }
 
   .iv-hero-cta {
-    padding: 8px 20px !important;
-    font-size: 12.5px !important;
-  }
-
-  .iv-mobile-stats {
-    margin: 12px auto 0 auto !important;
-    padding: 12px 6px !important;
-    opacity: 1 !important;
-    transform: none !important;
-    animation: none !important;
+    padding: 11px 22px !important;
+    font-size: 13.5px !important;
   }
 
   .iv-hero-tag {
-    margin-bottom: 6px !important;
+    font-size: 11px !important;
+    margin-bottom: 8px !important;
   }
 
-  .iv-hero-bar {
-    margin-bottom: 10px !important;
+  .iv-card-headline {
+    font-size: 20px !important;
+  }
+
+  .iv-staircase {
+    height: 90px !important;
+  }
+
+  .spiral-philosophy-sticky {
+    height: 520px !important;
   }
 }
 
@@ -2516,26 +2763,26 @@ html {
     color: #ffffff;
 }
 
-/* Custom Brand Glow RGB values */
-.brand-bs { --brand-glow-rgb: 255, 255, 255; }
-.brand-josh { --brand-glow-rgb: 255, 140, 0; }
-.brand-et { --brand-glow-rgb: 216, 35, 42; }
-.brand-iitm { --brand-glow-rgb: 197, 160, 89; }
-.brand-bt { --brand-glow-rgb: 237, 28, 36; }
-.brand-upsurge { --brand-glow-rgb: 0, 210, 196; }
-.brand-smallcase { --brand-glow-rgb: 27, 131, 255; }
-.brand-stocktwits { --brand-glow-rgb: 38, 166, 154; }
-.brand-msn { --brand-glow-rgb: 0, 164, 239; }
-.brand-investing { --brand-glow-rgb: 255, 140, 0; }
-.brand-x { --brand-glow-rgb: 255, 255, 255; }
-.brand-youtube { --brand-glow-rgb: 255, 0, 0; }
-.brand-money9 { --brand-glow-rgb: 255, 165, 0; }
-.brand-stockgro { --brand-glow-rgb: 0, 200, 115; }
-.brand-samco { --brand-glow-rgb: 0, 115, 230; }
-.brand-rediff { --brand-glow-rgb: 220, 30, 30; }
-.brand-ssrn { --brand-glow-rgb: 15, 76, 129; }
-.brand-inshorts { --brand-glow-rgb: 255, 90, 95; }
-.brand-elm { --brand-glow-rgb: 197, 160, 89; }
+/* Brand Glow — all unified to site orange accent */
+.brand-bs,
+.brand-josh,
+.brand-et,
+.brand-iitm,
+.brand-bt,
+.brand-upsurge,
+.brand-smallcase,
+.brand-stocktwits,
+.brand-msn,
+.brand-investing,
+.brand-x,
+.brand-youtube,
+.brand-money9,
+.brand-stockgro,
+.brand-samco,
+.brand-rediff,
+.brand-ssrn,
+.brand-inshorts,
+.brand-elm,
 .brand-vishal { --brand-glow-rgb: 255, 140, 0; }
 
 
@@ -2978,9 +3225,10 @@ html {
         flex-direction: row;
         justify-content: center;
         gap: 10px;
-        align-items: center;
+        align-items: stretch;
         width: 100%;
-        height: 320px; /* Consistent height for mobile horizontal accordion */
+        min-height: 320px; /* Minimum height; grows when a card is expanded */
+        height: auto;
         padding: 10px 0;
     }
     
@@ -3011,6 +3259,8 @@ html {
     .company-card-wrapper.expanded {
         flex: 12 !important;
         flex-direction: column !important;
+        align-items: stretch !important;
+        height: auto !important;
         border-color: var(--accent);
         background: rgba(24, 18, 12, 0.85);
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
@@ -3116,10 +3366,13 @@ html {
         visibility: visible;
         pointer-events: auto;
         transform: translateX(0);
-        max-height: none;
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
         padding: 12px 8px;
         width: 100%;
-        height: calc(100% - 48px) !important;
+        flex-wrap: wrap;
+        justify-content: center;
     }
     
     .btn-report-item {
@@ -3770,6 +4023,338 @@ html {
 }
 
 /* ==========================================================================
+   OUR PORTFOLIO SECTION STYLES (KamayaKya Light theme Style)
+   ========================================================================== */
+.homepage-portfolio-section {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    background: transparent;
+    overflow: hidden;
+    perspective: 1200px;
+    will-change: transform, opacity;
+}
+
+.portfolio-carousel-container {
+    position: relative;
+    width: 100%;
+    max-width: 1200px;
+    height: 400px;
+    margin: 20px auto 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1200px;
+}
+
+.portfolio-carousel-track {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.portfolio-card {
+    position: absolute;
+    width: 520px;
+    max-width: 92%;
+    height: 360px;
+    background: #ffffff;
+    color: #333333;
+    border: 1.5px solid #edf2f7;
+    border-radius: 16px;
+    padding: 24px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+                opacity 0.6s ease,
+                border-color 0.6s ease,
+                box-shadow 0.6s ease,
+                filter 0.6s ease;
+    filter: blur(4px);
+    transform: translate(-50%, -50%) translate3d(0, 0, -150px) scale(0.75);
+    left: 50%;
+    top: 50%;
+    transform-origin: center center;
+}
+
+.portfolio-card.active {
+    opacity: 1;
+    filter: blur(0);
+    pointer-events: auto;
+    border: 2px solid #ff8c00;
+    box-shadow: 0 15px 35px rgba(255, 140, 0, 0.22), 0 10px 25px rgba(0, 0, 0, 0.15);
+    transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(1);
+    z-index: 10;
+}
+
+.portfolio-card.prev {
+    opacity: 0.35;
+    filter: blur(2px);
+    pointer-events: auto;
+    cursor: pointer;
+    transform: translate(-50%, -50%) translate3d(-360px, 0, -100px) scale(0.85);
+    z-index: 5;
+}
+
+.portfolio-card.next {
+    opacity: 0.35;
+    filter: blur(2px);
+    pointer-events: auto;
+    cursor: pointer;
+    transform: translate(-50%, -50%) translate3d(360px, 0, -100px) scale(0.85);
+    z-index: 5;
+}
+
+.portfolio-card.hidden {
+    opacity: 0;
+    filter: blur(6px);
+    pointer-events: none;
+    transform: translate(-50%, -50%) translate3d(0, 0, -200px) scale(0.7);
+    z-index: 0;
+}
+
+/* Card Header elements */
+.portfolio-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 8px;
+    width: 100%;
+}
+
+.portfolio-card-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    object-fit: contain;
+    background: #f7fafc;
+    border: 1px solid #edf2f7;
+    flex-shrink: 0;
+}
+
+.portfolio-card-title-block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-grow: 1;
+}
+
+.portfolio-card-title {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0;
+    text-align: left;
+    line-height: 1.3;
+}
+
+.portfolio-card-description {
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: #4a5568;
+    margin: 0;
+    text-align: left;
+    line-height: 1.4;
+}
+
+/* Card Middle elements */
+.portfolio-card-middle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 48px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.portfolio-volatility-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff5f5;
+    border: 1px solid #feb2b2;
+    color: #c53030;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.portfolio-volatility-badge i {
+    font-size: 10px;
+}
+
+.portfolio-cagr-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.portfolio-cagr-label {
+    font-family: var(--font-body);
+    font-size: 10px;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+}
+
+.portfolio-cagr-value-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cagr-lock-icon {
+    font-size: 11px;
+    color: #3182ce;
+}
+
+.portfolio-cagr-value {
+    font-family: var(--font-heading);
+    font-size: 15px;
+    font-weight: 700;
+    color: #38a169;
+    filter: blur(4px);
+    user-select: none;
+    opacity: 0.85;
+}
+
+/* Card Stats elements */
+.portfolio-card-stats {
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px dashed #e2e8f0;
+    border-bottom: 1px dashed #e2e8f0;
+    padding: 14px 0;
+    margin: 14px 0;
+    width: 100%;
+}
+
+.portfolio-stat-col {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    width: 33%;
+    text-align: left;
+}
+
+.portfolio-stat-label {
+    font-family: var(--font-body);
+    font-size: 9px;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.portfolio-stat-value {
+    font-family: var(--font-heading);
+    font-size: 13px;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+/* Card Footer elements */
+.portfolio-card-footer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.portfolio-subscribe-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px;
+    background: #ff8c00;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(255, 140, 0, 0.2);
+    box-sizing: border-box;
+}
+
+.portfolio-subscribe-btn:hover {
+    background-color: #e07b00;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 140, 0, 0.35);
+}
+
+/* Slider Arrows */
+.portfolio-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(30, 30, 30, 0.85);
+    border: 1.5px solid rgba(255, 140, 0, 0.25);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 25;
+    transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.portfolio-arrow:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 18px rgba(255, 140, 0, 0.4);
+}
+
+.portfolio-arrow.prev {
+    left: 15px;
+}
+
+.portfolio-arrow.next {
+    right: 15px;
+}
+
+/* Intermediate screens layout for portfolio carousel */
+@media (min-width: 769px) and (max-width: 1200px) {
+    .portfolio-card.prev {
+        transform: translate(-50%, -50%) translate3d(-260px, 0, -100px) scale(0.85);
+    }
+    .portfolio-card.next {
+        transform: translate(-50%, -50%) translate3d(260px, 0, -100px) scale(0.85);
+    }
+    .portfolio-arrow.prev {
+        left: 10px;
+    }
+    .portfolio-arrow.next {
+        right: 10px;
+    }
+}
+
+/* ==========================================================================
    STACKED TESTIMONIALS SECTION (Velvet Marigold Dark Theme)
    ========================================================================== */
 .stacked-testimonials-section {
@@ -4248,6 +4833,28 @@ html {
 }
 
 @media screen and (max-width: 768px) {
+    /* Override flow-layout absolute positioning on mobile */
+    .stacked-testimonials-section.flow-layout {
+        position: relative !important;
+        inset: auto !important;
+        height: auto !important;
+        overflow: hidden !important;
+        display: block !important;
+    }
+
+    /* Allow inner sticky to show stacked cards fully — outer section clips */
+    .stacked-testimonials-section.flow-layout .stacked-testimonials-sticky {
+        height: auto !important;
+        overflow: visible !important;
+        padding: 40px 16px !important;
+    }
+
+    /* Carousel container — visible so offset stacked cards show */
+    .testimonials-carousel-container {
+        overflow: visible !important;
+        max-width: 100% !important;
+    }
+
     .testimonials-frame-corner {
         width: 16px;
         height: 16px;

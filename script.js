@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const stackedSection = document.querySelector('.stacked-testimonials-section');
         // If the testimonials section is present, check if it has flow-layout, or if it will be initialized to it
         const isFlow = stackedSection ? (stackedSection.classList.contains('flow-layout') || true) : true;
-        return isFlow ? 4.3 * cachedWindowHeight : 8.3 * cachedWindowHeight;
+        return isFlow ? 5.3 * cachedWindowHeight : 9.3 * cachedWindowHeight;
     };
 
     const scrollStack = document.querySelector('.scroll-stack');
@@ -186,6 +186,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize Case Studies section and modals
     initCaseStudies();
 
+    // Initialize Portfolio Carousel
+    initPortfolioCarousel();
+
     // Initialize Stats Counter Animation
     initStatsCounters();
 
@@ -327,6 +330,7 @@ function init3DSpiral() {
         const philosophySticky = document.querySelector('.spiral-philosophy-sticky');
         const featuredSec = document.querySelector('.iv-featured-section');
         const casesSec = document.querySelector('.iv-cases-section');
+        const portfolioSec = document.getElementById('portfolio-scroll-section');
         const pricingSecEl = document.getElementById('pricing-scroll-section');
         const testimonialsSec = document.getElementById('testimonials-section');
 
@@ -361,6 +365,13 @@ function init3DSpiral() {
                 currScale: 0.95, targetScale: 0.95,
                 pointerEvents: 'none',
                 hasEntered: false
+            },
+            portfolio: {
+                el: portfolioSec,
+                currOpacity: 0, targetOpacity: 0,
+                currY: 60, targetY: 60,
+                currScale: 0.95, targetScale: 0.95,
+                pointerEvents: 'none'
             },
             pricing: {
                 el: pricingSecEl,
@@ -410,15 +421,16 @@ function init3DSpiral() {
             const windowHeight = cachedWindowHeight;
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
-            const endOffset = isFlow ? 4.3 * windowHeight : 8.3 * windowHeight; 
+            const endOffset = isFlow ? 5.3 * windowHeight : 9.3 * windowHeight; 
             return [
                 0,
                 1.0 * windowHeight,
                 1.8 * windowHeight,
                 2.1 * windowHeight,
-                2.5 * windowHeight,
-                3.0 * windowHeight,
-                3.3 * windowHeight,
+                2.5 * windowHeight, // Portfolio
+                3.0 * windowHeight, // Pricing
+                3.5 * windowHeight, // Testimonials
+                3.8 * windowHeight, // Testimonials exit
                 endOffset
             ];
         };
@@ -440,7 +452,7 @@ function init3DSpiral() {
             // Hide indicator when reaching FAQ/Footer bottom
             const stackedSection = document.querySelector('.stacked-testimonials-section');
             const isFlow = stackedSection && stackedSection.classList.contains('flow-layout');
-            const hideThreshold = isFlow ? 3.4 * windowHeight : 7.2 * windowHeight;
+            const hideThreshold = isFlow ? 3.9 * windowHeight : 8.2 * windowHeight;
             if (scrollY >= hideThreshold) {
                 scrollIndicator.classList.remove('visible');
                 return;
@@ -527,8 +539,9 @@ function init3DSpiral() {
             // Philosophy card spin: 1.2 to 2.4
             // Featured logos: 2.4 to 3.0
             // Case studies: 3.0 to 3.6
-            // Pricing: 3.6 to 4.2
-            // Testimonials: 3.0 to 3.5
+            // Portfolio: 3.6 to 4.2
+            // Pricing: 4.2 to 4.8
+            // Testimonials: 4.8 to 5.3
             
             const heroFadeEnd = 1.0 * windowHeight;
 
@@ -546,15 +559,19 @@ function init3DSpiral() {
             const casesFadeInEnd = 2.3 * windowHeight;
             const casesFadeOutStart = 2.5 * windowHeight;
 
-            const pricingFadeInStart = 2.5 * windowHeight;
-            const pricingFadeInEnd = 2.7 * windowHeight;
-            const pricingZoomStart = 2.7 * windowHeight;
-            const pricingZoomEnd = 3.0 * windowHeight;
-            const pricingFadeOutStart = 3.0 * windowHeight;
+            const portfolioFadeInStart = 2.5 * windowHeight;
+            const portfolioFadeInEnd = 2.7 * windowHeight;
+            const portfolioFadeOutStart = 3.0 * windowHeight;
 
-            const testimonialsFadeInStart = 3.0 * windowHeight;
-            const testimonialsFadeInEnd = 3.2 * windowHeight;
-            const testimonialsFadeOutStart = 3.3 * windowHeight;
+            const pricingFadeInStart = 3.0 * windowHeight;
+            const pricingFadeInEnd = 3.2 * windowHeight;
+            const pricingZoomStart = 3.2 * windowHeight;
+            const pricingZoomEnd = 3.5 * windowHeight;
+            const pricingFadeOutStart = 3.5 * windowHeight;
+
+            const testimonialsFadeInStart = 3.5 * windowHeight;
+            const testimonialsFadeInEnd = 3.7 * windowHeight;
+            const testimonialsFadeOutStart = 3.8 * windowHeight;
 
             // 1. Hero Section Fade & Translate (outward)
             if (heroSec) {
@@ -660,12 +677,43 @@ function init3DSpiral() {
                     sectionsState.cases.hasEntered = true;
                 } else {
                     // Exiting Cases Section (scrollY >= casesFadeOutStart) - scroll up naturally
-                    const progress = Math.max(0, Math.min(1, (scrollY - casesFadeOutStart) / (pricingFadeInEnd - casesFadeOutStart)));
+                    const progress = Math.max(0, Math.min(1, (scrollY - casesFadeOutStart) / (portfolioFadeInEnd - casesFadeOutStart)));
                     sectionsState.cases.targetOpacity = 1;
                     sectionsState.cases.targetY = -progress * windowHeight;
                     sectionsState.cases.targetScale = 1;
                     sectionsState.cases.pointerEvents = progress < 1 ? 'auto' : 'none';
                     sectionsState.cases.hasEntered = true;
+                }
+            }
+
+            // 4b. Portfolio Section Fade & Translate (inward & outward)
+            const portfolioSec = sectionsState.portfolio.el;
+            if (portfolioSec) {
+                if (scrollY < portfolioFadeInStart) {
+                    sectionsState.portfolio.targetOpacity = 0;
+                    sectionsState.portfolio.targetY = windowHeight;
+                    sectionsState.portfolio.targetScale = 1;
+                    sectionsState.portfolio.pointerEvents = 'none';
+                } else if (scrollY >= portfolioFadeInStart && scrollY <= portfolioFadeInEnd) {
+                    // Entrance Phase
+                    const progress = (scrollY - portfolioFadeInStart) / (portfolioFadeInEnd - portfolioFadeInStart);
+                    sectionsState.portfolio.targetOpacity = progress;
+                    sectionsState.portfolio.targetY = 0.45 * windowHeight * (1 - progress);
+                    sectionsState.portfolio.targetScale = 1;
+                    sectionsState.portfolio.pointerEvents = 'auto';
+                } else if (scrollY > portfolioFadeInEnd && scrollY < portfolioFadeOutStart) {
+                    // Active Phase
+                    sectionsState.portfolio.targetOpacity = 1;
+                    sectionsState.portfolio.targetY = 0;
+                    sectionsState.portfolio.targetScale = 1;
+                    sectionsState.portfolio.pointerEvents = 'auto';
+                } else {
+                    // Exiting Portfolio Section (scrollY >= portfolioFadeOutStart) - scroll up naturally
+                    const progress = Math.max(0, Math.min(1, (scrollY - portfolioFadeOutStart) / (pricingFadeInEnd - portfolioFadeOutStart)));
+                    sectionsState.portfolio.targetOpacity = 1;
+                    sectionsState.portfolio.targetY = -progress * windowHeight;
+                    sectionsState.portfolio.targetScale = 1;
+                    sectionsState.portfolio.pointerEvents = progress < 1 ? 'auto' : 'none';
                 }
             }
 
@@ -826,10 +874,19 @@ function init3DSpiral() {
             const ySpacingFactor = getSpiralYSpacingFactor();
             
             // A. Smoothly update and apply section transitions (buttery smooth scroll transitions)
+            const isMobileView = window.innerWidth <= 768;
             const sectionLerp = 0.16;
             for (const key in sectionsState) {
                 const s = sectionsState[key];
                 if (s.el) {
+                    if (isMobileView) {
+                        s.el.style.opacity = '';
+                        s.el.style.transform = '';
+                        s.el.style.pointerEvents = '';
+                        s.el.style.display = '';
+                        s.el.style.filter = '';
+                        continue;
+                    }
                     s.currOpacity += (s.targetOpacity - s.currOpacity) * sectionLerp;
                     s.currY += (s.targetY - s.currY) * sectionLerp;
                     s.currScale += (s.targetScale - s.currScale) * sectionLerp;
@@ -933,31 +990,44 @@ function init3DSpiral() {
             
             // C. Smoothly update and apply Pricing Section elements
             if (pricingSecEl) {
-                const pricingLerp = 0.08;
-                
-                // Interpolate Title
-                pricingState.title.currZ += (pricingState.title.targetZ - pricingState.title.currZ) * pricingLerp;
-                pricingState.title.currScale += (pricingState.title.targetScale - pricingState.title.currScale) * pricingLerp;
-                pricingState.title.currOpacity += (pricingState.title.targetOpacity - pricingState.title.currOpacity) * pricingLerp;
-                
-                if (pricingState.title.el) {
-                    pricingState.title.el.style.transform = `translate3d(0, 0, ${pricingState.title.currZ.toFixed(1)}px) scale(${pricingState.title.currScale.toFixed(3)})`;
-                    pricingState.title.el.style.opacity = pricingState.title.currOpacity.toFixed(3);
-                }
-                
-                // Interpolate Cards
-                pricingState.cards.forEach(c => {
-                    c.currZ += (c.targetZ - c.currZ) * pricingLerp;
-                    c.currScale += (c.targetScale - c.currScale) * pricingLerp;
-                    c.currOpacity += (c.targetOpacity - c.currOpacity) * pricingLerp;
-                    c.currRotateX += (c.targetRotateX - c.currRotateX) * pricingLerp;
-                    c.currY += (c.targetY - c.currY) * pricingLerp;
-                    
-                    if (c.el) {
-                        c.el.style.transform = `translate3d(0, ${c.currY.toFixed(1)}px, ${c.currZ.toFixed(1)}px) scale(${c.currScale.toFixed(3)}) rotateX(${c.currRotateX.toFixed(1)}deg)`;
-                        c.el.style.opacity = c.currOpacity.toFixed(3);
+                if (isMobileView) {
+                    if (pricingState.title.el) {
+                        pricingState.title.el.style.transform = '';
+                        pricingState.title.el.style.opacity = '';
                     }
-                });
+                    pricingState.cards.forEach(c => {
+                        if (c.el) {
+                            c.el.style.transform = '';
+                            c.el.style.opacity = '';
+                        }
+                    });
+                } else {
+                    const pricingLerp = 0.08;
+                    
+                    // Interpolate Title
+                    pricingState.title.currZ += (pricingState.title.targetZ - pricingState.title.currZ) * pricingLerp;
+                    pricingState.title.currScale += (pricingState.title.targetScale - pricingState.title.currScale) * pricingLerp;
+                    pricingState.title.currOpacity += (pricingState.title.targetOpacity - pricingState.title.currOpacity) * pricingLerp;
+                    
+                    if (pricingState.title.el) {
+                        pricingState.title.el.style.transform = `translate3d(0, 0, ${pricingState.title.currZ.toFixed(1)}px) scale(${pricingState.title.currScale.toFixed(3)})`;
+                        pricingState.title.el.style.opacity = pricingState.title.currOpacity.toFixed(3);
+                    }
+                    
+                    // Interpolate Cards
+                    pricingState.cards.forEach(c => {
+                        c.currZ += (c.targetZ - c.currZ) * pricingLerp;
+                        c.currScale += (c.targetScale - c.currScale) * pricingLerp;
+                        c.currOpacity += (c.targetOpacity - c.currOpacity) * pricingLerp;
+                        c.currRotateX += (c.targetRotateX - c.currRotateX) * pricingLerp;
+                        c.currY += (c.targetY - c.currY) * pricingLerp;
+                        
+                        if (c.el) {
+                            c.el.style.transform = `translate3d(0, ${c.currY.toFixed(1)}px, ${c.currZ.toFixed(1)}px) scale(${c.currScale.toFixed(3)}) rotateX(${c.currRotateX.toFixed(1)}deg)`;
+                            c.el.style.opacity = c.currOpacity.toFixed(3);
+                        }
+                    });
+                }
             }
             
             requestAnimationFrame(animateSpiral);
