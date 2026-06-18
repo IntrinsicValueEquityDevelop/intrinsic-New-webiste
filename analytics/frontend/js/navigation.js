@@ -82,6 +82,14 @@
 })();
 
 (function () {
+  function getBasePath() {
+    var path = window.location.pathname;
+    if (path.indexOf('/analytics') === 0) {
+      return '/analytics';
+    }
+    return '';
+  }
+
   function getLogoSrc() {
     var isDark = document.documentElement.getAttribute("data-theme") === "dark";
     var logoName = isDark ? 'logo.png' : 'logo 2.png';
@@ -89,7 +97,7 @@
     if (isFile) {
       return '../../' + logoName;
     } else {
-      return '/static/' + logoName;
+      return getBasePath() + '/' + logoName;
     }
   }
 
@@ -110,7 +118,10 @@
       if (base.startsWith('/')) return base.substring(1) + '.html' + query;
       return path;
     } else {
-      return path;
+      if (path === '/') {
+        return getBasePath() + '/dashboard';
+      }
+      return getBasePath() + path;
     }
   }
 
