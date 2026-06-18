@@ -2862,6 +2862,7 @@ html {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: 40rem;
     width: 100%;
     max-width: 1200px;
     padding: 0 40px;
@@ -3279,7 +3280,7 @@ html {
         justify-content: center;
         gap: 12px;
         width: 100%;
-        height: 100%;
+        height: 30%;
         background: transparent;
         border: none;
         color: rgba(255, 255, 255, 0.8);
@@ -3885,7 +3886,7 @@ html {
     
     .pricing-cards-grid {
         display: grid !important;
-        grid-template-columns: repeat(3, 1fr) !important;
+        grid-template-columns: 1fr !important;
         gap: 14px !important;
         width: 100% !important;
         max-width: 100% !important;
@@ -3897,14 +3898,54 @@ html {
     .pricing-card-3d {
         flex: none !important;
         width: 100% !important;
-        padding: 20px 14px !important;
-        border-radius: 12px !important;
+        padding: 24px 20px !important;
+        border-radius: 16px !important;
         min-height: auto;
     }
     
     .pricing-plan-name {
-        font-size: 15px !important;
-        margin-bottom: 6px !important;
+        font-size: 20px !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .pricing-meta-label {
+        font-size: 10px !important;
+    }
+    
+    .pricing-meta-value {
+        font-size: 16px !important;
+    }
+    
+    .pricing-price {
+        font-size: 16px !important;
+    }
+    
+    .pricing-duration {
+        font-size: 12px !important;
+    }
+    
+    .btn-pricing-primary {
+        font-size: 13px !important;
+        padding: 10px 16px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .pricing-cards-grid {
+        gap: 15px !important;
+    }
+    
+    .pricing-card-3d {
+        padding: 20px 16px !important;
+    }
+    
+    .pricing-plan-name {
+        font-size: 18px !important;
+        margin-bottom: 12px !important;
+    }
+    
+    .pricing-meta-item {
+        margin-bottom: 4px !important;
     }
     
     .pricing-meta-label {
@@ -3912,69 +3953,29 @@ html {
     }
     
     .pricing-meta-value {
-        font-size: 11px !important;
-    }
-    
-    .pricing-price {
-        font-size: 14px !important;
-    }
-    
-    .pricing-duration {
-        font-size: 10px !important;
-    }
-    
-    .btn-pricing-primary {
-        font-size: 11px !important;
-        padding: 8px 12px !important;
-    }
-}
-
-@media (max-width: 600px) {
-    .pricing-cards-grid {
-        gap: 6px !important;
-    }
-    
-    .pricing-card-3d {
-        padding: 10px 4px !important;
-    }
-    
-    .pricing-plan-name {
-        font-size: 10.5px !important;
-        margin-bottom: 4px !important;
-    }
-    
-    .pricing-meta-item {
-        margin-bottom: 2px !important;
-    }
-    
-    .pricing-meta-label {
-        font-size: 7px !important;
-    }
-    
-    .pricing-meta-value {
-        font-size: 8px !important;
+        font-size: 15px !important;
     }
     
     .pricing-card-divider {
-        margin: 4px 0 !important;
+        margin: 10px 0 !important;
     }
     
     .pricing-price-box {
-        margin-bottom: 6px !important;
+        margin-bottom: 8px !important;
     }
     
     .pricing-price {
-        font-size: 9.5px !important;
+        font-size: 15px !important;
     }
     
     .pricing-duration {
-        font-size: 7px !important;
+        font-size: 11px !important;
     }
     
     .btn-pricing-primary {
-        font-size: 8px !important;
-        padding: 6px 2px !important;
-        border-radius: 5px !important;
+        font-size: 12px !important;
+        padding: 8px 12px !important;
+        border-radius: 6px !important;
     }
 }
 

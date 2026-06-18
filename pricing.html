@@ -47,8 +47,10 @@
             margin: 0;
         }
         .btn-pricing-scroll {
-            width: 100%;
-            padding: 14px;
+            width: 50%;
+            padding: 10px;
+            margin-left: 25%;
+            font-size: small;
             border-radius: 12px;
             background: var(--accent);
             color: var(--text-dark);
@@ -64,6 +66,23 @@
         }
         .btn-pricing-scroll:active {
             transform: translateY(0);
+        }
+        @media (max-width: 900px) {
+            .btn-pricing-scroll {
+                width: 70%;
+                margin-left: 15%;
+                font-size: 13px;
+                padding: 12px;
+            }
+        }
+        @media (max-width: 600px) {
+            .btn-pricing-scroll {
+                width: 100%;
+                margin-left: 0;
+                font-size: 13px;
+                padding: 12px;
+                border-radius: 10px;
+            }
         }
     </style>
 </head>
