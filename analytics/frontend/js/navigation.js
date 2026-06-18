@@ -484,5 +484,127 @@
         setGroupState(group, false);
       });
     });
+
+    // Premium Lock Overlay System for Blurred Elements
+    function applyLockOverlays() {
+      var blurred = document.querySelectorAll(".iv-blur-value");
+      blurred.forEach(function (el) {
+        var container = null;
+        
+        // Find closest logical container
+        var tableWrap = el.closest(".iv-table-wrap") || el.closest(".iv-hw-table-wrap");
+        if (tableWrap) {
+          container = tableWrap;
+        } else {
+          var microCard = el.closest(".iv-micro-card");
+          if (microCard) {
+            container = microCard;
+          } else {
+            var statBox = el.closest(".iv-stat-box");
+            if (statBox) {
+              container = statBox;
+            } else {
+              var collapseContent = el.closest(".iv-collapse-content");
+              if (collapseContent) {
+                container = collapseContent;
+              } else {
+                var sectorChart = el.closest(".iv-sector-chart-section");
+                if (sectorChart) {
+                  container = sectorChart;
+                } else {
+                  var card = el.closest(".iv-card");
+                  if (card && (card.classList.contains("iv-blur-value") || card.querySelector("canvas.iv-blur-value") || card.querySelector("#financialsChart") || card.querySelector("#ivHeadwindHistoryCanvas"))) {
+                    container = card;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        // Fallback for standalone large blurred elements
+        if (!container) {
+          var rect = el.getBoundingClientRect();
+          if (rect.height >= 35 || el.tagName === "DIV" || el.tagName === "CANVAS") {
+            container = el;
+          }
+        }
+
+        if (container) {
+          // If the container itself is blurred, wrapping it prevents the overlay from getting blurred
+          if (container.classList.contains("iv-blur-value")) {
+            var wrapper = container.parentElement;
+            if (!wrapper.classList.contains("iv-blur-wrap-container")) {
+              wrapper = document.createElement("div");
+              wrapper.className = "iv-blur-wrap-container";
+              
+              var style = window.getComputedStyle(container);
+              wrapper.style.display = style.display === "inline-block" ? "inline-block" : "block";
+              wrapper.style.width = container.style.width || "100%";
+              wrapper.style.height = container.style.height || "auto";
+              wrapper.style.position = "relative";
+              wrapper.style.borderRadius = style.borderRadius;
+              wrapper.style.margin = style.margin;
+              
+              container.parentNode.insertBefore(wrapper, container);
+              wrapper.appendChild(container);
+              
+              container.style.margin = "0";
+            }
+            container = wrapper;
+          }
+
+          // Ensure position relative is set
+          if (window.getComputedStyle(container).position === "static") {
+            container.style.setProperty("position", "relative", "important");
+          }
+
+          if (!container.querySelector(".iv-lock-overlay")) {
+            var overlay = document.createElement("a");
+            overlay.href = "https://premium.intrinsicvalueequity.in/checkout/efe6d23f-bf90-4e14-92c2-6fd0fb8f0237?init_booking=true";
+            overlay.className = "iv-lock-overlay";
+            overlay.title = "Unlock Premium Version";
+            overlay.innerHTML = `
+              <div class="iv-lock-icon-bg">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+              </div>
+            `;
+            
+            overlay.addEventListener("click", function (e) {
+              e.stopPropagation();
+            });
+            container.appendChild(overlay);
+          }
+        } else {
+          // Direct clickable fallback for small inline blurred elements
+          if (!el.classList.contains("iv-clickable-blur")) {
+            el.classList.add("iv-clickable-blur");
+            el.style.setProperty("cursor", "pointer", "important");
+            el.style.setProperty("pointer-events", "auto", "important");
+            el.addEventListener("click", function (e) {
+              e.stopPropagation();
+              window.location.href = "https://premium.intrinsicvalueequity.in/checkout/efe6d23f-bf90-4e14-92c2-6fd0fb8f0237?init_booking=true";
+            });
+          }
+        }
+      });
+    }
+
+    // Run lock overlay setup
+    applyLockOverlays();
+
+    // Set up MutationObserver to catch dynamically added or toggled elements
+    var observer = new MutationObserver(function () {
+      applyLockOverlays();
+    });
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["class"]
+    });
   });
 })();

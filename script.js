@@ -36,7 +36,19 @@ document.addEventListener('DOMContentLoaded', () => {
         history.scrollRestoration = 'manual';
     }
     window.scrollTo(0, 0);
-
+    // Clean up URLs for production (running on http: or https:)
+    if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+        document.querySelectorAll('a[href]').forEach(link => {
+            const href = link.getAttribute('href');
+            if (href && href.endsWith('.html') && !href.startsWith('http') && !href.startsWith('//')) {
+                var cleanHref = href.substring(0, href.length - 5);
+                if (cleanHref === 'index' || cleanHref.endsWith('/index')) {
+                    cleanHref = cleanHref.substring(0, cleanHref.length - 5) || '/';
+                }
+                link.setAttribute('href', cleanHref);
+            }
+        });
+    }
 
     // Lock scroll stack height on load to prevent jumping when mobile address bar hides/shows
     const getScrollStackHeight = () => {
