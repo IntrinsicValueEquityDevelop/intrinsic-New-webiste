@@ -1974,4 +1974,55 @@ html:not([data-theme="dark"]) .iv-drawer-stock-codes span {
   pointer-events: none !important;
   opacity: 0.8 !important;
   transition: none !important;
+}
+
+/* Sidebar Client Login Button */
+.iv-nav-login-wrapper {
+  margin-top: auto;
+  padding: 12px 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.iv-nav-login-btn {
+  display: block;
+  width: 100%;
+  padding: 10px 14px;
+  background: linear-gradient(135deg, var(--iv-accent, #FF8C00) 0%, #FF5E00 100%);
+  color: #050505 !important;
+  text-align: center;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  box-shadow: 0 4px 15px rgba(255, 140, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-sizing: border-box;
+}
+
+.iv-nav-login-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(255, 140, 0, 0.35);
+  background: linear-gradient(135deg, #FF9E22 0%, #FF6E18 100%);
+  color: #050505 !important;
+}
+
+.iv-nav-login-btn:active {
+  transform: translateY(0);
+}
+
+@media (min-width: 992px) {
+  .iv-nav-login-wrapper {
+    margin-top: 0;
+    margin-left: auto;
+    width: auto;
+    padding: 0;
+  }
+  
+  .iv-nav-login-btn {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
 }
