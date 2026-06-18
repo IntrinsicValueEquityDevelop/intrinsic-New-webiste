@@ -1991,7 +1991,7 @@ html:not([data-theme="dark"]) .iv-drawer-stock-codes span {
   background: linear-gradient(135deg, var(--iv-accent, #FF8C00) 0%, #FF5E00 100%);
   color: #050505 !important;
   text-align: center;
-  border-radius: 8px;
+  border-radius: 20px;
   font-weight: 700;
   font-size: 13px;
   text-transform: uppercase;
