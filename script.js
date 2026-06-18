@@ -2047,6 +2047,7 @@ function initPortfolioCarousel() {
     const cards = container.querySelectorAll('.portfolio-card');
     const prevBtn = container.querySelector('.portfolio-arrow.prev');
     const nextBtn = container.querySelector('.portfolio-arrow.next');
+    const progressBar = container.querySelector('#portfolioProgressBar');
     
     if (cards.length === 0) return;
     
@@ -2068,6 +2069,12 @@ function initPortfolioCarousel() {
                 card.classList.add('hidden');
             }
         });
+        
+        if (progressBar) {
+            progressBar.style.animation = 'none';
+            progressBar.offsetHeight; // trigger reflow
+            progressBar.style.animation = 'portfolioProgressAnim 7s linear forwards';
+        }
     }
     
     function startAutoplay() {
