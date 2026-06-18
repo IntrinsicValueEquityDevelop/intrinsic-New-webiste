@@ -387,9 +387,7 @@ function ivDrawRoundedRect(ctx, x, y, w, h, r) {
           var industry = row.getAttribute('data-industry');
           if (!industry) return;
 
-          var isFile = window.location.protocol === 'file:';
-          var targetUrl = isFile ? 'ranking-tool.html' : '/ranking-tool';
-          targetUrl += '?industry=' + encodeURIComponent(industry);
+          var targetUrl = 'ranking-tool.html?industry=' + encodeURIComponent(industry);
           window.location.href = targetUrl;
         });
       });

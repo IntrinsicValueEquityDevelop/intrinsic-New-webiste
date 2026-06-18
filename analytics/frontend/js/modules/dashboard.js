@@ -7,14 +7,14 @@
         var view = btn.getAttribute("data-quick-view");
         if (!view) return;
 
-        var route = "/" + view;
+        var filename = view + ".html";
         if (view === "ranking") {
-          route = "/ranking-tool";
+          filename = "ranking-tool.html";
         } else if (view === "monthly-analysis") {
-          route = "/monthly-market-analysis";
+          filename = "monthly-market-analysis.html";
         }
 
-        window.location.href = route;
+        window.location.href = filename;
       });
     });
 
