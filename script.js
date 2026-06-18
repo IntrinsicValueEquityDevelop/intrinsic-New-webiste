@@ -2074,7 +2074,7 @@ function initPortfolioCarousel() {
         stopAutoplay();
         autoplayTimer = setInterval(() => {
             nextSlide();
-        }, 5000);
+        }, 7000);
     }
     
     function stopAutoplay() {
