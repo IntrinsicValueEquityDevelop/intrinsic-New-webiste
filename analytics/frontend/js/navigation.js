@@ -90,12 +90,31 @@
     return '';
   }
 
+  // Returns the directory of the current page when using file:// protocol.
+  // e.g. "file:///C:/IV%20website/analytics/frontend/pages/dashboard.html"
+  //   -> "file:///C:/IV%20website/analytics/frontend/pages/"
+  function getFileBaseDir() {
+    var href = window.location.href;
+    return href.substring(0, href.lastIndexOf('/') + 1);
+  }
+
+  // Returns the analytics root directory when using file:// protocol.
+  // All pages live in analytics/frontend/pages/, so going up two levels gives analytics/.
+  function getAnalyticsRoot() {
+    var base = getFileBaseDir();
+    // go up to frontend/
+    base = base.substring(0, base.lastIndexOf('/', base.length - 2) + 1);
+    // go up to analytics/
+    base = base.substring(0, base.lastIndexOf('/', base.length - 2) + 1);
+    return base;
+  }
+
   function getLogoSrc() {
     var isDark = document.documentElement.getAttribute("data-theme") === "dark";
     var logoName = isDark ? 'logo.png' : 'logo 2.png';
     var isFile = window.location.protocol === 'file:';
     if (isFile) {
-      return '../../' + logoName;
+      return getAnalyticsRoot() + logoName;
     } else {
       return getBasePath() + '/' + logoName;
     }
@@ -104,19 +123,15 @@
   function getLink(path) {
     var isFile = window.location.protocol === 'file:';
     if (isFile) {
-      if (path === '/') return 'dashboard.html';
+      // Build full absolute file:// URL to the target page
+      var pagesBase = getAnalyticsRoot() + 'frontend/pages/';
       var parts = path.split('?');
       var base = parts[0];
       var query = parts[1] ? '?' + parts[1] : '';
-      if (base === '/dashboard') return 'dashboard.html' + query;
-      if (base === '/ranking-tool') return 'ranking-tool.html' + query;
-      if (base === '/monthly-market-analysis') return 'monthly-market-analysis.html' + query;
-      if (base === '/market-valuation-index') return 'market-valuation-index.html' + query;
-      if (base === '/headwind-tailwind-indicator') return 'headwind-tailwind-indicator.html' + query;
-      if (base === '/portfolio-review-tool') return 'portfolio-review-tool.html' + query;
-      if (base === '/turnaround') return 'turnaround.html' + query;
-      if (base.startsWith('/')) return base.substring(1) + '.html' + query;
-      return path;
+      if (base === '/' || base === '/dashboard') return pagesBase + 'dashboard.html' + query;
+      // Strip leading slash and map to .html
+      var pageName = base.startsWith('/') ? base.substring(1) : base;
+      return pagesBase + pageName + '.html' + query;
     } else {
       if (path === '/') {
         return getBasePath() + '/dashboard';
@@ -124,6 +139,7 @@
       return getBasePath() + path;
     }
   }
+
 
   document.addEventListener("DOMContentLoaded", function () {
     var main = document.querySelector("main");
