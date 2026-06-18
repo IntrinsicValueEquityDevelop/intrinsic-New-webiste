@@ -133,12 +133,25 @@
       var pageName = base.startsWith('/') ? base.substring(1) : base;
       return pagesBase + pageName + '.html' + query;
     } else {
-      if (path === '/') {
-        return getBasePath() + '/dashboard';
+      // HTTP/HTTPS
+      var basePath = getBasePath(); // '' for Vercel root, '/analytics' for subfolder
+      var parts2 = path.split('?');
+      var base2 = parts2[0];
+      var query2 = parts2[1] ? '?' + parts2[1] : '';
+      if (base2 === '/') base2 = '/dashboard';
+
+      if (basePath === '') {
+        // Vercel (or any root-level deployment) — use clean URLs handled by vercel.json
+        return base2 + query2;
+      } else {
+        // Subfolder deployment (Hostinger, local HTTP server) — link directly to HTML files
+        // so no .htaccess rewriting is needed
+        var pageName2 = base2.startsWith('/') ? base2.substring(1) : base2;
+        return basePath + '/frontend/pages/' + pageName2 + '.html' + query2;
       }
-      return getBasePath() + path;
     }
   }
+
 
 
   document.addEventListener("DOMContentLoaded", function () {
