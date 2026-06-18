@@ -324,7 +324,15 @@
     // Append Client Login button
     var loginWrap = document.createElement("div");
     loginWrap.className = "iv-nav-login-wrapper";
-    loginWrap.innerHTML = '<a href="https://premium.intrinsicvalueequity.in/eud/courses" target="_blank" rel="noopener noreferrer" class="iv-nav-login-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle; display: inline-block;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>Client Login</a>';
+    loginWrap.innerHTML = `
+      <a href="https://premium.intrinsicvalueequity.in/eud/courses" target="_blank" rel="noopener noreferrer" class="iv-nav-login-btn">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px; vertical-align: middle; display: inline-block;">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>Client Login
+      </a>
+      <div class="iv-login-hint">↑ Login if already subscribed</div>
+    `;
     sidebar.appendChild(loginWrap);
 
     shell.appendChild(sidebar);
@@ -496,6 +504,7 @@
     function applyLockOverlays() {
       var blurred = document.querySelectorAll(".iv-blur-value");
       blurred.forEach(function (el) {
+        if (el.classList.contains("iv-no-lock")) return;
         var container = null;
         
         // Find closest logical container
@@ -572,11 +581,17 @@
             overlay.className = "iv-lock-overlay";
             overlay.title = "Unlock Premium Version";
             overlay.innerHTML = `
-              <div class="iv-lock-icon-bg">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                  <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                </svg>
+              <div class="iv-lock-content">
+                <div class="iv-lock-icon-bg">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                  </svg>
+                </div>
+                <div class="iv-lock-text">
+                  Subscribe to <span class="iv-lock-highlight">unlock full potential</span> <br>
+                  <span class="iv-lock-subtext">Get access to premium valuation insights, advanced analytics.</span>
+                </div>
               </div>
             `;
             

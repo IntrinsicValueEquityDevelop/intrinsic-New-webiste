@@ -328,9 +328,9 @@ function init3DSpiral() {
                         if (e.cancelable) e.preventDefault();
                     }
                     
-                    // Drag left (negative deltaX) should rotate forward
-                    const newAngle = dragStartAngle - deltaX * 0.8;
-                    targetScrollOffsetAngle = Math.max(0, Math.min(540, newAngle));
+                    // Drag left (negative deltaX) should rotate forward (less sensitive drag)
+                    const newAngle = dragStartAngle - deltaX * 0.35;
+                    targetScrollOffsetAngle = Math.max(0, Math.min(360, newAngle));
                 }
             }, { passive: false });
             
@@ -601,7 +601,7 @@ function init3DSpiral() {
                     sectionsState.philosophy.targetY = 0.45 * windowHeight;
                     sectionsState.philosophy.targetScale = 1;
                     sectionsState.philosophy.pointerEvents = 'none';
-                    targetScrollOffsetAngle = scrollDirection === 'up' ? 540 : 0;
+                    targetScrollOffsetAngle = scrollDirection === 'up' ? 360 : 0;
                 } else if (scrollY >= philFadeInStart && scrollY <= philFadeInEnd) {
                     // Entrance Phase
                     const progress = (scrollY - philFadeInStart) / (philFadeInEnd - philFadeInStart);
@@ -609,7 +609,7 @@ function init3DSpiral() {
                     sectionsState.philosophy.targetY = 0.45 * windowHeight * (1 - progress);
                     sectionsState.philosophy.targetScale = 1;
                     sectionsState.philosophy.pointerEvents = 'auto';
-                    targetScrollOffsetAngle = scrollDirection === 'up' ? 540 : 0;
+                    targetScrollOffsetAngle = scrollDirection === 'up' ? 360 : 0;
                 } else if (scrollY > philFadeInEnd && scrollY < philFadeOutStart) {
                     // Active Spin Phase
                     sectionsState.philosophy.targetOpacity = 1;
@@ -619,7 +619,7 @@ function init3DSpiral() {
 
                     const spinProgress = (scrollY - philSpinStart) / (philSpinEnd - philSpinStart);
                     const clampedProgress = Math.max(0, Math.min(1, spinProgress));
-                    targetScrollOffsetAngle = scrollDirection === 'up' ? 540 : (clampedProgress * 540);
+                    targetScrollOffsetAngle = scrollDirection === 'up' ? 360 : (clampedProgress * 360);
                 } else {
                     // Exiting Philosophy Section (scrollY >= philFadeOutStart) - scroll up naturally
                     const progress = Math.max(0, Math.min(1, (scrollY - philFadeOutStart) / (featuredFadeInEnd - philFadeOutStart)));
@@ -627,7 +627,7 @@ function init3DSpiral() {
                     sectionsState.philosophy.targetY = -progress * windowHeight;
                     sectionsState.philosophy.targetScale = 1;
                     sectionsState.philosophy.pointerEvents = progress < 1 ? 'auto' : 'none';
-                    targetScrollOffsetAngle = 540;
+                    targetScrollOffsetAngle = 360;
                 }
             }
 
@@ -2054,6 +2054,7 @@ function initPortfolioCarousel() {
     let currentIndex = 0;
     const totalCards = cards.length;
     let autoplayTimer = null;
+    let isHovered = false;
     
     function updateCarousel() {
         cards.forEach((card, index) => {
@@ -2074,11 +2075,17 @@ function initPortfolioCarousel() {
             progressBar.style.animation = 'none';
             progressBar.offsetHeight; // trigger reflow
             progressBar.style.animation = 'portfolioProgressAnim 7s linear forwards';
+            if (isHovered) {
+                progressBar.style.animationPlayState = 'paused';
+            } else {
+                progressBar.style.animationPlayState = 'running';
+            }
         }
     }
     
     function startAutoplay() {
         stopAutoplay();
+        if (isHovered) return;
         autoplayTimer = setInterval(() => {
             nextSlide();
         }, 7000);
@@ -2092,7 +2099,9 @@ function initPortfolioCarousel() {
     }
     
     function resetAutoplay() {
-        startAutoplay();
+        if (!isHovered) {
+            startAutoplay();
+        }
     }
     
     function nextSlide() {
@@ -2158,9 +2167,9 @@ function initPortfolioCarousel() {
         // Only trigger horizontal swipe if deltaX is larger than deltaY (horizontal intent)
         if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50) {
             if (deltaX < 0) {
-                nextSlide(); // Swipe left
+                prevSlide(); // Swipe left (opposite direction)
             } else {
-                prevSlide(); // Swipe right
+                nextSlide(); // Swipe right (opposite direction)
             }
         }
     }
@@ -2183,9 +2192,28 @@ function initPortfolioCarousel() {
         }
     }, { passive: false });
     
+    function handleMouseEnter() {
+        isHovered = true;
+        stopAutoplay();
+        if (progressBar) {
+            progressBar.style.animationPlayState = 'paused';
+        }
+    }
+
+    function handleMouseLeave() {
+        isHovered = false;
+        startAutoplay();
+        if (progressBar) {
+            progressBar.style.animation = 'none';
+            progressBar.offsetHeight; // trigger reflow
+            progressBar.style.animation = 'portfolioProgressAnim 7s linear forwards';
+            progressBar.style.animationPlayState = 'running';
+        }
+    }
+
     // Hover pause behavior for autoplay
-    container.addEventListener('mouseenter', stopAutoplay);
-    container.addEventListener('mouseleave', startAutoplay);
+    container.addEventListener('mouseenter', handleMouseEnter);
+    container.addEventListener('mouseleave', handleMouseLeave);
     
     // Initialize the view and autoplay
     updateCarousel();

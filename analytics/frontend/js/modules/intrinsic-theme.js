@@ -152,17 +152,17 @@
     var pbStat = app.querySelector('#ivIntPbStat');
 
     if (!dataSummary) {
-      if (countStat) countStat.innerHTML = '<span class="iv-blur-value">0</span>';
-      if (peStat) peStat.innerHTML = '<span class="iv-blur-value">—</span>';
-      if (salesStat) salesStat.innerHTML = '<span class="iv-blur-value">—</span>';
-      if (pbStat) pbStat.innerHTML = '<span class="iv-blur-value">—</span>';
+      if (countStat) countStat.innerHTML = '<span class="iv-blur-value iv-no-lock">0</span>';
+      if (peStat) peStat.innerHTML = '<span class="iv-blur-value iv-no-lock">—</span>';
+      if (salesStat) salesStat.innerHTML = '<span class="iv-blur-value iv-no-lock">—</span>';
+      if (pbStat) pbStat.innerHTML = '<span class="iv-blur-value iv-no-lock">—</span>';
       return;
     }
 
-    if (countStat) countStat.innerHTML = '<span class="iv-blur-value">' + (dataSummary.count !== undefined ? dataSummary.count.toString() : '0') + '</span>';
-    if (peStat) peStat.innerHTML = '<span class="iv-blur-value">' + (dataSummary.avgPe ? dataSummary.avgPe.toFixed(1) : '—') + '</span>';
-    if (salesStat) salesStat.innerHTML = '<span class="iv-blur-value">' + (dataSummary.avgSalesGrowth ? dataSummary.avgSalesGrowth.toFixed(1) + '%' : '—') + '</span>';
-    if (pbStat) pbStat.innerHTML = '<span class="iv-blur-value">' + (dataSummary.avgPb ? dataSummary.avgPb.toFixed(2) : '—') + '</span>';
+    if (countStat) countStat.innerHTML = '<span class="iv-blur-value iv-no-lock">' + (dataSummary.count !== undefined ? dataSummary.count.toString() : '0') + '</span>';
+    if (peStat) peStat.innerHTML = '<span class="iv-blur-value iv-no-lock">' + (dataSummary.avgPe ? dataSummary.avgPe.toFixed(1) : '—') + '</span>';
+    if (salesStat) salesStat.innerHTML = '<span class="iv-blur-value iv-no-lock">' + (dataSummary.avgSalesGrowth ? dataSummary.avgSalesGrowth.toFixed(1) + '%' : '—') + '</span>';
+    if (pbStat) pbStat.innerHTML = '<span class="iv-blur-value iv-no-lock">' + (dataSummary.avgPb ? dataSummary.avgPb.toFixed(2) : '—') + '</span>';
   }
 
 
