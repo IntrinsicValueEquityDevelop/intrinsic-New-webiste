@@ -2081,4 +2081,27 @@ html:not([data-theme="dark"]) .iv-drawer-stock-codes span {
 /* Ensure parents of overlays are relative */
 .iv-table-wrap, .iv-hw-table-wrap, .iv-micro-card, .iv-stat-box, .iv-sector-chart-section, .iv-collapse-content, .iv-blur-wrap-container {
   position: relative !important;
+}
+
+/* Made in Bharat Footer */
+.iv-bharat-footer {
+  text-align: center;
+  padding: 3rem 0 1.5rem 0;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+  opacity: 0.8;
+}
+
+.iv-bharat-footer .made-green {
+  color: #128807 !important;
+}
+
+.iv-bharat-footer .made-in {
+  color: var(--iv-text) !important;
+}
+
+.iv-bharat-footer .made-bharat {
+  color: #FF9933 !important;
 }

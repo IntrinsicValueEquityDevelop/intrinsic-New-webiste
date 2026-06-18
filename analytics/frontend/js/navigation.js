@@ -384,6 +384,13 @@
     parent.replaceChild(shell, main);
     
     ivContent.appendChild(main);
+
+    // Create and append "MADE IN BHARAT" footer
+    var bharatFooter = document.createElement("div");
+    bharatFooter.className = "iv-bharat-footer";
+    bharatFooter.innerHTML = '<span class="made-green">MADE</span> <span class="made-in">IN</span> <span class="made-bharat">BHARAT</span>';
+    ivContent.appendChild(bharatFooter);
+
     ivMain.appendChild(ivContent);
     shell.appendChild(ivMain);
 
