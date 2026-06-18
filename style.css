@@ -4123,9 +4123,9 @@ html {
 
 .portfolio-card {
     position: absolute;
-    width: 450px;
+    width: 480px;
     max-width: 92%;
-    height: 320px;
+    height: 330px;
     background: transparent;
     border: none;
     border-radius: 10px;
@@ -6433,9 +6433,9 @@ body.preloader-active {
 
 .portfolio-card {
     position: absolute;
-    width: 450px;
+    width: 480px;
     max-width: 92%;
-    height: 320px;
+    height: 330px;
     background: transparent;
     border: none;
     border-radius: 10px;
