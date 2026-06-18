@@ -1,20 +1,91 @@
 {
-  "cleanUrls": true,
-  "rewrites": [
-    { "source": "/", "destination": "/frontend/pages/dashboard.html" },
-    { "source": "/dashboard", "destination": "/frontend/pages/dashboard.html" },
-    { "source": "/ranking-tool", "destination": "/frontend/pages/ranking-tool.html" },
-    { "source": "/monthly-market-analysis", "destination": "/frontend/pages/monthly-market-analysis.html" },
-    { "source": "/market-valuation-index", "destination": "/frontend/pages/market-valuation-index.html" },
-    { "source": "/headwind-tailwind-indicator", "destination": "/frontend/pages/headwind-tailwind-indicator.html" },
-    { "source": "/portfolio-review-tool", "destination": "/frontend/pages/portfolio-review-tool.html" },
-    { "source": "/intrinsic-theme", "destination": "/frontend/pages/intrinsic-theme.html" },
-    { "source": "/sip", "destination": "/frontend/pages/sip.html" },
-    { "source": "/swp", "destination": "/frontend/pages/swp.html" },
-    { "source": "/lumpsum", "destination": "/frontend/pages/lumpsum.html" },
-    { "source": "/xirr", "destination": "/frontend/pages/xirr.html" },
-    { "source": "/gawp", "destination": "/frontend/pages/gawp.html" },
-    { "source": "/tools", "destination": "/frontend/pages/tools.html" },
-    { "source": "/admin", "destination": "/frontend/pages/admin.html" }
+  "version": 2,
+  "builds": [
+    {
+      "src": "frontend/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/static/(.*)",
+      "dest": "frontend/assets/$1"
+    },
+    {
+      "src": "/css/(.*)",
+      "dest": "frontend/css/$1"
+    },
+    {
+      "src": "/js/(.*)",
+      "dest": "frontend/js/$1"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "frontend/assets/$1"
+    },
+    {
+      "src": "/frontend/(.*)",
+      "dest": "frontend/$1"
+    },
+    {
+      "src": "/dashboard",
+      "dest": "frontend/pages/dashboard.html"
+    },
+    {
+      "src": "/ranking-tool",
+      "dest": "frontend/pages/ranking-tool.html"
+    },
+    {
+      "src": "/monthly-market-analysis",
+      "dest": "frontend/pages/monthly-market-analysis.html"
+    },
+    {
+      "src": "/market-valuation-index",
+      "dest": "frontend/pages/market-valuation-index.html"
+    },
+    {
+      "src": "/headwind-tailwind-indicator",
+      "dest": "frontend/pages/headwind-tailwind-indicator.html"
+    },
+    {
+      "src": "/portfolio-review-tool",
+      "dest": "frontend/pages/portfolio-review-tool.html"
+    },
+    {
+      "src": "/intrinsic-theme",
+      "dest": "frontend/pages/intrinsic-theme.html"
+    },
+    {
+      "src": "/sip",
+      "dest": "frontend/pages/sip.html"
+    },
+    {
+      "src": "/swp",
+      "dest": "frontend/pages/swp.html"
+    },
+    {
+      "src": "/lumpsum",
+      "dest": "frontend/pages/lumpsum.html"
+    },
+    {
+      "src": "/xirr",
+      "dest": "frontend/pages/xirr.html"
+    },
+    {
+      "src": "/gawp",
+      "dest": "frontend/pages/gawp.html"
+    },
+    {
+      "src": "/tools",
+      "dest": "frontend/pages/tools.html"
+    },
+    {
+      "src": "/admin",
+      "dest": "frontend/pages/admin.html"
+    },
+    {
+      "src": "/",
+      "dest": "frontend/pages/dashboard.html"
+    }
   ]
 }
