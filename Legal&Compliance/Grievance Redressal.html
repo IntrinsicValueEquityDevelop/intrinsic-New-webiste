@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="../onlylogo.PNG" type="image/png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grievance Redressal | Intrinsic Value Equity Advisors</title>
+    <meta name="description" content="Raise a grievance with Intrinsic Value Equity Advisors — SEBI Registered Research Analyst INH000009047. Submit your grievance details and attachments.">
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .grievance-form {
+            background: rgba(18, 18, 18, 0.45);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin: 2.5rem 0;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .grievance-form {
+                padding: 1.5rem;
+            }
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            border-radius: 8px;
+            padding: 0.9rem 1.2rem;
+            font-size: 0.95rem;
+            color: var(--text-primary) !important;
+            transition: all 0.3s ease;
+        }
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            outline: none;
+            border-color: var(--accent-primary, #f97316) !important;
+            background: rgba(255, 255, 255, 0.05) !important;
+            box-shadow: 0 0 12px rgba(249, 115, 22, 0.2);
+        }
+        .form-select option {
+            background: #121212;
+            color: #ffffff;
+        }
+        .file-upload-wrapper {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        .file-upload-wrapper:hover {
+            border-color: var(--accent-primary, #f97316);
+            background: rgba(249, 115, 22, 0.02);
+        }
+        .file-upload-input {
+            width: 100%;
+            color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+        .btn-submit {
+            display: block;
+            width: 150px;
+            padding: 12px 24px;
+            background: var(--accent-primary, #f97316);
+            color: #050505;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .btn-submit:hover {
+            background: var(--accent-hover, #ea580c);
+            box-shadow: 0 0 15px rgba(249, 115, 22, 0.4);
+            transform: translateY(-2px);
+        }
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sleek Preloader Screen -->
+    <div id="iv-preloader" class="iv-preloader">
+        <div class="preloader-content">
+            <img src="../logo.png" alt="Intrinsic Value Logo" class="preloader-logo">
+            <div class="preloader-progress-track">
+                <div class="preloader-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================================== -->
+    <!-- SHARED NAVIGATION HEADER -->
+    <!-- ========================================================================== -->
+    <header class="main-header">
+        <div class="container header-container">
+            <a href="../index.html" class="logo">
+                <img src="../logo.png" alt="Intrinsic Value Logo" class="logo-img">
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="../pricing.html" class="nav-link" rel="noopener noreferrer">Service</a></li>
+                    <li><a href="../about.html" class="nav-link">About Us</a></li>
+                    <li><a href="../blogs.html" class="nav-link">Blogs</a></li>
+                    <li><a href="analytics/index.html" class="nav-link"
+                            target="_blank" rel="noopener noreferrer">Analytics</a></li>
+                    <li class="nav-actions-mobile">
+                        <a href="https://premium.exlyapp.com/?init_contact=true" class="btn-contact" target="_blank" rel="noopener noreferrer">Contact Us</a>
+                        <a href="https://premium.intrinsicvalueequity.in/eud/courses" class="btn-glow" target="_blank" rel="noopener noreferrer">Client Login</a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="nav-actions">
+                <a href="https://premium.exlyapp.com/?init_contact=true" class="btn-contact" target="_blank" rel="noopener noreferrer">Contact Us</a>
+                <a href="https://premium.intrinsicvalueequity.in/eud/courses" class="btn-glow" target="_blank" rel="noopener noreferrer">Client Login</a>
+            </div>
+            <button class="menu-trigger" aria-label="Toggle Navigation Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ========================================================================== -->
+    <!-- MAIN CONTENT -->
+    <!-- ========================================================================== -->
+    <main style="padding-top: calc(var(--header-height) + 2rem); min-height: calc(100vh - 200px);">
+        <div class="container" style="padding-bottom: 4rem; max-width: 900px;">
+
+            <div class="legal-page-header" style="margin-bottom: 2.5rem; text-align: center;">
+                <span class="section-tag" style="display:inline-block; margin-bottom: 1rem;">Support</span>
+                <h1 style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; margin-bottom: 0.75rem;">Grievance Redressal</h1>
+                <div style="width: 60px; height: 3px; background: var(--accent-primary, #f97316); border-radius: 2px; margin: 1rem auto 0 auto;"></div>
+            </div>
+
+            <div class="legal-content" style="color: var(--text-secondary); line-height: 1.9; font-size: 0.97rem;">
+
+                <p style="margin-bottom: 1rem;">For any grievances (e.g., non-receipt of a research report, missing pages, or other deficiencies), please raise your doubt in App chats or Whatsapp. If you don't receive any response within 24 hours, you can call our customer support number.</p>
+                
+                <p style="margin-bottom: 1rem;">In case of No response within 3 days.</p>
+                
+                <p style="margin-bottom: 1.5rem;">Email to Our <strong>designated Grievance Officer</strong> at <a href="mailto:info@intrinsicvalueequity.in" style="color: var(--accent-primary, #f97316);">info@intrinsicvalueequity.in</a> within <strong>7 business days</strong> of the issue.</p>
+                
+                <p style="margin-bottom: 2rem;">After that you can Raise it using below Form.</p>
+
+                <!-- Grievance Form -->
+                <form id="grievance-form" class="grievance-form" enctype="multipart/form-data" onsubmit="event.preventDefault(); alert('Form submission is saved. API setup will follow later.');">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="first-name">First name *</label>
+                            <input type="text" id="first-name" name="first-name" class="form-input" required placeholder="Enter your first name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="last-name">Last name *</label>
+                            <input type="text" id="last-name" name="last-name" class="form-input" required placeholder="Enter your last name">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="phone">Phone *</label>
+                            <input type="tel" id="phone" name="phone" class="form-input" required placeholder="Enter your phone number">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="product">Product *</label>
+                            <select id="product" name="product" class="form-select" required>
+                                <option value="" disabled selected>Select Product</option>
+                                <option value="HNI Premium">HNI Premium</option>
+                                <option value="Inner Circle">Inner Circle</option>
+                                <option value="Invest Biz">Invest Biz</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="email">E-mail *</label>
+                        <input type="email" id="email" name="email" class="form-input" required placeholder="Enter your email address">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="subject">Subject *</label>
+                        <input type="text" id="subject" name="subject" class="form-input" required placeholder="Enter the subject of your grievance">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="description">Description *</label>
+                        <textarea id="description" name="description" class="form-textarea" required placeholder="Describe your grievance in detail"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="attachment">Attachment</label>
+                        <div class="file-upload-wrapper">
+                            <input type="file" id="attachment" name="attachment" class="file-upload-input">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-submit">Submit</button>
+                </form>
+
+                <p style="margin-top: 2rem; margin-bottom: 1.5rem;">If the complaint is not resolved by us in next 15 days, or if the client is not satisfied with Intrinsic Value grievance redressal, the client may, approach SEBI at: <a href="https://scores.sebi.gov.in/" target="_blank" rel="noopener noreferrer" style="color: var(--accent-primary, #f97316);">https://scores.sebi.gov.in/</a> and can lodge complain in &ldquo;Complaint Registration&rdquo; under &ldquo;Investor Corner&rdquo;.</p>
+                
+                <p style="margin-bottom: 0.5rem;">In case, you are not able to register a complaint online, investors may send their complaints to:</p>
+                <p style="margin-bottom: 1.5rem; line-height: 1.7; padding-left: 1rem; border-left: 3px solid var(--accent-primary, #f97316); color: var(--text-primary);">Office of Investor Assistance and Education, Securities and Exchange Board of India, SEBI Bhavan. Plot No. C4-A, &lsquo;G&rsquo; Block, Bandra-Kurla Complex, Bandra (E), Mumbai &ndash; 400 051.</p>
+
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ========================================================================== -->
+    <!-- FOOTER -->
+    <!-- ========================================================================== -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <div class="footer-disclaimers">
+                    <p class="disclaimer-text">
+                        Investment in securities market are subjected to market risks. Read all the related documents carefully before investing.
+                    </p>
+                    <p class="disclaimer-text">
+                        Disclaimer: Registration granted by SEBI and certification from NISM in no way guarantee performance of the Research Analyst or provide any assurance of returns to investor.
+                    </p>
+                </div>
+                <div class="footer-copyright">
+                    <p>&copy; 2026 Intrinsic Value Equity Advisors. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://api.whatsapp.com/send/?phone=917354259486&text=Hello%2C%0D%0Ai+want+to+understand+about+your+services&type=phone_number&app_absent=0"
+       class="whatsapp-float-btn"
+       target="_blank"
+       rel="noopener noreferrer"
+       aria-label="Contact us on WhatsApp">
+       <div class="whatsapp-icon-wrapper">
+           <svg class="whatsapp-svg" viewBox="0 0 448 512" fill="currentColor" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+               <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7 .9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+           </svg>
+       </div>
+       <span class="whatsapp-tooltip">Chat with us</span>
+    </a>
+
+    <!-- Tabnav Web Accessibility Widget -->
+    <script src="https://widget.tabnav.com/limited-widget.min.js.gz?req=VE6638XI6WDptOlpafdEm9SBnAt4hExw9g"
+        tnv-data-config='{"language":"us-en","color":"#405ec3","buttonColor":"#405ec3","buttonSize":"small","widgetSize":"small","widgetLocation":"right","buttonLocation":"bottom"}'
+        defer></script>
+    <noscript>JavaScript is required for <a href="https://tabnav.com/accessibility-widget">tabnav web accessibility widget</a> to work properly.</noscript>
+
+    <!-- Link Logic Script -->
+    <script src="../script.js"></script>
+</body>
+
+</html>
