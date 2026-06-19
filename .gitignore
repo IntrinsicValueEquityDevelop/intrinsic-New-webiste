@@ -1,0 +1,12 @@
+# Python cache and environments
+**/__pycache__/
+**/*.pyc
+**/venv/
+**/.env
+
+# System / IDE files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
